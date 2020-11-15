@@ -1,45 +1,45 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1C0D06FE-DC8C-4067-986D-691F93B90B3F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servibes.Bootstrapper", "src\Servibes.Bootstrapper\Servibes.Bootstrapper.csproj", "{B2CEB3C0-71CB-49E9-88C4-9C475DA1FF90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servibes.Bootstrapper", "src\Servibes.Bootstrapper\Servibes.Bootstrapper.csproj", "{B2CEB3C0-71CB-49E9-88C4-9C475DA1FF90}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{4A3464AB-9175-4AD9-9873-8625CDC941EB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Appointments", "Appointments", "{7379852B-AB66-4ABB-879E-F6B21B1CDA10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servibes.Appointments.Api", "src\Modules\Appointments\Servibes.Appointments.Api\Servibes.Appointments.Api.csproj", "{463F39C8-46C5-4AFD-9288-F6B069D608DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servibes.Appointments.Api", "src\Modules\Appointments\Servibes.Appointments.Api\Servibes.Appointments.Api.csproj", "{463F39C8-46C5-4AFD-9288-F6B069D608DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servibes.Appointments.Application", "src\Modules\Appointments\Servibes.Appointments.Application\Servibes.Appointments.Application.csproj", "{6058F02A-1C5E-4CAB-880A-66EDFE303891}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servibes.Appointments.Application", "src\Modules\Appointments\Servibes.Appointments.Application\Servibes.Appointments.Application.csproj", "{6058F02A-1C5E-4CAB-880A-66EDFE303891}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servibes.Appointments.Core", "src\Modules\Appointments\Servibes.Appointments.Core\Servibes.Appointments.Core.csproj", "{B59473D6-B71F-44E1-9A76-8A4E51F89CC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servibes.Appointments.Core", "src\Modules\Appointments\Servibes.Appointments.Core\Servibes.Appointments.Core.csproj", "{B59473D6-B71F-44E1-9A76-8A4E51F89CC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servibes.Appointments.Infrastructure", "src\Modules\Appointments\Servibes.Appointments.Infrastructure\Servibes.Appointments.Infrastructure.csproj", "{2B3A5412-10B0-402B-95DC-01D59BF76F48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servibes.Appointments.Infrastructure", "src\Modules\Appointments\Servibes.Appointments.Infrastructure\Servibes.Appointments.Infrastructure.csproj", "{2B3A5412-10B0-402B-95DC-01D59BF76F48}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Availability", "Availability", "{0FB87F63-292C-49AD-AA95-D82AA0FF9E89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servibes.Availability.Api", "src\Modules\Availability\Servibes.Availability.Api\Servibes.Availability.Api.csproj", "{66B18FEB-E501-4293-999A-2C5D8D11154F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servibes.Availability.Api", "src\Modules\Availability\Servibes.Availability.Api\Servibes.Availability.Api.csproj", "{66B18FEB-E501-4293-999A-2C5D8D11154F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servibes.Availability.Application", "src\Modules\Availability\Servibes.Availability.Application\Servibes.Availability.Application.csproj", "{C2926D02-BAFF-4429-BDC5-98A712973C74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servibes.Availability.Application", "src\Modules\Availability\Servibes.Availability.Application\Servibes.Availability.Application.csproj", "{C2926D02-BAFF-4429-BDC5-98A712973C74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servibes.Availability.Core", "src\Modules\Availability\Servibes.Availability.Core\Servibes.Availability.Core.csproj", "{6BA8AD80-7FE2-44C4-9551-C6D84FCDA6EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servibes.Availability.Core", "src\Modules\Availability\Servibes.Availability.Core\Servibes.Availability.Core.csproj", "{6BA8AD80-7FE2-44C4-9551-C6D84FCDA6EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servibes.Availability.Infrastructure", "src\Modules\Availability\Servibes.Availability.Infrastructure\Servibes.Availability.Infrastructure.csproj", "{D6E67AB2-3FBF-4382-8721-8E7365F76763}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servibes.Availability.Infrastructure", "src\Modules\Availability\Servibes.Availability.Infrastructure\Servibes.Availability.Infrastructure.csproj", "{D6E67AB2-3FBF-4382-8721-8E7365F76763}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BusinessProfile", "BusinessProfile", "{88CD8F5E-7343-4014-B812-F29E5672A823}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servibes.BusinessProfile.Api", "src\Modules\BusinessProfile\Servibes.BusinessProfile.Api\Servibes.BusinessProfile.Api.csproj", "{5F70953F-DE8F-426B-8335-7EDBA01DE3F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servibes.BusinessProfile.Api", "src\Modules\BusinessProfile\Servibes.BusinessProfile.Api\Servibes.BusinessProfile.Api.csproj", "{5F70953F-DE8F-426B-8335-7EDBA01DE3F6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientProfile", "ClientProfile", "{E8E39FB3-4D49-4B7C-A7CB-EBBC583A4B06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servibes.ClientProfile.Api", "src\Modules\ClientProfile\Servibes.ClientProfile.Api\Servibes.ClientProfile.Api.csproj", "{095EEFAC-F182-49FF-9C94-6E26A406C72E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servibes.ClientProfile.Api", "src\Modules\ClientProfile\Servibes.ClientProfile.Api\Servibes.ClientProfile.Api.csproj", "{095EEFAC-F182-49FF-9C94-6E26A406C72E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sales", "Sales", "{1E78B17C-D11B-473E-9F01-5F3FF8848907}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servibes.Sales.Api", "src\Modules\Sales\Servibes.Sales.Api\Servibes.Sales.Api.csproj", "{83BA9AFB-57BE-4D52-8027-083133B59B12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servibes.Sales.Api", "src\Modules\Sales\Servibes.Sales.Api\Servibes.Sales.Api.csproj", "{83BA9AFB-57BE-4D52-8027-083133B59B12}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bootstrapper", "Bootstrapper", "{8D09D1AD-6B14-4FD9-9745-139ECBAC572F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,9 +49,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B2CEB3C0-71CB-49E9-88C4-9C475DA1FF90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -199,9 +196,11 @@ Global
 		{83BA9AFB-57BE-4D52-8027-083133B59B12}.Release|x86.ActiveCfg = Release|Any CPU
 		{83BA9AFB-57BE-4D52-8027-083133B59B12}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B2CEB3C0-71CB-49E9-88C4-9C475DA1FF90} = {1C0D06FE-DC8C-4067-986D-691F93B90B3F}
-		{4A3464AB-9175-4AD9-9873-8625CDC941EB} = {1C0D06FE-DC8C-4067-986D-691F93B90B3F}
+		{B2CEB3C0-71CB-49E9-88C4-9C475DA1FF90} = {8D09D1AD-6B14-4FD9-9745-139ECBAC572F}
 		{7379852B-AB66-4ABB-879E-F6B21B1CDA10} = {4A3464AB-9175-4AD9-9873-8625CDC941EB}
 		{463F39C8-46C5-4AFD-9288-F6B069D608DA} = {7379852B-AB66-4ABB-879E-F6B21B1CDA10}
 		{6058F02A-1C5E-4CAB-880A-66EDFE303891} = {7379852B-AB66-4ABB-879E-F6B21B1CDA10}
@@ -218,5 +217,8 @@ Global
 		{095EEFAC-F182-49FF-9C94-6E26A406C72E} = {E8E39FB3-4D49-4B7C-A7CB-EBBC583A4B06}
 		{1E78B17C-D11B-473E-9F01-5F3FF8848907} = {4A3464AB-9175-4AD9-9873-8625CDC941EB}
 		{83BA9AFB-57BE-4D52-8027-083133B59B12} = {1E78B17C-D11B-473E-9F01-5F3FF8848907}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91C88C5B-D9BA-42DA-A82A-648F12DE52D1}
 	EndGlobalSection
 EndGlobal
