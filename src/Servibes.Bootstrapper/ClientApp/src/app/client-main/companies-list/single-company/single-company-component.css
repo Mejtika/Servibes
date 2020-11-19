@@ -1,0 +1,48 @@
+a {
+    text-decoration: none;
+    color: #484848;
+}
+
+hr {
+    margin-top: 8px;
+    margin-bottom: 3px;
+}
+
+.cover-img {
+    margin-top: 8%; 
+}
+
+.address-header {
+    font-size: 12px;
+    color: grey;
+    font-style: italic;
+}
+
+.service-name {
+    font-size: 14px;
+}
+
+.service-price {
+    font-size: 14px;
+}
+
+.service-description {
+    font-size: 12px;
+    color: gray;
+}
+
+.service-duration {
+    font-size: 12px;
+    color: grey;
+}
+
+.company-div {
+    margin-top: 5%;
+}
+
+.book-button {
+    margin-top: 20px;
+    height: 20px;
+    font-size: 12px;
+    padding-top: 0px;
+}

@@ -1,0 +1,11 @@
+<div class="container">
+    <div *ngIf="!companies">
+        <spinner></spinner>
+    </div>
+
+    <div *ngIf="companies">
+        <div *ngFor="let company of companies">
+            <single-company [company]="company"></single-company>
+        </div>
+    </div>
+</div>

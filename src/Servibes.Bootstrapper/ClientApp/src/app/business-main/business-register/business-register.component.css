@@ -1,0 +1,10 @@
+label {
+    font-weight: bolder;
+}
+
+.thickHr {
+    border: none;
+    height: 2px;
+    color: rgb(100, 100, 100);
+    background-color: rgb(100, 100, 100);
+}

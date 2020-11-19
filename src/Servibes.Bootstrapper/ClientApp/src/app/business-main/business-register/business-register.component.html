@@ -1,0 +1,229 @@
+<div class="container">
+
+    <h1>Business register component</h1>
+
+    <div [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <!-- BUSINESS NAME -->
+        <div class="form-group">
+            <label for="businessName">Business name:</label>
+            <br />
+            <input type="text" id="businessName"
+                formControlName="businessName" required
+                placeholder="Business name..."
+                class="form-control"
+                />
+
+            <div *ngIf="hasError('businessName')"
+                 class="invalid-feedback">
+                <div *ngIf="form.get('businessName').errors['required']">
+                    Business name is required.
+                </div>
+            </div>
+        </div>
+        <!-- BUSINESS NAME -->
+
+        <!-- PHONE NUMBER -->
+        <div class="form-group">
+            <label for="businessPhoneNumber">Phone number:</label>
+            <br />
+            <input type="tel" id="businessPhoneNumber"
+                formControlName="businessPhoneNumber" required
+                placeholder="Phone number..."
+                class="form-control"
+                />
+
+            <div *ngIf="hasError('businessPhoneNumber')"
+                 class="invalid-feedback">
+                <div *ngIf="form.get('businessPhoneNumber').errors?.required">
+                    Business name is required.
+                </div>
+            </div>
+        </div>
+        <!-- PHONE NUMBER -->
+
+        <!-- CATEGORY -->
+        <div class="form-group">
+            <label for="category">Category: </label>
+            <br />
+            <select class="form-control" (change)="changedCategory($event)" formControlName="category" id="category">
+                <option value="" disabled>Choice category</option>
+                <option *ngFor="let category of categories" [ngValue]="category">{{ category }}</option>
+            </select>
+
+            <div *ngIf="hasError('category')"
+                 class="invalid-feedback">
+                <div *ngIf="form.get('category').errors?.required">
+                    Category is required
+                </div>
+            </div>
+        </div>
+        <!-- CATEGORY -->
+        
+        <!-- ADDRESS -->
+        <div class="form-group">
+            <label for="location">Address:</label>
+            <br />
+            <input type="text" id="location"
+                formControlName="location" required
+                placeholder="Address..."
+                class="form-control"
+                />
+
+            <div *ngIf="hasError('location')"
+                 class="invalid-feedback">
+                <div *ngIf="form.get('location').errors?.required">
+                    Address is required.
+                </div>
+            </div>
+        </div>
+        <!-- ADDRESS -->
+
+        <!-- COVER PHOTO -->
+        <div class="form-group">
+            <label for="coverPhoto">Conver photo:</label>
+            <br />
+            <input type="file" id="coverPhoto"
+                formControlName="coverPhoto" required
+                class="form-control"
+                />
+
+            <div *ngIf="hasError('coverPhoto')"
+                 class="invalid-feedback">
+                <div *ngIf="form.get('coverPhoto').errors?.required">
+                    Cover photo is required
+                </div>
+            </div>
+        </div>
+        <!-- COVER PHOTO -->
+
+        <hr class="thickHr"/>
+
+        <!-- EMPLOYEES -->
+        <div class="list-group list-group-flush">
+            <div class="list-group-item" *ngFor="let employee of employees.controls; let i = index">
+                <h5 class="card-title">Employee {{i + 1}}</h5>
+                <div [formGroup]="employee" class="form-row">
+                    <div class="form-group col-6">
+                        <label>First name</label>
+                        <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && employee.controls.firstName.errors }" />
+                        <div *ngIf="submitted && employee.controls.firstName.errors" class="invalid-feedback">
+                            <div *ngIf="employee.controls.firstName.errors.required">First name is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>Last name</label>
+                        <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && employee.controls.lastName.errors }" />
+                        <div *ngIf="submitted && employee.controls.lastName.errors" class="invalid-feedback">
+                            <div *ngIf="employee.controls.lastName.errors.required">Last name is required</div>
+                        </div>
+                    </div>
+                </div>
+                <button *ngIf="i != 0" class="btn btn-danger" (click)="removeEmployeeForm(i)">Remove employee</button>
+            </div>
+            <button class="btn btn-primary" (click)="addEmployeeForm()">Add next employee</button>
+        </div>
+        <!-- EMPLOYEES -->
+
+        <hr class="thickHr"/>
+
+        <!-- OPENING HOURS -->
+        <div class="list-group list-group-flush">
+            <div class="list-group-item" *ngFor="let day of openingHours.controls; let i = index">
+                    <h5 class="card-title">{{ weekDays[i] }}</h5>
+                    <div [formGroup]="day" class="form-row">
+                        <div class="form-group col-2">
+                            <input type="checkbox" formControlName="isActive"/>
+                        </div>
+                        <div class="form-group col-5">
+                            <label>Open hour</label>
+                            <!--<input 
+                                type="text" 
+                                formControlName="open" 
+                                class="form-control" 
+                                [ngClass]="{ 'is-invalid': submitted && day.controls.open.errors }" />-->
+                            <select class="form-control" (change)="openHoursChanged($event, i)" formControlName="open" id="open">
+                                <option value="" disabled>Choice time</option>
+                                <option *ngFor="let time of times" [ngValue]="time">{{ time }}</option>
+                            </select>
+                            <div *ngIf="submitted && day.controls.open.errors" class="invalid-feedback">
+                                <div *ngIf="day.controls.open.errors.required">Open hours is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-5">
+                            <label>Close hour</label>
+                            <!--<input 
+                                type="text" 
+                                formControlName="close" 
+                                class="form-control" 
+                                [ngClass]="{ 'is-invalid': submitted && day.controls.close.errors }" />-->
+                            <select class="form-control" (change)="closeHoursChanged($event, i)" formControlName="close" id="close">
+                                <option value="" disabled>Choice time</option>
+                                <option *ngFor="let time of times" [ngValue]="time">{{ time }}</option>
+                            </select>
+                            <div *ngIf="submitted && day.controls.close.errors" class="invalid-feedback">
+                                <div *ngIf="day.controls.close.errors.required">Close hours is required</div>
+                            </div>
+                        </div>
+                    </div>   
+            </div>
+        </div>
+        <!-- OPENING HOURS -->
+
+        <hr class="thickHr"/>
+
+        <!-- SERVICES -->
+        <div class="list-group list-group-flush">
+            <div class="list-group-item" *ngFor="let service of services.controls; let i = index">
+                <h5 class="card-title">Service {{ i + 1 }}</h5>
+                <div [formGroup]="service" class="form-row">
+                    <div class="form-group col-4">
+                        <label>Service name</label>
+                        <input 
+                            type="text" 
+                            formControlname="serviceName" 
+                            class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && service.controls.serviceName.errors }" />
+                        <div *ngIf="submitted && service.controls.serviceName.errors.required">Service name is required</div>
+                    </div>
+                    <div class="form-group col-4">
+                        <label>Price</label>
+                        <input 
+                            type="number" 
+                            formControlname="price" 
+                            class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && service.controls.price.errors }" />
+                        <div *ngIf="submitted && service.controls.price.errors.required">Price is required</div>
+                    </div>
+                    <div class="form-group col-4">
+                        <label>Duration</label>
+                        <input 
+                            type="text" 
+                            formControlname="duration" 
+                            class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && service.controls.duration.errors }" />
+                        <div *ngIf="submitted && service.controls.duration.errors.required">Duration is required</div>
+                    </div>
+                    <div class="form-group col-12">
+                        <label>Description</label>
+                        <textarea 
+                            type="textarea" 
+                            formControlname="description" 
+                            class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && service.controls.description.errors }">
+                        </textarea>
+                        <div *ngIf="submitted && service.controls.description.errors.required">Description is required</div>
+                    </div>
+                </div>
+                <button *ngIf="i != 0" class="btn btn-danger" (click)="removeService(i)">Remove service</button>
+            </div>
+            <button class="btn btn-primary" (click)="addService()">Add next service</button>
+        </div>
+        <!-- SERVICES -->
+
+        <hr class="thickHr"/>
+
+        <button type="submit" (click)="onSubmit()" class="btn btn-primary" [disabled]="!form.valid">Save</button>
+    </div>
+
+</div>

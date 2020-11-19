@@ -1,0 +1,101 @@
+<nav class="sticky-top">
+  <div class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand">UltimateService</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse row justify-content-md-center"
+      id="navbarNavAltMarkup"
+    >
+      <div class="navbar-nav">
+        <form
+          id="searchForm"
+          (ngSubmit)="saveForm()"
+          [formGroup]="searchForm"
+          class="form-inline my-2 my-lg-0"
+        >
+          <input
+            class="form-control mr-sm-2"
+            modal-trigger="searchWhat"
+            formControlName="searchWhat"
+            type="text"
+            placeholder="Czego szukasz?"
+            aria-label="Search"
+          />
+          <input
+            class="form-control mr-sm-2"
+            modal-trigger="searchWhere"
+            formControlName="searchWhere"
+            type="text"
+            placeholder="Gdzie?"
+            aria-label="Search"
+          />
+          <input
+            class="form-control mr-sm-2"
+            formControlName="searchWhen"
+            type="date"
+            placeholder="Kiedy?"
+            aria-label="Search"
+          />
+          <button class="btn btn-danger mr-sm-2">Szukaj</button>
+        </form>
+        <a class="nav-item mr-sm-2 btn btn-success nav-link">Profile</a>
+        <a class="nav-item mr-sm-2 btn btn-success nav-link">Business site</a>
+      </div>
+    </div>
+  </div>
+  <div class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav categoriesList">
+        <a
+          *ngFor="let category of categories"
+          class="nav-item nav-link category"
+          [routerLink]="['/client/companies']" 
+          [queryParams]="{ category: category}"
+          >{{ category }}</a
+        >
+      </div>
+    </div>
+  </div>
+</nav>
+
+<modal
+  [closeOnBodyClick]="closeOnBodyClick"
+  elementId="searchWhat"
+  title="POPULAR SERVICES"
+>
+  <div class="list-group">
+    <div
+      class="list-group-item"
+      *ngFor="let service of categories"
+      (click)="selectWhat(service)"
+    >
+      {{ service }}
+    </div>
+  </div>
+</modal>
+
+<modal
+  [closeOnBodyClick]="closeOnBodyClick"
+  elementId="searchWhere"
+  title="SERVICES LOCALIZATION"
+>
+  <div class="list-group">
+    <div
+      class="list-group-item"
+      *ngFor="let city of cities"
+      (click)="selectWhere(city)"
+    >
+      {{ city }}
+    </div>
+  </div>
+</modal>

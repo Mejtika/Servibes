@@ -1,0 +1,13 @@
+::ng-deep .dx-tooltip-wrapper .dx-overlay-content .dx-popup-content {
+    padding: 14px;
+}
+
+::ng-deep .appointment-block > div:first-child {
+    font-size: 20px;
+    white-space: normal;
+}
+
+::ng-deep .appointment-block > div:not(:first-child) {
+    font-size: 11px;
+    white-space: normal;
+}
