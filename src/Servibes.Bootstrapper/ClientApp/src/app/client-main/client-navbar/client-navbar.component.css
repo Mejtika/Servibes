@@ -1,0 +1,12 @@
+.categoriesList {
+    display: table;
+}
+
+.category {
+    display: inline;
+}
+
+#account {
+    display: inline;
+    text-align: right;
+}

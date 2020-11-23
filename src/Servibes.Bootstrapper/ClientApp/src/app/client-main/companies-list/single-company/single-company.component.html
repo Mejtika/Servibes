@@ -1,0 +1,32 @@
+<div *ngIf="!company">
+    <spinner></spinner>
+</div>
+
+<div class="container">
+  <div class="company-div">
+    <div class="row justify-content-md-center">
+      <div class="col-4">
+        <a [routerLink]="['/client/companies/', company.id]">
+          <img class="img-fluid cover-img rounded" [src]="company.coverImg"/> 
+        </a>
+      </div>
+      <div class="col-7">
+        <a [routerLink]="['/client/companies/', company.id]">
+          <h4>{{ company.companyDetails.companyName }}</h4>
+        </a>
+        <h6 class="address-header">{{ company.companyDetails.address.city }}</h6>
+        <hr/>
+        <div *ngFor="let service of company['services'] | slice:0:3">
+          <div class="row">
+            <p class="col-8 service-name">{{ service.name }}</p>
+            <p class="col-2 service-price">{{ service.price }} PLN</p>
+            <button [routerLink]="['/client/companies/', company.id]" class="col-2 book-button btn btn-primary ">Book</button>
+            <span class="col-8 service-description">{{ service.description }}</span>
+            <span class="col-2 service-duration">{{ service.duration }} minut</span>
+          </div>
+          <hr/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+.container {
+    margin-top: 15px;
+}
+
+.company-cover-img {
+    border: 1px solid darkgray;
+    height: auto;
+}
+
+.company-main {
+    margin-right: 7px;
+}
+
+.map {
+    border: 1px solid darkgray;
+    margin-top: 15px;
+    max-height: 250px;
+}
+
+.company-side {
+    height: auto;
+    border-radius: 10px;
+    background-color: #fafafa;
+}
+
+.address-header {
+    font-size: 12px;
+    color: grey;
+    font-style: italic;
+}
+
+.service-name {
+    font-size: 14px;
+}
+
+.service-price {
+    font-size: 14px;
+}
+
+.service-description {
+    font-size: 12px;
+    color: gray;
+}
+
+.service-duration {
+    font-size: 12px;
+    color: grey;
+}
+
+
+.book-button {
+    margin-top: 20px;
+    height: 20px;
+    font-size: 12px;
+    padding-top: 0px;
+}
+
+.company-address {
+    font-size: 12px;
+    color: grey;
+    font-style: italic;
+}
+
+.company-description {
+    font-size: 13px;
+    color: gray;
+}
+
+.company-description-header {
+    margin-top: 5px;
+    font-size: 15px;
+    color: #505050;
+}
+
+.company-side-header {
+    margin-top: 30px;
+}
+
+.company-side-employee-img {
+    height: 40px;
+}
+
+.company-side-contact {
+    font-size: 20px;
+}
+
+.company-side-availability-single {
+    margin-top: 5px;
+}
+
+.day-of-the-week {
+    font-style: italic;
+}
+
+.time-span {
+    font-style: italic;
+}
