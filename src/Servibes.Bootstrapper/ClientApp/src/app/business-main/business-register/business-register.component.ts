@@ -3,6 +3,9 @@ import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms'
 
 import { BaseForm } from 'src/app/shared/others/BaseForm';
 import { TimeArray } from './../../shared/others/time-array';
+import { ProfileService } from '../business-services/profile-service';
+import { BusinessProfile } from '../models/BusinessProfile';
+import { cwd } from 'process';
 
 @Component({
     selector: 'business-register',
@@ -15,7 +18,9 @@ export class BusinessRegisterComponent extends BaseForm {
     public times: string[] = this.timeArray.generate(15);
 
 
-    constructor(private formBuilder: FormBuilder, private timeArray: TimeArray) {
+  constructor(private formBuilder: FormBuilder,
+    private timeArray: TimeArray,
+    private profileService: ProfileService) {
         super();
     }
 
@@ -58,11 +63,11 @@ export class BusinessRegisterComponent extends BaseForm {
         //ToDo: Conditional validations not working properly
 
         for (let index = 0; index < 7; index++) {
-            (this.form.controls.openingHours as FormArray).push(this.formBuilder.group({
+            this.openingHours.push(this.formBuilder.group({
                 dayOfWeek: new FormControl(this.weekDays[index]),
-                isActive: new FormControl(''),
-                open: new FormControl('', [this.conditionalValidator(() => this.openingHours.controls[index].get('isActive').value, Validators.required)]),
-                close: new FormControl('', [this.conditionalValidator(() => this.openingHours.controls[index].get('isActive').value, Validators.required)]),
+                isActive: new FormControl(false),
+                openHour: new FormControl('08:00', [this.conditionalValidator(() => this.openingHours.controls[index].get('isActive').value, Validators.required)]),
+                closeHour: new FormControl('16:00', [this.conditionalValidator(() => this.openingHours.controls[index].get('isActive').value, Validators.required)]),
             }));
         }
     }
@@ -93,6 +98,15 @@ export class BusinessRegisterComponent extends BaseForm {
     }
 
     onSubmit() {
-        console.log(this.form.getRawValue());
+      console.log(this.form.getRawValue());
+      let formData = this.form.getRawValue();
+
+      const formValue: BusinessProfile = Object.assign(
+        this.form.value
+      )
+
+      this.profileService.addBusinessProfile(formValue).subscribe(profile => {
+        console.log('Posted profile: ', profile);
+      });
     }
 }

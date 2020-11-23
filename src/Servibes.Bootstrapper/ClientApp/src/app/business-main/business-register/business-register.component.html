@@ -48,7 +48,7 @@
             <br />
             <select class="form-control" (change)="changedCategory($event)" formControlName="category" id="category">
                 <option value="" disabled>Choice category</option>
-                <option *ngFor="let category of categories" [ngValue]="category">{{ category }}</option>
+                <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
             </select>
 
             <div *ngIf="hasError('category')"
@@ -137,32 +137,22 @@
                         </div>
                         <div class="form-group col-5">
                             <label>Open hour</label>
-                            <!--<input 
-                                type="text" 
-                                formControlName="open" 
-                                class="form-control" 
-                                [ngClass]="{ 'is-invalid': submitted && day.controls.open.errors }" />-->
-                            <select class="form-control" (change)="openHoursChanged($event, i)" formControlName="open" id="open">
+                            <select class="form-control" (change)="openHoursChanged($event, i)" formControlName="openHour" id="open">
                                 <option value="" disabled>Choice time</option>
-                                <option *ngFor="let time of times" [ngValue]="time">{{ time }}</option>
+                                <option *ngFor="let time of times" [value]="time">{{ time }}</option>
                             </select>
-                            <div *ngIf="submitted && day.controls.open.errors" class="invalid-feedback">
-                                <div *ngIf="day.controls.open.errors.required">Open hours is required</div>
+                            <div *ngIf="submitted && day.controls.openHour.errors" class="invalid-feedback">
+                                <div *ngIf="day.controls.openHour.errors.required">Open hours is required</div>
                             </div>
                         </div>
                         <div class="form-group col-5">
                             <label>Close hour</label>
-                            <!--<input 
-                                type="text" 
-                                formControlName="close" 
-                                class="form-control" 
-                                [ngClass]="{ 'is-invalid': submitted && day.controls.close.errors }" />-->
-                            <select class="form-control" (change)="closeHoursChanged($event, i)" formControlName="close" id="close">
+                            <select class="form-control" (change)="closeHoursChanged($event, i)" formControlName="closeHour" id="close">
                                 <option value="" disabled>Choice time</option>
-                                <option *ngFor="let time of times" [ngValue]="time">{{ time }}</option>
+                                <option *ngFor="let time of times" [value]="time">{{ time }}</option>
                             </select>
-                            <div *ngIf="submitted && day.controls.close.errors" class="invalid-feedback">
-                                <div *ngIf="day.controls.close.errors.required">Close hours is required</div>
+                            <div *ngIf="submitted && day.controls.closeHour.errors" class="invalid-feedback">
+                                <div *ngIf="day.controls.closeHour.errors.required">Close hours is required</div>
                             </div>
                         </div>
                     </div>   
@@ -181,7 +171,7 @@
                         <label>Service name</label>
                         <input 
                             type="text" 
-                            formControlname="serviceName" 
+                            formControlName="serviceName" 
                             class="form-control" 
                             [ngClass]="{ 'is-invalid': submitted && service.controls.serviceName.errors }" />
                         <div *ngIf="submitted && service.controls.serviceName.errors.required">Service name is required</div>
@@ -190,16 +180,16 @@
                         <label>Price</label>
                         <input 
                             type="number" 
-                            formControlname="price" 
+                            formControlName="price" 
                             class="form-control" 
                             [ngClass]="{ 'is-invalid': submitted && service.controls.price.errors }" />
                         <div *ngIf="submitted && service.controls.price.errors.required">Price is required</div>
                     </div>
                     <div class="form-group col-4">
-                        <label>Duration</label>
+                        <label>Duration [minutes]</label>
                         <input 
-                            type="text" 
-                            formControlname="duration" 
+                            type="number" 
+                            formControlName="duration" 
                             class="form-control" 
                             [ngClass]="{ 'is-invalid': submitted && service.controls.duration.errors }" />
                         <div *ngIf="submitted && service.controls.duration.errors.required">Duration is required</div>
@@ -208,7 +198,7 @@
                         <label>Description</label>
                         <textarea 
                             type="textarea" 
-                            formControlname="description" 
+                            formControlName="description" 
                             class="form-control" 
                             [ngClass]="{ 'is-invalid': submitted && service.controls.description.errors }">
                         </textarea>

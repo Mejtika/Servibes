@@ -8,7 +8,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BusinessProfileController
+    public class BusinessProfileController : ControllerBase
     {
         [HttpPost]
         public void CreateProfile([FromBody]CreateProfileDto profileDto)
