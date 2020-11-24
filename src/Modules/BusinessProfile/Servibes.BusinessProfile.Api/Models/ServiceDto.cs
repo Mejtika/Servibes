@@ -4,11 +4,12 @@ using System.Text;
 
 namespace Servibes.BusinessProfile.Api.Models
 {
-    public class Service
+    public class ServiceDto
     {
         public string ServiceName { get; set; }
         public double Price { get; set; }
-        public string Duration { get; set; }
+        public double Duration { get; set; }
         public string Description { get; set; }
+        public List<EmployeeDto> Employees { get; set; }
     }
 }

@@ -15,9 +15,9 @@ namespace Servibes.BusinessProfile.Api.Models
         Sunday
     }
 
-    public class OpenHours
+    public class OpenHoursDto
     {
-        public string DayOfWeek { get; set; }
+        public DayOfWeek DayOfWeek { get; set; }
         public bool IsActive { get; set; }
         public string OpenHour { get; set; }
         public string CloseHour { get; set; }

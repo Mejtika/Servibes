@@ -12,8 +12,8 @@ namespace Servibes.BusinessProfile.Api.Models
         public string CoverPhoto { get; set; }
         public string Location { get; set; }
 
-        public List<Employee> Employees { get; set; }
-        public List<OpenHours> OpeningHours { get; set; }
-        public List<Service> Services { get; set; }
+        public List<EmployeeDto> Employees { get; set; }
+        public List<OpenHoursDto> OpeningHours { get; set; }
+        public List<ServiceDto> Services { get; set; }
     }
 }

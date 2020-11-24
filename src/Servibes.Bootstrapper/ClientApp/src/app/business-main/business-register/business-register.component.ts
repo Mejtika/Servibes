@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms';
 
 import { BaseForm } from 'src/app/shared/others/BaseForm';
 import { TimeArray } from './../../shared/others/time-array';
@@ -43,7 +43,7 @@ export class BusinessRegisterComponent extends BaseForm {
         //Adding initial form fields
         this.addEmployeeForm();
         this.addOpeningHoursForm();
-        this.addService();
+        //this.addService();
     }
 
     addEmployeeForm() {
@@ -64,7 +64,7 @@ export class BusinessRegisterComponent extends BaseForm {
 
         for (let index = 0; index < 7; index++) {
             this.openingHours.push(this.formBuilder.group({
-                dayOfWeek: new FormControl(this.weekDays[index]),
+                dayOfWeek: new FormControl(index),
                 isActive: new FormControl(false),
                 openHour: new FormControl('08:00', [this.conditionalValidator(() => this.openingHours.controls[index].get('isActive').value, Validators.required)]),
                 closeHour: new FormControl('16:00', [this.conditionalValidator(() => this.openingHours.controls[index].get('isActive').value, Validators.required)]),
@@ -73,12 +73,32 @@ export class BusinessRegisterComponent extends BaseForm {
     }
 
     addService() {
-        this.services.push(this.formBuilder.group({
-            serviceName: new FormControl(''),
-            price: new FormControl(''),
-            description: new FormControl(''),
-            duration: new FormControl('')
-        }))
+      let service = this.formBuilder.group({
+        serviceName: new FormControl(''),
+        price: new FormControl(''),
+        description: new FormControl(''),
+        duration: new FormControl(''),
+        employees: new FormArray([])
+      });
+
+      let emps = service.get('employees') as FormArray;
+
+      this.addEmployeesToServiceForm(emps);
+
+      this.services.push(service);
+    }
+
+  addEmployeesToServiceForm(service: FormArray) {
+
+      (this.employees as FormArray).controls.forEach(emp => {
+        console.log('employee: ', emp);
+
+        service.push(this.formBuilder.group({
+          isActive: new FormControl(false),
+          firstName: new FormControl(emp.get('firstName').value),
+          lastName: new FormControl(emp.get('lastName').value)
+        }));
+      });
     }
 
     removeService(index: number) {
