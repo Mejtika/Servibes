@@ -5,32 +5,26 @@ using System.Text;
 
 namespace Servibes.BusinessProfile.Api.Model.ValueObjects
 {
-    public class Address// : ValueObject
+    public class Address
     {
-        public string City { get; private set; }
-        public string ZipCode { get; private set; }
-        public string Street { get; private set; }
-        public string StreetNumber { get; private set; }
-        public string FlatNumber { get; private set; }
+        public string City { get; }
+        public string ZipCode { get; }
+        public string Street { get; }
+        public string FlatNumber { get;  }
+        public string StreetNumber { get;  }
 
-        public Address() { }
-
-        public Address(string city, string zipCode, string street, string streetNumber, string flatNumber)
+        private Address(string city, string zipCode, string street, string streetNumber, string flatNumber)
         {
-            this.City = city;
-            this.ZipCode = zipCode;
-            this.Street = street;
-            this.StreetNumber = streetNumber;
-            this.FlatNumber = flatNumber;
+            City = city;
+            ZipCode = zipCode;
+            Street = street;
+            StreetNumber = streetNumber;
+            FlatNumber = flatNumber;
         }
 
-        /*protected override IEnumerable<object> GetEqualityComponents()
+        public static Address Create(string city, string zipCode, string street, string streetNumber, string flatNumber)
         {
-            yield return City;
-            yield return ZipCode;
-            yield return Street;
-            yield return StreetNumber;
-            yield return FlatNumber;
-        }*/
+            return new Address(city, zipCode, street, streetNumber, flatNumber);
+        }
     }
 }

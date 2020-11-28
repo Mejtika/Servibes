@@ -3,26 +3,33 @@ using Servibes.Shared.BuildingBlocks;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Servibes.BusinessProfile.Api.Model.ValueObjects
 {
-    public class PhoneNumber// : ValueObject
+    public class PhoneNumber
     {
-        public string Number { get; private set; }
-        public PhoneType PhoneType { get; private set; }
+        public string Value { get; }
 
-        public PhoneNumber() { }
-
-        public PhoneNumber(string number, PhoneType phoneType)
+        private PhoneNumber(string value)
         {
-            this.Number = number;
-            this.PhoneType = phoneType;
+            Value = value;
         }
 
-        /*protected override IEnumerable<object> GetEqualityComponents()
+        public static PhoneNumber Create(string phoneNumber)
         {
-            yield return Number;
-            yield return PhoneType;
-        }*/
+            if (string.IsNullOrWhiteSpace(phoneNumber))
+            {
+                throw new InvalidOperationException(phoneNumber);
+            }
+
+            if (!Regex.IsMatch(phoneNumber, @"^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$",
+                RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+            {
+                throw new InvalidOperationException(phoneNumber);
+            }
+
+            return new PhoneNumber(phoneNumber.ToLowerInvariant());
+        }
     }
 }

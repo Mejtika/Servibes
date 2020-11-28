@@ -11,6 +11,7 @@ namespace Servibes.BusinessProfile.Api.Model
         public double Price { get; set; }
         public double Duration { get; set; }
         public string Description { get; set; }
+        public Company Company { get; set; }
         public List<Employee> Employees { get; set; }
     }
 }

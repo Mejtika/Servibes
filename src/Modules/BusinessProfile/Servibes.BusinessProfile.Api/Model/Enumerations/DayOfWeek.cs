@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace Servibes.BusinessProfile.Api.Model.Enumerations
 {
     public enum DayOfWeek
@@ -11,7 +8,7 @@ namespace Servibes.BusinessProfile.Api.Model.Enumerations
         Wednesday,
         Thursday,
         Friday,
-        Saturaday,
+        Saturday,
         Sunday
     }
 }
