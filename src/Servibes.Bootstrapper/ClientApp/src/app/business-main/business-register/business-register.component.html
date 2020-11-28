@@ -6,18 +6,18 @@
 
         <!-- BUSINESS NAME -->
         <div class="form-group">
-            <label for="businessName">Business name:</label>
+            <label for="companyName">Business name:</label>
             <br />
-            <input type="text" id="businessName"
-                formControlName="businessName" required
+            <input type="text" id="companyName"
+                formControlName="companyName" required
                 placeholder="Business name..."
                 class="form-control"
                 />
 
-            <div *ngIf="hasError('businessName')"
+            <div *ngIf="hasError('companyName')"
                  class="invalid-feedback">
-                <div *ngIf="form.get('businessName').errors['required']">
-                    Business name is required.
+                <div *ngIf="form.get('companyName').errors['required']">
+                    Company name is required.
                 </div>
             </div>
         </div>
@@ -25,18 +25,18 @@
 
         <!-- PHONE NUMBER -->
         <div class="form-group">
-            <label for="businessPhoneNumber">Phone number:</label>
+            <label for="companyPhoneNumber">Phone number:</label>
             <br />
-            <input type="tel" id="businessPhoneNumber"
-                formControlName="businessPhoneNumber" required
+            <input type="tel" id="companyPhoneNumber"
+                formControlName="companyPhoneNumber" required
                 placeholder="Phone number..."
                 class="form-control"
                 />
 
-            <div *ngIf="hasError('businessPhoneNumber')"
+            <div *ngIf="hasError('companyPhoneNumber')"
                  class="invalid-feedback">
-                <div *ngIf="form.get('businessPhoneNumber').errors?.required">
-                    Business name is required.
+                <div *ngIf="form.get('companyPhoneNumber').errors?.required">
+                    Phone number is required.
                 </div>
             </div>
         </div>
@@ -61,21 +61,68 @@
         <!-- CATEGORY -->
         
         <!-- ADDRESS -->
-        <div class="form-group">
-            <label for="location">Address:</label>
-            <br />
-            <input type="text" id="location"
-                formControlName="location" required
-                placeholder="Address..."
-                class="form-control"
-                />
+        <div class="form-group" [formGroup]="address">
+          <label for="location">Address:</label>
+          <br />
+          <input type="text" id="city"
+                 formControlName="city" required
+                 placeholder="City..."
+                 class="form-control" />
 
-            <div *ngIf="hasError('location')"
-                 class="invalid-feedback">
-                <div *ngIf="form.get('location').errors?.required">
-                    Address is required.
-                </div>
+          <div *ngIf="hasError('city')"
+               class="invalid-feedback">
+            <div *ngIf="form.get('city').errors?.required">
+              City is required.
             </div>
+          </div>
+
+          <input type="text" id="zipCode"
+                 formControlName="zipCode" required
+                 placeholder="Zip code..."
+                 class="form-control" />
+
+          <div *ngIf="hasError('zipCode')"
+               class="invalid-feedback">
+            <div *ngIf="form.get('zipCode').errors?.required">
+              Zip code is required.
+            </div>
+          </div>
+
+          <input type="text" id="street"
+                 formControlName="street" required
+                 placeholder="Street..."
+                 class="form-control" />
+
+          <div *ngIf="hasError('street')"
+               class="invalid-feedback">
+            <div *ngIf="form.get('street').errors?.required">
+              Street is required.
+            </div>
+          </div>
+
+          <input type="text" id="streetNumber"
+                 formControlName="streetNumber" required
+                 placeholder="Street number..."
+                 class="form-control" />
+
+          <div *ngIf="hasError('streetNumber')"
+               class="invalid-feedback">
+            <div *ngIf="form.get('streetNumber').errors?.required">
+              Street Number is required.
+            </div>
+          </div>
+
+          <input type="text" id="flatNumber"
+                 formControlName="flatNumber" required
+                 placeholder="Flat number..."
+                 class="form-control" />
+
+          <div *ngIf="hasError('flatNumber')"
+               class="invalid-feedback">
+            <div *ngIf="form.get('flatNumber').errors?.required">
+              Flat Number is required.
+            </div>
+          </div>
         </div>
         <!-- ADDRESS -->
 

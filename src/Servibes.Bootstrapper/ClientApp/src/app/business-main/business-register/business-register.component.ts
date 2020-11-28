@@ -27,15 +27,22 @@ export class BusinessRegisterComponent extends BaseForm {
     get employees() { return this.form.controls.employees as FormArray; }
     get openingHours() { return this.form.controls.openingHours as FormArray; }
     get services() { return this.form.controls.services as FormArray; }
+    get address() { return this.form.controls.address as FormGroup };
 
     ngOnInit() {
         this.form = this.formBuilder.group({
-            businessName: new FormControl('', Validators.required),
-            employees: new FormArray([]),
-            businessPhoneNumber: new FormControl('', Validators.required),
+            companyName: new FormControl('', Validators.required),
+            companyPhoneNumber: new FormControl('', Validators.required),
             category: new FormControl('', Validators.required),
-            location: new FormControl('', Validators.required),
+            address: this.formBuilder.group({
+                city: new FormControl('', Validators.required),
+                zipCode: new FormControl('', Validators.required),
+                street: new FormControl('', Validators.required),
+                streetNumber: new FormControl('', Validators.required),
+                flatNumber: new FormControl('')
+            }),
             coverPhoto: new FormControl(''),
+            employees: new FormArray([]),
             openingHours: new FormArray([]),
             services: new FormArray([])
         });
