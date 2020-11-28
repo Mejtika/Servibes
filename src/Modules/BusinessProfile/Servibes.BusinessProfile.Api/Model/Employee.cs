@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Servibes.BusinessProfile.Api.Models
+namespace Servibes.BusinessProfile.Api.Model
 {
-    public class EmployeeDto
+    public class Employee
     {
-        public bool IsActive { get; set; }
+        public Guid EmployeeId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public List<HoursRange> WorkingHours { get; set; }
     }
 }
