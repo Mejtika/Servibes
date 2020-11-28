@@ -3,9 +3,7 @@ using Servibes.BusinessProfile.Api.Model;
 using Servibes.BusinessProfile.Api.Model.Enumerations;
 using Servibes.BusinessProfile.Api.Model.ValueObjects;
 using Servibes.BusinessProfile.Api.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 
 namespace Servibes.BusinessProfile.Api.Controllers
@@ -38,7 +36,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
                 List<Employee> serviceEmployees = new List<Employee>();
                 s.Employees.Where(s => s.IsActive).ToList().ForEach(e =>
                 {
-                    serviceEmployees.Add(companyEmployees.Where(ce => ce.FirstName == e.FirstName && ce.LastName == e.LastName).FirstOrDefault());
+                    serviceEmployees.Add(companyEmployees.FirstOrDefault(ce => ce.FirstName == e.FirstName && ce.LastName == e.LastName));
                 });
 
                 companyServices.Add(new Service() 
@@ -54,23 +52,22 @@ namespace Servibes.BusinessProfile.Api.Controllers
             Company company = new Company()
             {
                 CompanyName = profileDto.CompanyName,
-                PhoneNumber = new PhoneNumber(
-                    profileDto.CompanyPhoneNumber,
-                    PhoneType.Mobile),   //TODO: Implement type matching (Frontend select)
-                Address = new Address(
-                    profileDto.Address.City,
+                PhoneNumber = PhoneNumber.Create(profileDto.CompanyPhoneNumber), 
+                Address = Address.Create(profileDto.Address.City,
                     profileDto.Address.ZipCode,
                     profileDto.Address.Street,
                     profileDto.Address.StreetNumber,
                     profileDto.Address.FlatNumber),
                 Category = profileDto.Category,
                 CoverPhoto = profileDto.CoverPhoto,
-                OpenHours = profileDto.OpeningHours,
-                Employees = companyEmployees,
-                Services = companyServices
+                OpeningHours = profileDto.OpeningHours,
+                //Employees = companyEmployees,
+                //Services = companyServices
             };
 
             context.Companies.Add(company);
+            context.Employees.AddRange(companyEmployees);
+            context.Services.AddRange(companyServices);
             context.SaveChanges();
         }
     }
