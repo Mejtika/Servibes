@@ -10,4 +10,8 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Servibes.Shared\Servibes.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
