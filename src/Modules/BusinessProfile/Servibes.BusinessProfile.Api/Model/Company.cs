@@ -13,8 +13,6 @@ namespace Servibes.BusinessProfile.Api.Model
         public string Category { get; set; }
         public Address Address { get; set; }
         public string CoverPhoto { get; set; }
-        public List<HoursRange> OpeningHours { get; set; }
-        //public List<Employee> Employees { get; set; }
-        //public List<Service> Services { get; set; }
+        public List<OpeningHours> OpeningHours { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Servibes.BusinessProfile.Api.Model;
 using Servibes.BusinessProfile.Api.Model.Enumerations;
 using Servibes.BusinessProfile.Api.Model.ValueObjects;
 using Servibes.BusinessProfile.Api.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,10 +25,24 @@ namespace Servibes.BusinessProfile.Api.Controllers
         {
             //foreach Employee of Employees -> EmployeeAddedEvent -> Id, WorkingHours(CompanyOpeningHours) | Employee
 
+            var companyId = Guid.NewGuid();
+
             List<Employee> companyEmployees = new List<Employee>();
             profileDto.Employees.ForEach(e =>
             {
-                companyEmployees.Add(new Employee() { FirstName = e.FirstName, LastName = e.LastName, WorkingHours = profileDto.OpeningHours });
+                companyEmployees.Add(new Employee() 
+                { 
+                    EmployeeId = Guid.NewGuid(), 
+                    FirstName = e.FirstName, 
+                    LastName = e.LastName, 
+                    WorkingHours = profileDto.OpeningHours.Select(oh => new WorkingHours()
+                    {
+                        DayOfWeek = oh.DayOfWeek,
+                        From = TimeSpan.Parse(oh.OpenHour),
+                        To = TimeSpan.Parse(oh.CloseHour)
+                    }).ToList(), 
+                    CompanyId = companyId 
+                });
             });
 
             List<Service> companyServices = new List<Service>();
@@ -40,7 +55,9 @@ namespace Servibes.BusinessProfile.Api.Controllers
                 });
 
                 companyServices.Add(new Service() 
-                { 
+                {
+                    ServiceId = Guid.NewGuid(),
+                    CompanyId = companyId,
                     ServiceName = s.ServiceName, 
                     Description = s.Description, 
                     Duration = s.Duration, 
@@ -51,8 +68,9 @@ namespace Servibes.BusinessProfile.Api.Controllers
 
             Company company = new Company()
             {
+                CompanyId = companyId,
                 CompanyName = profileDto.CompanyName,
-                PhoneNumber = PhoneNumber.Create(profileDto.CompanyPhoneNumber), 
+                PhoneNumber = PhoneNumber.Create(profileDto.CompanyPhoneNumber),
                 Address = Address.Create(profileDto.Address.City,
                     profileDto.Address.ZipCode,
                     profileDto.Address.Street,
@@ -60,9 +78,13 @@ namespace Servibes.BusinessProfile.Api.Controllers
                     profileDto.Address.FlatNumber),
                 Category = profileDto.Category,
                 CoverPhoto = profileDto.CoverPhoto,
-                OpeningHours = profileDto.OpeningHours,
-                //Employees = companyEmployees,
-                //Services = companyServices
+                OpeningHours = profileDto.OpeningHours.Select(oh => new OpeningHours()
+                {
+                    DayOfWeek = oh.DayOfWeek,
+                    IsOpen = oh.IsOpen,
+                    From = TimeSpan.Parse(oh.OpenHour),
+                    To = TimeSpan.Parse(oh.CloseHour)
+                }).ToList()
             };
 
             context.Companies.Add(company);

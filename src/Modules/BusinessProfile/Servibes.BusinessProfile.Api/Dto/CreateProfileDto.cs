@@ -15,7 +15,7 @@ namespace Servibes.BusinessProfile.Api.Models
         public AddressDto Address { get; set; }
 
         public List<EmployeeDto> Employees { get; set; }
-        public List<HoursRange> OpeningHours { get; set; }
+        public List<OpenHoursDto> OpeningHours { get; set; }
         public List<ServiceDto> Services { get; set; }
     }
 }

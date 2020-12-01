@@ -6,11 +6,10 @@ using DayOfWeek = Servibes.BusinessProfile.Api.Model.Enumerations.DayOfWeek;
 
 namespace Servibes.BusinessProfile.Api.Model
 {
-    public class HoursRange
+    public class WorkingHours
     {
         public DayOfWeek DayOfWeek { get; set; }
-        public bool IsOpen { get; set; }
-        public string OpenHour { get; set; }
-        public string CloseHour { get; set; }
+        public TimeSpan From { get; set; }
+        public TimeSpan To { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Servibes.BusinessProfile.Api.Model
         public Guid EmployeeId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Company Company { get; set; }
-        public List<HoursRange> WorkingHours { get; set; }
+        public Guid CompanyId { get; set; }
+        public List<WorkingHours> WorkingHours { get; set; }
     }
 }
