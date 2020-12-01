@@ -1,5 +1,5 @@
 ﻿
-namespace Servibes.BusinessProfile.Api.Model.Enumerations
+namespace Servibes.Shared.Enumerations
 {
     public enum DayOfWeek
     {

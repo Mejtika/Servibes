@@ -9,7 +9,7 @@ namespace Servibes.BusinessProfile.Api.Models
     public class CreateProfileDto
     {
         public string CompanyName { get; set; }
-        public string CompanyPhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public string Category { get; set; }
         public string CoverPhoto { get; set; }
         public AddressDto Address { get; set; }

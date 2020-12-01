@@ -1,5 +1,4 @@
-﻿using Servibes.BusinessProfile.Api.Model.Enumerations;
-using Servibes.Shared.BuildingBlocks;
+﻿using Servibes.Shared.BuildingBlocks;
 using System;
 using System.Collections.Generic;
 using System.Text;

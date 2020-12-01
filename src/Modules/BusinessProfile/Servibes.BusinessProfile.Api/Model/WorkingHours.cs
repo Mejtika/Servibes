@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Servibes.BusinessProfile.Api.Model.Enumerations;
-using DayOfWeek = Servibes.BusinessProfile.Api.Model.Enumerations.DayOfWeek;
+using DayOfWeek = Servibes.Shared.Enumerations.DayOfWeek;
 
 namespace Servibes.BusinessProfile.Api.Model
 {

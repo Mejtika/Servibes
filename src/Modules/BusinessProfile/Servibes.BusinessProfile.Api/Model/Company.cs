@@ -11,8 +11,8 @@ namespace Servibes.BusinessProfile.Api.Model
         public string CompanyName { get; set; }
         public PhoneNumber PhoneNumber { get; set; }
         public string Category { get; set; }
-        public Address Address { get; set; }
         public string CoverPhoto { get; set; }
+        public Address Address { get; set; }
         public List<OpeningHours> OpeningHours { get; set; }
     }
 }

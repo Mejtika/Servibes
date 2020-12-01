@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Servibes.BusinessProfile.Api.Model.Enumerations;
+using Servibes.Shared.Enumerations;
 
 namespace Servibes.BusinessProfile.Api.Models
 {
