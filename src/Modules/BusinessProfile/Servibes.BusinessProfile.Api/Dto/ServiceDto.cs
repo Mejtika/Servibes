@@ -10,6 +10,6 @@ namespace Servibes.BusinessProfile.Api.Models
         public double Price { get; set; }
         public double Duration { get; set; }
         public string Description { get; set; }
-        public List<EmployeeDto> Employees { get; set; }
+        public List<EmployeeDto> Performers { get; set; }
     }
 }

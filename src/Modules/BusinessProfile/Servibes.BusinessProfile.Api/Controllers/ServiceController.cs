@@ -48,10 +48,14 @@ namespace Servibes.BusinessProfile.Api.Controllers
                 ServiceName = serviceDto.ServiceName
             };
 
-            serviceDto.Employees.Where(s => s.IsActive).ToList().ForEach(e =>
+            serviceDto.Performers.Where(s => s.IsActive).ToList().ForEach(e =>
             {
-                service.Employees.Add(companyEmployees.FirstOrDefault(ce => ce.FirstName == e.FirstName && ce.LastName == e.LastName));
+                service.Performers.Add(new Performer()
+                {
+                    PerformerId = companyEmployees.Where(ce => ce.FirstName == e.FirstName && ce.LastName == e.LastName).FirstOrDefault().EmployeeId
+                });
             });
+
 
             context.Services.Add(service);
 
@@ -76,10 +80,13 @@ namespace Servibes.BusinessProfile.Api.Controllers
             service.Duration = service.Duration;
             service.Description = service.Description;
 
-            service.Employees.Clear();
-            serviceDto.Employees.Where(s => s.IsActive).ToList().ForEach(e =>
+            service.Performers.Clear();
+            serviceDto.Performers.Where(s => s.IsActive).ToList().ForEach(e =>
             {
-                service.Employees.Add(companyEmployees.FirstOrDefault(ce => ce.FirstName == e.FirstName && ce.LastName == e.LastName));
+                service.Performers.Add(new Performer()
+                {
+                    PerformerId = companyEmployees.Where(ce => ce.FirstName == e.FirstName && ce.LastName == e.LastName).FirstOrDefault().EmployeeId
+                });
             });
 
             context.Services.Update(service);

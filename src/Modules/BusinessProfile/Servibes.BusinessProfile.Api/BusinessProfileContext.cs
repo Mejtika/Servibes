@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Servibes.BusinessProfile.Api.Model;
 using Servibes.BusinessProfile.Api.Model.ValueObjects;
-using DayOfWeek = Servibes.BusinessProfile.Api.Model.Enumerations.DayOfWeek;
+using DayOfWeek = Servibes.Shared.Enumerations.DayOfWeek;
 
 
 namespace Servibes.BusinessProfile.Api

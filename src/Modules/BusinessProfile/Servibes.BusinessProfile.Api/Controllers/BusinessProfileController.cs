@@ -10,7 +10,7 @@ using System.Linq;
 namespace Servibes.BusinessProfile.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/company")]
     public class BusinessProfileController : ControllerBase
     {
         private readonly BusinessProfileContext context;
@@ -20,10 +20,10 @@ namespace Servibes.BusinessProfile.Api.Controllers
             this.context = context;
         }
 
-        [HttpGet("/company")]
-        public ActionResult<Company> GetCompanyById(Guid companyId)
+        [HttpGet("{companyId}")]
+        public IActionResult GetCompanyById(Guid companyId)
         {
-            //TODO: Map the Company to CompanyDto
+            //TODO map to DTO
             var company = context.Companies.Where(c => c.CompanyId == companyId).FirstOrDefault();
 
             if (company == null)
@@ -32,22 +32,10 @@ namespace Servibes.BusinessProfile.Api.Controllers
             return Ok(company);
         }
 
-        [HttpGet("/service")]
-        public ActionResult<Service> GetServiceById(Guid serviceId)
+        [HttpGet("{companyId}/openingHours")]
+        public IActionResult GetOpeningHoursByCompanyId(Guid companyId)
         {
-            //TODO: Map the Service to ServiceDto
-            var service = context.Services.Where(s => s.ServiceId == serviceId).FirstOrDefault();
-
-            if (service == null)
-                throw new ArgumentException($"Service with id {serviceId} doesnt exist.");
-
-            return Ok(service);
-        }
-
-        [HttpGet]
-        public ActionResult<List<OpeningHours>> GetOpeningHoursByCompanyId(Guid companyId)
-        {
-            //TODO: Map the OpeningHours to OpeningHoursDto
+            //TODO map to DTO
             var company = context.Companies.Where(c => c.CompanyId == companyId).FirstOrDefault();
 
             if (company == null)
@@ -59,8 +47,8 @@ namespace Servibes.BusinessProfile.Api.Controllers
             return Ok(company.OpeningHours);
         }
 
-        [HttpPost("/register")]
-        public ActionResult<Company> CreateProfile([FromBody]CreateProfileDto profileDto)
+        [HttpPost]
+        public IActionResult CreateProfile([FromBody]CreateProfileDto profileDto)
         {
             //foreach Employee of Employees -> EmployeeAddedEvent -> Id, WorkingHours(CompanyOpeningHours) | Employee
 
@@ -87,21 +75,24 @@ namespace Servibes.BusinessProfile.Api.Controllers
             List<Service> companyServices = new List<Service>();
             profileDto.Services.ForEach(s =>
             {
-                List<Employee> serviceEmployees = new List<Employee>();
-                s.Employees.Where(s => s.IsActive).ToList().ForEach(e =>
+                List<Performer> servicePerformers = new List<Performer>();
+                s.Performers.Where(p => p.IsActive).ToList().ForEach(sp =>
                 {
-                    serviceEmployees.Add(companyEmployees.FirstOrDefault(ce => ce.FirstName == e.FirstName && ce.LastName == e.LastName));
+                    servicePerformers.Add(new Performer()
+                    {
+                        PerformerId = companyEmployees.Where(ce => ce.FirstName == sp.FirstName && ce.LastName == sp.LastName).FirstOrDefault().EmployeeId
+                    });
                 });
 
-                companyServices.Add(new Service() 
+                companyServices.Add(new Service()
                 {
                     ServiceId = Guid.NewGuid(),
                     CompanyId = companyId,
-                    ServiceName = s.ServiceName, 
-                    Description = s.Description, 
-                    Duration = s.Duration, 
-                    Price = s.Price, 
-                    Employees = serviceEmployees
+                    ServiceName = s.ServiceName,
+                    Description = s.Description,
+                    Duration = s.Duration,
+                    Price = s.Price,
+                    Performers = servicePerformers
                 });
             });
 
@@ -131,11 +122,11 @@ namespace Servibes.BusinessProfile.Api.Controllers
             context.Services.AddRange(companyServices);
             context.SaveChanges();
 
-            return CreatedAtAction("GetCompanyById", new { companyId } );
+            return CreatedAtAction(nameof(GetCompanyById), new { companyId } );
         }
 
-        [HttpPost("/update/info")]
-        public ActionResult<Company> UpdateCompanyInfo([FromBody]UpdateCompanyInfoDto companyInfoDto, Guid companyId)
+        [HttpPut("{companyId}/companyInfo")]
+        public IActionResult UpdateCompanyInfo([FromBody]UpdateCompanyInfoDto companyInfoDto, Guid companyId)
         {
             var company = context.Companies.Where(c => c.CompanyId == companyId).FirstOrDefault();
 
@@ -154,11 +145,11 @@ namespace Servibes.BusinessProfile.Api.Controllers
 
             context.SaveChanges();
 
-            return CreatedAtAction("GetCompanyById", new { companyId });
+            return NoContent();
         }
 
-        [HttpPost("/update/openhours")]
-        public ActionResult<OpeningHours> UpdateOpenHours([FromBody]List<OpenHoursDto> openingHours, Guid companyId)
+        [HttpPut("{companyId}/openingHours")]
+        public IActionResult UpdateOpenHours([FromBody]List<OpenHoursDto> openingHours, Guid companyId)
         {
             var company = context.Companies.Where(c => c.CompanyId == companyId).FirstOrDefault();
 
@@ -173,34 +164,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
                 To = TimeSpan.Parse(oh.CloseHour)
             }).ToList();
 
-            return CreatedAtAction("GetOpeningHoursByCompanyId", new { companyId });
-        }
-
-        [HttpPost("/update/service")]
-        public ActionResult<Service> UpdateService([FromBody] ServiceDto serviceDto, Guid serviceId)
-        {
-            var service = context.Services.Where(s => s.ServiceId == serviceId).FirstOrDefault();
-
-            if (service == null)
-                throw new ArgumentException($"Service with id {serviceId} doesnt exist.");
-
-            var companyEmployees = context.Employees.Where(e => e.CompanyId == service.CompanyId).ToList();
-
-            if (companyEmployees.Count == 0)
-                throw new ArgumentException($"Company with service of id {serviceId} doesnt have any employees.");
-
-            service.ServiceName = serviceDto.ServiceName;
-            service.Price = service.Price;
-            service.Duration = service.Duration;
-            service.Description = service.Description;
-
-            service.Employees.Clear();
-            serviceDto.Employees.Where(s => s.IsActive).ToList().ForEach(e =>
-            {
-                service.Employees.Add(companyEmployees.FirstOrDefault(ce => ce.FirstName == e.FirstName && ce.LastName == e.LastName));
-            });
-
-            return CreatedAtAction("GetServiceById", new { serviceId });
+            return NoContent();
         }
     }
 }
