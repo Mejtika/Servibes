@@ -85,22 +85,22 @@ export class BusinessRegisterComponent extends BaseForm {
         price: new FormControl(''),
         description: new FormControl(''),
         duration: new FormControl(''),
-        employees: new FormArray([])
+        performers: new FormArray([])
       });
 
-      let emps = service.get('employees') as FormArray;
+      let performers = service.get('performers') as FormArray;
 
-      this.addEmployeesToServiceForm(emps);
+      this.addEmployeesToServiceForm(performers);
 
       this.services.push(service);
     }
 
-  addEmployeesToServiceForm(service: FormArray) {
+  addEmployeesToServiceForm(performers: FormArray) {
 
       (this.employees as FormArray).controls.forEach(emp => {
         console.log('employee: ', emp);
 
-        service.push(this.formBuilder.group({
+        performers.push(this.formBuilder.group({
           isActive: new FormControl(false),
           firstName: new FormControl(emp.get('firstName').value),
           lastName: new FormControl(emp.get('lastName').value)

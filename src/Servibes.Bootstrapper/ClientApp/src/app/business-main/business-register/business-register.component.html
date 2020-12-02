@@ -248,17 +248,17 @@
                     <div *ngIf="submitted && service.controls.description.errors.required">Description is required</div>
                   </div>
                   <div class="form-group col-6">
-                    <label>Employees</label>
-                    <div *ngFor="let employee of service.get('employees').controls ">
+                    <label>Performers</label>
+                    <div *ngFor="let performer of service.get('performers').controls ">
                       <div [formGroup]="employee">
                         <input type="checkbox" formControlName="isActive" />
-                        <input type="text" formControlName="firstName" [value]="employee.controls.firstName.value" hidden />
-                        <input type="text" formControlName="lastName" [value]="employee.controls.lastName.value" hidden />
-                        {{ employee.controls.firstName.value }} {{ employee.controls.lastName.value }}
+                        <input type="text" formControlName="firstName" [value]="performer.controls.firstName.value" hidden />
+                        <input type="text" formControlName="lastName" [value]="performer.controls.lastName.value" hidden />
+                        {{ performer.controls.firstName.value }} {{ performer.controls.lastName.value }}
                       </div>
                     </div>
                     
-                    <div *ngIf="submitted && service.controls.employees.errors.required">Employee is required</div>
+                    <div *ngIf="submitted && service.controls.performer.errors.required">Performer is required</div>
                   </div>
                 </div>
                 <button *ngIf="i != 0" class="btn btn-danger" (click)="removeService(i)">Remove service</button>
