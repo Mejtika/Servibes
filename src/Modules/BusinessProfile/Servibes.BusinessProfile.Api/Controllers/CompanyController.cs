@@ -11,11 +11,11 @@ namespace Servibes.BusinessProfile.Api.Controllers
 {
     [ApiController]
     [Route("api/company")]
-    public class BusinessProfileController : ControllerBase
+    public class CompanyController : ControllerBase
     {
         private readonly BusinessProfileContext context;
 
-        public BusinessProfileController(BusinessProfileContext context)
+        public CompanyController(BusinessProfileContext context)
         {
             this.context = context;
         }

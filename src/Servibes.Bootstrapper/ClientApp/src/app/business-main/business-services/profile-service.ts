@@ -12,15 +12,15 @@ export class ProfileService {
   }
 
   getBusinessProfile(id: string): Observable<BusinessProfile> {
-    return this.apiService.get(`api/BusinessProfile/${id}`);
+    return this.apiService.get(`api/company/${id}`);
   }
 
   addBusinessProfile(businessProfile: BusinessProfile): Observable<BusinessProfile> {
-    return this.apiService.post(`api/BusinessProfile`, businessProfile);
+    return this.apiService.post(`api/company`, businessProfile);
   }
 
   updateBusinessProfile(businessProfile: BusinessProfile): Observable<BusinessProfile> {
     //TODO: Think about doing patch instead
-    return this.apiService.post(`api/BusinessProfile/${businessProfile.id}`, businessProfile);
+    return this.apiService.post(`api/company/${businessProfile.id}`, businessProfile);
   }
 }
