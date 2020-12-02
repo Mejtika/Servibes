@@ -47,16 +47,19 @@ namespace Servibes.BusinessProfile.Api
                     b.HasKey("OpeningHourId");
                     b.Property(x => x.DayOfWeek).HasConversion(new EnumToStringConverter<DayOfWeek>());
                 });
-
-                //builder.HasMany(c => c.Employees).WithOne().HasForeignKey("CompanyId");
-                //builder.HasMany(c => c.Services).WithOne().HasForeignKey("CompanyId");
-
             });
 
             modelBuilder.Entity<Service>(builder =>
             {
-                builder.HasMany(c => c.Employees).WithOne().HasForeignKey("ServiceId");
-                builder.HasOne(s => s.Company).WithMany().IsRequired();
+                builder.OwnsMany(x => x.Performers, b =>
+                {
+                    b.Property<Guid>("Id");
+                    b.HasKey("Id");
+                    b.ToTable("Performers");
+                    b.WithOwner().HasForeignKey("ServiceId");
+                });
+
+                builder.HasOne<Company>().WithMany().HasForeignKey("CompanyId").IsRequired();
             });
 
             modelBuilder.Entity<Employee>(builder =>
@@ -69,7 +72,7 @@ namespace Servibes.BusinessProfile.Api
                     b.HasKey("WorkingHourId");
                     b.Property(x => x.DayOfWeek).HasConversion(new EnumToStringConverter<DayOfWeek>());
                 });
-                builder.HasOne(s => s.Company).WithMany().IsRequired();
+                builder.HasOne<Company>().WithMany().HasForeignKey("CompanyId").IsRequired();
 
             });
         }
