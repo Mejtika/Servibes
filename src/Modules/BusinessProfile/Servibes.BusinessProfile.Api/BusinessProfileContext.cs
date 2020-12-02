@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Servibes.BusinessProfile.Api.Model;
 using Servibes.BusinessProfile.Api.Model.ValueObjects;
-using DayOfWeek = Servibes.Shared.Enumerations.DayOfWeek;
+using DayOfWeek = Servibes.BusinessProfile.Api.Model.Enumerations.DayOfWeek;
 
 
 namespace Servibes.BusinessProfile.Api
@@ -17,6 +17,7 @@ namespace Servibes.BusinessProfile.Api
         public DbSet<Employee> Employees { get; set; }
 
         public DbSet<Service> Services { get; set; }
+
 
         public BusinessProfileContext(DbContextOptions<BusinessProfileContext> options) : base(options)
         {
@@ -46,15 +47,18 @@ namespace Servibes.BusinessProfile.Api
                     b.HasKey("OpeningHourId");
                     b.Property(x => x.DayOfWeek).HasConversion(new EnumToStringConverter<DayOfWeek>());
                 });
-
-                //builder.HasMany(c => c.Employees).WithOne().HasForeignKey("CompanyId");
-                //builder.HasMany(c => c.Services).WithOne().HasForeignKey("CompanyId");
-
             });
 
             modelBuilder.Entity<Service>(builder =>
             {
-                builder.HasMany(c => c.Employees).WithOne().HasForeignKey("ServiceId");
+                builder.OwnsMany(x => x.Performers, b =>
+                {
+                    b.Property<Guid>("Id");
+                    b.HasKey("Id");
+                    b.ToTable("Performers");
+                    b.WithOwner().HasForeignKey("ServiceId");
+                });
+
                 builder.HasOne<Company>().WithMany().HasForeignKey("CompanyId").IsRequired();
             });
 
@@ -68,7 +72,6 @@ namespace Servibes.BusinessProfile.Api
                     b.HasKey("WorkingHourId");
                     b.Property(x => x.DayOfWeek).HasConversion(new EnumToStringConverter<DayOfWeek>());
                 });
-
                 builder.HasOne<Company>().WithMany().HasForeignKey("CompanyId").IsRequired();
 
             });
