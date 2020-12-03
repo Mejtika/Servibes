@@ -1,9 +1,7 @@
-﻿using Servibes.BusinessProfile.Api.Dto;
-using Servibes.BusinessProfile.Api.Models;
+﻿using Servibes.BusinessProfile.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DayOfWeek = Servibes.Shared.Enumerations.DayOfWeek;
 
 namespace Servibes.BusinessProfile.Api.Model
@@ -20,13 +18,18 @@ namespace Servibes.BusinessProfile.Api.Model
             var saturday = GetHoursRange(openHoursDtos, DayOfWeek.Saturday);
             var sunday = GetHoursRange(openHoursDtos, DayOfWeek.Sunday);
 
-            return new WeekHoursRange(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+            return WeekHoursRange.CreateFromWeekDays(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
         }
 
         private static HoursRange GetHoursRange(List<HoursRangeDto> openHoursDtos, DayOfWeek dayOfWeek)
         {
             return openHoursDtos.Where(x => x.DayOfWeek == dayOfWeek)
-                .Select(y => new HoursRange(y.IsAvailable, TimeSpan.Parse(y.Start), TimeSpan.Parse(y.End))).FirstOrDefault();
+                .Select(y => HoursRange
+                    .Create(
+                    y.IsAvailable,
+                    TimeSpan.Parse(y.Start),
+                    TimeSpan.Parse(y.End)))
+                .FirstOrDefault();
         }
     }
 }

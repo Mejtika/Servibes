@@ -1,7 +1,4 @@
-﻿using Servibes.BusinessProfile.Api.Model.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace Servibes.BusinessProfile.Api.Model
 {

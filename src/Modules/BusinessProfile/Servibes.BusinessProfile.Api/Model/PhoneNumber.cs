@@ -1,10 +1,7 @@
-﻿using Servibes.Shared.BuildingBlocks;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Servibes.BusinessProfile.Api.Model.ValueObjects
+namespace Servibes.BusinessProfile.Api.Model
 {
     public class PhoneNumber
     {

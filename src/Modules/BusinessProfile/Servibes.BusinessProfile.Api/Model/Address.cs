@@ -1,9 +1,4 @@
-﻿using Servibes.Shared.BuildingBlocks;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Servibes.BusinessProfile.Api.Model.ValueObjects
+﻿namespace Servibes.BusinessProfile.Api.Model
 {
     public class Address
     {
