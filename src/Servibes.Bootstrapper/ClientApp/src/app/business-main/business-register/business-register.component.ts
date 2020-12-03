@@ -32,7 +32,7 @@ export class BusinessRegisterComponent extends BaseForm {
     ngOnInit() {
         this.form = this.formBuilder.group({
             companyName: new FormControl('', Validators.required),
-            companyPhoneNumber: new FormControl('', Validators.required),
+            phoneNumber: new FormControl('', Validators.required),
             category: new FormControl('', Validators.required),
             address: this.formBuilder.group({
                 city: new FormControl('', Validators.required),
@@ -72,9 +72,9 @@ export class BusinessRegisterComponent extends BaseForm {
         for (let index = 0; index < 7; index++) {
             this.openingHours.push(this.formBuilder.group({
                 dayOfWeek: new FormControl(index),
-                isActive: new FormControl(false),
-                openHour: new FormControl('08:00', [this.conditionalValidator(() => this.openingHours.controls[index].get('isActive').value, Validators.required)]),
-                closeHour: new FormControl('16:00', [this.conditionalValidator(() => this.openingHours.controls[index].get('isActive').value, Validators.required)]),
+                isAvailable: new FormControl(false),
+                start: new FormControl('08:00', [this.conditionalValidator(() => this.openingHours.controls[index].get('isActive').value, Validators.required)]),
+                end: new FormControl('16:00', [this.conditionalValidator(() => this.openingHours.controls[index].get('isActive').value, Validators.required)]),
             }));
         }
     }
@@ -95,17 +95,17 @@ export class BusinessRegisterComponent extends BaseForm {
       this.services.push(service);
     }
 
-  addEmployeesToServiceForm(performers: FormArray) {
+    addEmployeesToServiceForm(performers: FormArray) {
 
-      (this.employees as FormArray).controls.forEach(emp => {
-        console.log('employee: ', emp);
+        (this.employees as FormArray).controls.forEach(emp => {
+          console.log('employee: ', emp);
 
-        performers.push(this.formBuilder.group({
-          isActive: new FormControl(false),
-          firstName: new FormControl(emp.get('firstName').value),
-          lastName: new FormControl(emp.get('lastName').value)
-        }));
-      });
+          performers.push(this.formBuilder.group({
+            isActive: new FormControl(false),
+            firstName: new FormControl(emp.get('firstName').value),
+            lastName: new FormControl(emp.get('lastName').value)
+          }));
+        });
     }
 
     removeService(index: number) {
@@ -126,7 +126,6 @@ export class BusinessRegisterComponent extends BaseForm {
 
     onSubmit() {
       console.log(this.form.getRawValue());
-      let formData = this.form.getRawValue();
 
       const formValue: BusinessProfile = Object.assign(
         this.form.value

@@ -4,11 +4,11 @@ using Servibes.Shared.Enumerations;
 
 namespace Servibes.BusinessProfile.Api.Models
 {
-    public class OpenHoursDto
+    public class HoursRangeDto
     {
         public DayOfWeek DayOfWeek { get; set; }
-        public bool IsOpen { get; set; }
-        public string OpenHour { get; set; }
-        public string CloseHour { get; set; }
+        public bool IsAvailable { get; set; }
+        public string Start { get; set; }
+        public string End { get; set; }
     }
 }

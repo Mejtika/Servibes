@@ -45,12 +45,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
                 CompanyId = companyId,
                 FirstName = employeeDto.FirstName,
                 LastName = employeeDto.LastName,
-                WorkingHours = company.OpeningHours.Select(oh => new WorkingHours()
-                {
-                    DayOfWeek = oh.DayOfWeek,
-                    From = oh.From,
-                    To = oh.To
-                }).ToList()
+                WorkingHours = company.OpeningHours
             };
 
             context.Employees.Add(employee);
@@ -71,18 +66,13 @@ namespace Servibes.BusinessProfile.Api.Controllers
             if (company == null)
                 throw new ArgumentException($"Company with id {companyId} doesnt exist.");
 
-
             employee.CompanyId = companyId;
             employee.FirstName = employeeDto.FirstName;
             employee.LastName = employeeDto.LastName;
-            employee.WorkingHours = employeeDto.WorkingHours.Select(wh => new WorkingHours()
-            {
-                DayOfWeek = wh.DayOfWeek,
-                From = wh.From,
-                To = wh.To
-            }).ToList();
+            employee.WorkingHours = WeekHoursRangeFactory.Create(employeeDto.WorkingHours);
 
             context.Employees.Add(employee);
+            context.SaveChanges();
 
             return NoContent();
         }

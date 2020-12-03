@@ -6,6 +6,7 @@ using Servibes.BusinessProfile.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DayOfWeek = Servibes.Shared.Enumerations.DayOfWeek;
 
 namespace Servibes.BusinessProfile.Api.Controllers
 {
@@ -41,11 +42,13 @@ namespace Servibes.BusinessProfile.Api.Controllers
             if (company == null)
                 throw new ArgumentException($"Company with id {companyId} doesnt exist.");
 
-            if (company.OpeningHours.Count() == 0) //Should never happend!
+            if (company.OpeningHours == null) //Should never happend!
                 throw new ArgumentException($"Company with id {companyId} doesnt have any OpeningHours defined.");
 
             return Ok(company.OpeningHours);
         }
+
+        
 
         [HttpPost]
         public IActionResult CreateProfile([FromBody]CreateProfileDto profileDto)
@@ -54,21 +57,20 @@ namespace Servibes.BusinessProfile.Api.Controllers
 
             var companyId = Guid.NewGuid();
 
+            //List<HoursRange> weekHoursRange = profileDto.OpeningHours.Select(
+            //    oh => new HoursRange(oh.IsOpen, TimeSpan.Parse(oh.OpenHour), TimeSpan.Parse(oh.CloseHour))).ToList();
+
+            
+
             List<Employee> companyEmployees = new List<Employee>();
             profileDto.Employees.ForEach(e =>
             {
-                companyEmployees.Add(new Employee() 
-                { 
-                    EmployeeId = Guid.NewGuid(), 
-                    FirstName = e.FirstName, 
-                    LastName = e.LastName, 
-                    WorkingHours = profileDto.OpeningHours.Select(oh => new WorkingHours()
-                    {
-                        DayOfWeek = oh.DayOfWeek,
-                        From = TimeSpan.Parse(oh.OpenHour),
-                        To = TimeSpan.Parse(oh.CloseHour)
-                    }).ToList(), 
-                    CompanyId = companyId 
+                companyEmployees.Add(new Employee()
+                {
+                    EmployeeId = Guid.NewGuid(),
+                    FirstName = e.FirstName,
+                    LastName = e.LastName,
+                    WorkingHours = WeekHoursRangeFactory.Create(profileDto.OpeningHours)
                 });
             });
 
@@ -108,13 +110,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
                     profileDto.Address.FlatNumber),
                 Category = profileDto.Category,
                 CoverPhoto = profileDto.CoverPhoto,
-                OpeningHours = profileDto.OpeningHours.Select(oh => new OpeningHours()
-                {
-                    DayOfWeek = oh.DayOfWeek,
-                    IsOpen = oh.IsOpen,
-                    From = TimeSpan.Parse(oh.OpenHour),
-                    To = TimeSpan.Parse(oh.CloseHour)
-                }).ToList()
+                OpeningHours = WeekHoursRangeFactory.Create(profileDto.OpeningHours)
             };
 
             context.Companies.Add(company);
@@ -149,20 +145,16 @@ namespace Servibes.BusinessProfile.Api.Controllers
         }
 
         [HttpPut("{companyId}/openingHours")]
-        public IActionResult UpdateOpenHours([FromBody]List<OpenHoursDto> openingHours, Guid companyId)
+        public IActionResult UpdateOpenHours([FromBody]List<HoursRangeDto> openingHours, Guid companyId)
         {
             var company = context.Companies.Where(c => c.CompanyId == companyId).FirstOrDefault();
 
             if (company == null)
                 throw new ArgumentException($"Company with id {companyId} doesnt exist.");
 
-            company.OpeningHours = openingHours.Select(oh => new OpeningHours()
-            {
-                DayOfWeek = oh.DayOfWeek,
-                IsOpen = oh.IsOpen,
-                From = TimeSpan.Parse(oh.OpenHour),
-                To = TimeSpan.Parse(oh.CloseHour)
-            }).ToList();
+            company.OpeningHours = WeekHoursRangeFactory.Create(openingHours);
+
+            context.SaveChanges();
 
             return NoContent();
         }

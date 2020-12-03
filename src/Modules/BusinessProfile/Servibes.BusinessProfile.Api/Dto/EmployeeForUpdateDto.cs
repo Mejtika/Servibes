@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Servibes.BusinessProfile.Api.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +9,6 @@ namespace Servibes.BusinessProfile.Api.Dto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public List<WorkingHoursDto> WorkingHours { get; set; }
+        public List<HoursRangeDto> WorkingHours { get; set; }
     }
 }
