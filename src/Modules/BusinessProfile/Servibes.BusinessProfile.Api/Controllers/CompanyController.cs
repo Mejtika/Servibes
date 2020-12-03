@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Servibes.BusinessProfile.Api.Dto;
 using Servibes.BusinessProfile.Api.Model;
-using Servibes.BusinessProfile.Api.Model.ValueObjects;
 using Servibes.BusinessProfile.Api.Models;
 using System;
 using System.Collections.Generic;
@@ -67,6 +66,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
             {
                 companyEmployees.Add(new Employee()
                 {
+                    CompanyId = companyId,
                     EmployeeId = Guid.NewGuid(),
                     FirstName = e.FirstName,
                     LastName = e.LastName,
