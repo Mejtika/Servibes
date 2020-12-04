@@ -69,7 +69,7 @@ export class BusinessRegisterComponent extends BaseForm {
     addOpeningHoursForm() {
         //ToDo: Conditional validations not working properly
 
-        for (let index = 0; index < 7; index++) {
+        for (let index = 1; index <= 6; index++) {
             this.openingHours.push(this.formBuilder.group({
                 dayOfWeek: new FormControl(index),
                 isAvailable: new FormControl(false),
@@ -77,6 +77,13 @@ export class BusinessRegisterComponent extends BaseForm {
                 end: new FormControl('16:00', [this.conditionalValidator(() => this.openingHours.controls[index].get('isActive').value, Validators.required)]),
             }));
         }
+
+        this.openingHours.push(this.formBuilder.group({
+          dayOfWeek: new FormControl(0),
+          isAvailable: new FormControl(false),
+          start: new FormControl('08:00', [this.conditionalValidator(() => this.openingHours.controls[0].get('isActive').value, Validators.required)]),
+          end: new FormControl('16:00', [this.conditionalValidator(() => this.openingHours.controls[0].get('isActive').value, Validators.required)]),
+        }));
     }
 
     addService() {
