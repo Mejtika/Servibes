@@ -34,55 +34,7 @@ namespace Servibes.BusinessProfile.Api
                     b.Property(x => x.FlatNumber).HasColumnName("FlatNumber");
                 });
 
-                builder.OwnsOne(c => c.OpeningHours, b =>
-                {
-                    b.ToTable("OpeningHours");
-                    b.WithOwner().HasForeignKey("CompanyId");
-                    b.Property<Guid>("OpeningHourId");
-                    b.HasKey("OpeningHourId");
-                    b.OwnsOne(x => x.Monday, builder => 
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Monday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Monday_Start");
-                        builder.Property(x => x.End).HasColumnName("Monday_End");
-                    });
-                    b.OwnsOne(x => x.Tuesday, builder =>
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Tuesday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Tuesday_Start");
-                        builder.Property(x => x.End).HasColumnName("Tuesday_End");
-                    }); 
-                    b.OwnsOne(x => x.Wednesday, builder =>
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Wednesday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Wednesday_Start");
-                        builder.Property(x => x.End).HasColumnName("Wednesday_End");
-                    }); 
-                    b.OwnsOne(x => x.Thursday, builder =>
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Thursday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Thursday_Start");
-                        builder.Property(x => x.End).HasColumnName("Thursday_End");
-                    }); 
-                    b.OwnsOne(x => x.Friday, builder =>
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Friday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Friday_Start");
-                        builder.Property(x => x.End).HasColumnName("Friday_End");
-                    }); 
-                    b.OwnsOne(x => x.Saturday, builder =>
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Saturday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Saturday_Start");
-                        builder.Property(x => x.End).HasColumnName("Saturday_End");
-                    }); 
-                    b.OwnsOne(x => x.Sunday, builder =>
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Sunday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Sunday_Start");
-                        builder.Property(x => x.End).HasColumnName("Sunday_End");
-                    });
-                });
+                
             });
 
             modelBuilder.Entity<Service>(builder =>
@@ -100,58 +52,7 @@ namespace Servibes.BusinessProfile.Api
 
             modelBuilder.Entity<Employee>(builder =>
             {
-                builder.OwnsOne(c => c.WorkingHours, b =>
-                {
-                    b.ToTable("WorkingHours");
-                    b.WithOwner().HasForeignKey("EmployeeId");
-                    b.Property<Guid>("WorkingHoursId");
-                    b.HasKey("WorkingHoursId");
-                    b.OwnsOne(x => x.Monday, builder =>
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Monday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Monday_Start");
-                        builder.Property(x => x.End).HasColumnName("Monday_End");
-                    });
-                    b.OwnsOne(x => x.Tuesday, builder =>
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Tuesday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Tuesday_Start");
-                        builder.Property(x => x.End).HasColumnName("Tuesday_End");
-                    }); 
-                    b.OwnsOne(x => x.Wednesday, builder =>
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Wednesday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Wednesday_Start");
-                        builder.Property(x => x.End).HasColumnName("Wednesday_End");
-                    }); 
-                    b.OwnsOne(x => x.Thursday, builder =>
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Thursday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Thursday_Start");
-                        builder.Property(x => x.End).HasColumnName("Thursday_End");
-                    }); 
-                    b.OwnsOne(x => x.Friday, builder =>
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Friday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Friday_Start");
-                        builder.Property(x => x.End).HasColumnName("Friday_End");
-                    });
-                    b.OwnsOne(x => x.Saturday, builder =>
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Saturday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Saturday_Start");
-                        builder.Property(x => x.End).HasColumnName("Saturday_End");
-                    }); 
-                    b.OwnsOne(x => x.Sunday, builder =>
-                    {
-                        builder.Property(x => x.IsAvailable).HasColumnName("Sunday_IsAvailable");
-                        builder.Property(x => x.Start).HasColumnName("Sunday_Start");
-                        builder.Property(x => x.End).HasColumnName("Sunday_End");
-                    });
-                });
-
                 builder.HasOne<Company>().WithMany().HasForeignKey("CompanyId").IsRequired();
-
             });
         }
     }
