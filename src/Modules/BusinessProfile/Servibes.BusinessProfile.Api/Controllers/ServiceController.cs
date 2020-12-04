@@ -22,7 +22,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpGet("{companyId}/service/{serviceId}")]
         public ActionResult<Service> GetServiceById(Guid companyId, Guid serviceId)
         {
-            var service = context.Services.Where(s => s.ServiceId == serviceId && s.CompanyId == companyId).FirstOrDefault();
+            var service = context.Services.FirstOrDefault(s => s.ServiceId == serviceId && s.CompanyId == companyId);
 
             if (service == null)
                 throw new ArgumentException($"Service with id {serviceId} doesnt exist for company id {companyId}.");
@@ -52,7 +52,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
             {
                 service.Performers.Add(new Performer()
                 {
-                    PerformerId = companyEmployees.Where(ce => ce.FirstName == e.FirstName && ce.LastName == e.LastName).FirstOrDefault().EmployeeId
+                    PerformerId = companyEmployees.FirstOrDefault(ce => ce.FirstName == e.FirstName && ce.LastName == e.LastName).EmployeeId
                 });
             });
 
@@ -65,7 +65,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpPut("{companyId}/service/{serviceId}")]
         public IActionResult UpdateService([FromBody] ServiceDto serviceDto, Guid companyId, Guid serviceId)
         {
-            var service = context.Services.Where(s => s.ServiceId == serviceId && s.CompanyId == companyId).FirstOrDefault();
+            var service = context.Services.FirstOrDefault(s => s.ServiceId == serviceId && s.CompanyId == companyId);
 
             if (service == null)
                 throw new ArgumentException($"Service with id {serviceId} doesnt exist.");
@@ -85,7 +85,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
             {
                 service.Performers.Add(new Performer()
                 {
-                    PerformerId = companyEmployees.Where(ce => ce.FirstName == e.FirstName && ce.LastName == e.LastName).FirstOrDefault().EmployeeId
+                    PerformerId = companyEmployees.FirstOrDefault(ce => ce.FirstName == e.FirstName && ce.LastName == e.LastName).EmployeeId
                 });
             });
 
