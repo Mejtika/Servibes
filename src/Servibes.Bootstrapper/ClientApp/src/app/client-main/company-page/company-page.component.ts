@@ -19,7 +19,7 @@ export class CompanyPageComponent {
     }
 
     ngOnInit() {
-        const id: number = +this.activatedRoute.snapshot.paramMap.get('id');
+        const id: string = this.activatedRoute.snapshot.paramMap.get('id');
 
         this.dataService.getCompany(id).subscribe(result => {
             this.company = result;
