@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Servibes.BusinessProfile.Api.Model;
 using Servibes.BusinessProfile.Api.Models;
+using Servibes.BusinessProfile.Api.Queries.Services.GetCompanyServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +11,19 @@ using System.Text;
 namespace Servibes.BusinessProfile.Api.Controllers
 {
     [ApiController]
-    [Route("api/company")]
+    [Route("api/companies")]
     public class ServiceController : ControllerBase
     {
         private readonly BusinessProfileContext context;
+        private readonly IMediator mediator;
 
-        public ServiceController(BusinessProfileContext context)
+        public ServiceController(BusinessProfileContext context, IMediator mediator)
         {
             this.context = context;
+            this.mediator = mediator;
         }
 
-        [HttpGet("{companyId}/service/{serviceId}")]
+        [HttpGet("{companyId}/services/{serviceId}")]
         public ActionResult<Service> GetServiceById(Guid companyId, Guid serviceId)
         {
             var service = context.Services.FirstOrDefault(s => s.ServiceId == serviceId && s.CompanyId == companyId);
@@ -30,7 +34,18 @@ namespace Servibes.BusinessProfile.Api.Controllers
             return Ok(service);
         }
 
-        [HttpPost("{companyId}/service")]
+        [HttpGet("{company}/services")]
+        public IActionResult GetAllCompanyServices(Guid companyId)
+        {
+            var result = this.mediator.Send(new GetCompanyServicesQuery()
+            {
+                CompanyId = companyId
+            });
+
+            return Ok(result);
+        }
+
+        [HttpPost("{companyId}/services")]
         public IActionResult CreateService([FromBody]ServiceDto serviceDto, Guid companyId)
         {
             var companyEmployees = context.Employees.Where(e => e.CompanyId == companyId);
@@ -62,7 +77,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
             return CreatedAtAction(nameof(GetServiceById), new { service.ServiceId });
         }
         
-        [HttpPut("{companyId}/service/{serviceId}")]
+        [HttpPut("{companyId}/services/{serviceId}")]
         public IActionResult UpdateService([FromBody] ServiceDto serviceDto, Guid companyId, Guid serviceId)
         {
             var service = context.Services.FirstOrDefault(s => s.ServiceId == serviceId && s.CompanyId == companyId);
@@ -94,7 +109,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{companyId}/service/{serviceId}")]
+        [HttpDelete("{companyId}/services/{serviceId}")]
         public IActionResult DeleteService(Guid companyId, Guid serviceId)
         {
             var service = context.Services.Where(s => s.ServiceId == serviceId && s.CompanyId == companyId).FirstOrDefault();

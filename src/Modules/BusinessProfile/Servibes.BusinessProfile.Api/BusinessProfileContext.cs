@@ -13,6 +13,8 @@ namespace Servibes.BusinessProfile.Api
 
         public DbSet<Service> Services { get; set; }
 
+        public DbSet<Category> Categories { get; set; }
+
 
         public BusinessProfileContext(DbContextOptions<BusinessProfileContext> options) : base(options)
         {

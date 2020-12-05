@@ -34,6 +34,7 @@
 
     <div *dxTemplate="let model of 'appointment-template'">
         <div class='appointment-block'>
+          <div>{{ model | json }}</div>
             <div>{{ getServiceById(model.appointmentData.serviceId).name }}</div>
             <div>{{ getServiceById(model.appointmentData.serviceId).description }}</div>
             <div>{{ model.appointmentData.client.firstName }} {{ model.appointmentData.client.lastName }}</div>

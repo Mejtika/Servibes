@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
+using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +16,10 @@ namespace Servibes.BusinessProfile.Api
         public static IServiceCollection AddBusinessProfileModule(this IServiceCollection services,
             IConfiguration configuration)
         {
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
             services.AddDbContext<BusinessProfileContext>(opt =>
             {
                 opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),

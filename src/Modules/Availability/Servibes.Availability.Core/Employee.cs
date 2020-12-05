@@ -41,13 +41,13 @@ namespace Servibes.Availability.Core
             var hasCollidingReservation = _reservations.Any(IsCollidingReservation);
             if (hasCollidingReservation && isInWeekWorkingRange)
             {
-                AddEvent(new ReservationCanceled(this, reservation));
+                //AddEvent(new ReservationCanceled(this, reservation));
                 return;
             }
 
             if (_reservations.Add(reservation))
             {
-                AddEvent(new ReservationAdded(this, reservation));
+                //AddEvent(new ReservationAdded(this, reservation));
             }
 
             bool IsCollidingReservation(Reservation r) => r.IsCollidingWith(reservation);
@@ -66,17 +66,17 @@ namespace Servibes.Availability.Core
                 return;
             }
 
-            AddEvent(new ReservationReleased(this, reservation));
+            //AddEvent(new ReservationReleased(this, reservation));
         }
 
         public void Delete()
         {
             foreach (var reservation in Reservations)
             {
-                AddEvent(new ReservationCanceled(this, reservation));
+                //AddEvent(new ReservationCanceled(this, reservation));
             }
 
-            AddEvent(new ResourceDeleted(this));
+            //AddEvent(new ResourceDeleted(this));
         }
     }
 }

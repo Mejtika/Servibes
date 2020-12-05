@@ -34,6 +34,7 @@ export class BusinessRegisterComponent extends BaseForm {
             companyName: new FormControl('', Validators.required),
             phoneNumber: new FormControl('', Validators.required),
             category: new FormControl('', Validators.required),
+            description: new FormControl('', Validators.required),
             address: this.formBuilder.group({
                 city: new FormControl('', Validators.required),
                 zipCode: new FormControl('', Validators.required),
@@ -73,16 +74,16 @@ export class BusinessRegisterComponent extends BaseForm {
             this.openingHours.push(this.formBuilder.group({
                 dayOfWeek: new FormControl(index),
                 isAvailable: new FormControl(false),
-                start: new FormControl('08:00', [this.conditionalValidator(() => this.openingHours.controls[index].get('isActive').value, Validators.required)]),
-                end: new FormControl('16:00', [this.conditionalValidator(() => this.openingHours.controls[index].get('isActive').value, Validators.required)]),
+              start: new FormControl('08:00', [this.conditionalValidator(() => this.openingHours.controls[index].get('isAvailable').value, Validators.required)]),
+              end: new FormControl('16:00', [this.conditionalValidator(() => this.openingHours.controls[index].get('isAvailable').value, Validators.required)]),
             }));
         }
 
         this.openingHours.push(this.formBuilder.group({
           dayOfWeek: new FormControl(0),
           isAvailable: new FormControl(false),
-          start: new FormControl('08:00', [this.conditionalValidator(() => this.openingHours.controls[0].get('isActive').value, Validators.required)]),
-          end: new FormControl('16:00', [this.conditionalValidator(() => this.openingHours.controls[0].get('isActive').value, Validators.required)]),
+          start: new FormControl('08:00', [this.conditionalValidator(() => this.openingHours.controls[0].get('isAvailable').value, Validators.required)]),
+          end: new FormControl('16:00', [this.conditionalValidator(() => this.openingHours.controls[0].get('isAvailable').value, Validators.required)]),
         }));
     }
 
@@ -124,11 +125,11 @@ export class BusinessRegisterComponent extends BaseForm {
     }
 
     openHoursChanged(e, index: number) {
-        this.openingHours.controls[index].get('open').setValue(e.target.value);
+        this.openingHours.controls[index].get('start').setValue(e.target.value);
     }
 
     closeHoursChanged(e, index: number) {
-        this.openingHours.controls[index].get('close').setValue(e.target.value);
+        this.openingHours.controls[index].get('end').setValue(e.target.value);
     }
 
     onSubmit() {
