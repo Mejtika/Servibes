@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User, UserManager, WebStorageStateStore } from 'oidc-client';
-import { BehaviorSubject, concat, from, Observable } from 'rxjs';
+import { BehaviorSubject, concat, from, Observable, combineLatest } from 'rxjs';
 import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { ApplicationPaths, ApplicationName } from './api-authorization.constants';
 
@@ -53,6 +53,17 @@ export class AuthorizeService {
       this.userSubject.pipe(take(1), filter(u => !!u)),
       this.getUserFromStorage().pipe(filter(u => !!u), tap(u => this.userSubject.next(u))),
       this.userSubject.asObservable());
+  }
+
+  public havePermissions(role: string): Observable<boolean> {
+    console.log(`HavePermission - ${role}`);
+    return combineLatest(
+      this.isAuthenticated(),
+      this.getUserRole().pipe(
+        tap((r) => console.log(`Role - ${r}`)),
+        map(r => r.toString().toUpperCase() === role.toUpperCase())),
+      (first, second) => first && second
+    );
   }
 
   public getAccessToken(): Observable<string> {
@@ -195,5 +206,12 @@ export class AuthorizeService {
       .pipe(
         mergeMap(() => this.userManager.getUser()),
         map(u => u && u.profile));
+  }
+
+  public getUserRole(): Observable<string> {
+    return from(this.ensureUserManagerInitialized())
+      .pipe(
+        mergeMap(() => this.userManager.getUser()),
+        map(u => u && u.profile.role));
   }
 }
