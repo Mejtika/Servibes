@@ -2,7 +2,8 @@
 
 namespace Servibes.Appointments.Core
 {
-    public class Class1
+    public class Appointment
     {
+
     }
 }

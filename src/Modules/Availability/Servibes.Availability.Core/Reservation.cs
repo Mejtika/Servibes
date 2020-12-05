@@ -1,19 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Servibes.Shared.BuildingBlocks;
 
 namespace Servibes.Availability.Core
 {
     public class Reservation : ValueObject
     {
-        public static Reservation Create(DateTime start, DateTime end, DateTime now)
-        {
-            if(AreDatesCorrect(start, end, now))
-            {
-                throw new Exception();
-            }
-            return new Reservation(start, end);
-        }
-
         public DateTime Start { get; }
         public DateTime End { get; }
 
@@ -23,10 +16,26 @@ namespace Servibes.Availability.Core
             End = end;
         }
 
+        public static Reservation Create(DateTime start, DateTime end, DateTime now)
+        {
+            if (AreDatesCorrect(start, end, now))
+            {
+                throw new Exception();
+            }
+            return new Reservation(start, end);
+        }
+
+        public bool IsOutOfRange(IEnumerable<HoursRange> hoursRanges)
+            => hoursRanges.SingleOrDefault(x => x.DayOfWeek == Start.DayOfWeek)
+                .IsCollidingWith(ToHoursRange());
+
         public bool IsLongPeriodReservation() => (End - Start).Hours > 12;
- 
-        public bool IsCollidingWith(Reservation reservation) 
+
+        public bool IsCollidingWith(Reservation reservation)
             => !(reservation.End <= Start || reservation.Start >= End);
+
+        private HoursRange ToHoursRange()
+            => HoursRange.Create(Start.DayOfWeek, true, Start.TimeOfDay, End.TimeOfDay);
 
         private static bool AreDatesCorrect(DateTime start, DateTime end, DateTime now)
             => (start < end) && (start > now) && (end > now);
