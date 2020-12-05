@@ -24,25 +24,34 @@ namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
-
+        public InputModel Input { get; set; }        
+        
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
+
+        public enum AccountType
+        {
+            Client,
+            Business
+        }
 
         public class InputModel
         {
@@ -50,6 +59,10 @@ namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+
+            [Required]
+            [Display(Name = "Choose your account type")]
+            public AccountType AccountType { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -71,7 +84,7 @@ namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
@@ -79,6 +92,8 @@ namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    await ScaffoldRolesAsync();
+                    await _userManager.AddToRoleAsync(user, Input.AccountType.ToString());
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -110,6 +125,19 @@ namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private async Task ScaffoldRolesAsync()
+        {
+            if (!await _roleManager.RoleExistsAsync(AccountType.Client.ToString()))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(AccountType.Client.ToString()));
+            }
+
+            if (!await _roleManager.RoleExistsAsync(AccountType.Business.ToString()))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(AccountType.Business.ToString()));
+            }
         }
     }
 }
