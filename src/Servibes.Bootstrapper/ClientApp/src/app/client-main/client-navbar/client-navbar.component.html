@@ -17,37 +17,30 @@
       id="navbarNavAltMarkup"
     >
       <div class="navbar-nav">
-        <form
-          id="searchForm"
-          (ngSubmit)="saveForm()"
-          [formGroup]="searchForm"
-          class="form-inline my-2 my-lg-0"
-        >
-          <input
-            class="form-control mr-sm-2"
-            modal-trigger="searchWhat"
-            formControlName="searchWhat"
-            type="text"
-            placeholder="Czego szukasz?"
-            aria-label="Search"
-          />
-          <input
-            class="form-control mr-sm-2"
-            modal-trigger="searchWhere"
-            formControlName="searchWhere"
-            type="text"
-            placeholder="Gdzie?"
-            aria-label="Search"
-          />
-          <input
-            class="form-control mr-sm-2"
-            formControlName="searchWhen"
-            type="date"
-            placeholder="Kiedy?"
-            aria-label="Search"
-          />
+        <form id="searchForm"
+              (ngSubmit)="saveForm()"
+              [formGroup]="searchForm"
+              class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2"
+                 modal-trigger="searchWhat"
+                 formControlName="searchWhat"
+                 type="text"
+                 placeholder="Czego szukasz?"
+                 aria-label="Search"/>
+          <input class="form-control mr-sm-2"
+                 modal-trigger="searchWhere"
+                 formControlName="searchWhere"
+                 type="text"
+                 placeholder="Gdzie?"
+                 aria-label="Search"/>
+          <input class="form-control mr-sm-2"
+                 formControlName="searchWhen"
+                 type="date"
+                 placeholder="Kiedy?"
+                 aria-label="Search"/>
           <button class="btn btn-danger mr-sm-2">Szukaj</button>
         </form>
+        <app-login-menu></app-login-menu>
         <a class="nav-item mr-sm-2 btn btn-success nav-link">Profile</a>
         <a class="nav-item mr-sm-2 btn btn-success nav-link">Business site</a>
       </div>

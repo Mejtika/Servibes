@@ -14,30 +14,33 @@ import { ClientNavbarComponent } from './client-navbar/client-navbar.component';
 import { CompanyPageComponent } from './company-page/company-page.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
+import { LoginMenuComponent } from "../../api-authorization/login-menu/login-menu.component";
 
 let jQuery = window['$'];
 
 const routes: Routes = [
-    { 
-        path: "", pathMatch: "full", redirectTo: "companies" 
-    },
-    {
-        path: "",
-        component: ClientMainComponent,
-        children: [
-            {
-                path: "companies",
-                data: { preload: true },
-                loadChildren: () =>
-                    import("./companies-list/companies-list.module").then(module => module.CompaniesListModule)
-            },
-            {
-                path: "companies/:id",
-                component: CompanyPageComponent
-            }
-        ]
-    }
-]
+  {
+    path: "",
+    pathMatch: "full",
+    redirectTo: "companies"
+  },
+  {
+    path: "",
+    component: ClientMainComponent,
+    children: [
+      {
+        path: "companies",
+        data: { preload: true },
+        loadChildren: () =>
+          import("./companies-list/companies-list.module").then(module => module.CompaniesListModule)
+      },
+      {
+        path: "companies/:id",
+        component: CompanyPageComponent
+      }
+    ]
+  }
+];
 
 @NgModule({
     declarations: [
@@ -46,7 +49,6 @@ const routes: Routes = [
         ClientFooterComponent,
         ModalComponent,
         ModalTriggerDirective,
-
         CompanyPageComponent
     ],
     imports: [
