@@ -40,17 +40,15 @@ namespace Servibes.Availability.Core
 
         public void AddReservation(Reservation reservation)
         { 
-            var isInWeekWorkingRange = IsInWeekWorkingRange(reservation);
-            var hasCollidingReservation = _reservations.Any(IsColliding);
-            if (hasCollidingReservation && isInWeekWorkingRange)
+            if (_reservations.Any(IsColliding) && IsInWeekWorkingRange(reservation))
             {
-                //AddDomainEvent(new ReservationCanceled(this, reservation));
+                AddDomainEvent(new EmployeeReservationCanceled(this, reservation));
                 return;
             }
 
             if (_reservations.Add(reservation))
             {
-                //AddDomainEvent(new ReservationAdded(this, reservation));
+                AddDomainEvent(new EmployeeReservationAdded(this, reservation));
             }
 
             bool IsColliding(Reservation r) => r.IsCollidingWith(reservation);
@@ -72,7 +70,12 @@ namespace Servibes.Availability.Core
             WorkingHours = workingHours;
         }
 
-        public void TrimWorkingHours(WeekHoursRange trimmedWorkingHours) => WorkingHours = trimmedWorkingHours;
+        public void TrimWorkingHours(WeekHoursRange trimmedWorkingHours)
+        {
+            WorkingHours = trimmedWorkingHours;
+        }
+
+        public bool CanBeTrimmed(WeekHoursRange companyOpeningHours) => true;
 
         public void ReleaseReservation(Reservation reservation)
         {
@@ -81,17 +84,17 @@ namespace Servibes.Availability.Core
                 return;
             }
 
-            //AddDomainEvent(new ReservationReleased(this, reservation));
+            AddDomainEvent(new EmployeeReservationReleased(this, reservation));
         }
 
         public void Delete()
         {
             foreach (var reservation in Reservations)
             {
-                //AddDomainEvent(new ReservationCanceled(this, reservation));
+                AddDomainEvent(new EmployeeReservationCanceled(this, reservation));
             }
 
-            //AddDomainEvent(new ResourceDeleted(this));
+            AddDomainEvent(new EmployeeAvailabilityDeleted(this));
         }
     }
 }
