@@ -31,6 +31,22 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="ClientApp\src\app\business-main\business-services\profile-service.ts" />
+    <None Remove="ClientApp\src\app\business-main\models\BusinessProfile.ts" />
+    <None Remove="ClientApp\src\app\core\services\api.service.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Modules\BusinessProfile\Servibes.BusinessProfile.Api\Servibes.BusinessProfile.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\business-main\business-services\profile-service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\business-main\models\BusinessProfile.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\services\api.service.ts" />
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

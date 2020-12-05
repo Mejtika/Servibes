@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
+using Servibes.Shared.BuildingBlocks;
+using Servibes.Shared.Communication.Brokers;
 
-namespace Servibes.Shared.Communication
+namespace Servibes.Shared.Communication.Events
 {
     internal sealed class EventProcessor : IEventProcessor
     {

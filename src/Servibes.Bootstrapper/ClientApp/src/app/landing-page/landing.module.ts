@@ -7,8 +7,6 @@ import { LandingFooterComponent } from './landing-footer/landing-footer.componen
 import { LandingNavbarComponent } from './landing-navbar/landing-navbar.component';
 import { LandingPageComponent } from './landing-page.component';
 
-import { LoginMenuComponent } from './../../api-authorization/login-menu/login-menu.component';
-import { ApiAuthorizationModule } from '../../api-authorization/api-authorization.module';
 
 const routes: Routes = [
     {
@@ -30,7 +28,6 @@ const routes: Routes = [
 
         FormsModule,
         ReactiveFormsModule,
-        ApiAuthorizationModule
     ],
     providers: [ 
       ]

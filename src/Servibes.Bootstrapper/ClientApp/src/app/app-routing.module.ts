@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthorizeInterceptor } from '../api-authorization/authorize.interceptor';
 import { ApiAuthorizationModule } from '../api-authorization/api-authorization.module';
+import { PermissionGuard } from "../api-authorization/permission.guard";
 
 const routes: Routes = [
     {
@@ -15,15 +15,17 @@ const routes: Routes = [
         path: "", pathMatch: "full", loadChildren: () => 
            import("./landing-page/landing.module").then(module => module.LandingModule)
     },
-        
-    //{ path: "client", redirectTo: "/client/companies" },
-    { 
-        path: "client", loadChildren: () => 
-            import("./client-main/client.module").then(module => module.ClientModule)
+  { 
+      path: "client",
+      loadChildren: () => 
+        import("./client-main/client.module").then(module => module.ClientModule),
+      canLoad: [PermissionGuard]
     },
     {
-        path: "business", loadChildren: () =>
-            import("./business-main/business.module").then(module => module.BusinessModule)
+      path: "business",
+      loadChildren: () =>
+        import("./business-main/business.module").then(module => module.BusinessModule),
+      canLoad: [PermissionGuard]
     },
     {
         path: "**", pathMatch: "full", redirectTo: "" 

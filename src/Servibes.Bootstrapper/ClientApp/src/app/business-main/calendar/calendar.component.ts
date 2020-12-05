@@ -22,17 +22,22 @@ export class CalendarComponent {
     constructor(mockDataService: MockDataService) {
 
         mockDataService.getAppointments().subscribe(result => {
-            this.appointments = result;
+          this.appointments = result;
+          console.log(result);
         });
         
-        mockDataService.getCompanyEmployeees(1).subscribe(result => {
-            this.employees = result;
+        mockDataService.getCompanyEmployeees("1").subscribe(result => {
+          this.employees = result;
+          console.log(result);
         });
 
-        mockDataService.getCompanyServices(1).subscribe(result => {
-            this.services = result;
+        mockDataService.getCompanyServices("1").subscribe(result => {
+          this.services = result;
+          console.log(result);
         });
-    }
+  }
+
+  log(val) { console.log(val); }
 
     onSchedulerReady() {
         let now = new Date();
@@ -48,7 +53,8 @@ export class CalendarComponent {
         }
     }
 
-    getServiceById(id) {
-        return Query(this.services).filter(["id", "=", id]).toArray()[0];
+  getServiceById(id: string) {
+    console.log(Query(this.services).filter(["id", "=", id]).toArray()[0]);
+      return Query(this.services).filter(["id", "=", id]).toArray()[0];
     }
 }

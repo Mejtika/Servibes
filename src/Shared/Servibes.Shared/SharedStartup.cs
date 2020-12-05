@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Servibes.Shared.Communication;
+using Servibes.Shared.Communication.Brokers;
+using Servibes.Shared.Communication.Events;
 
 namespace Servibes.Shared
 {

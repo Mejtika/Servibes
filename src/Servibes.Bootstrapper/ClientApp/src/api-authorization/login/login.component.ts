@@ -94,8 +94,19 @@ export class LoginComponent implements OnInit {
   private async navigateToReturnUrl(returnUrl: string) {
     // It's important that we do a replace here so that we remove the callback uri with the
     // fragment containing the tokens from the browser history.
-    await this.router.navigateByUrl(returnUrl, {
-      replaceUrl: true
+    this.authorizeService.getUserRole().subscribe(async role => {
+      console.log(`*** ${role} ***`)
+      switch (role) {
+        case "Client":
+          await this.router.navigateByUrl("/client", { replaceUrl: true });
+          break;
+        case "Business":
+          await this.router.navigateByUrl("/business", { replaceUrl: true });
+          break;
+        default:
+          await this.router.navigateByUrl(returnUrl, { replaceUrl: true });
+          break;
+      }
     });
   }
 

@@ -1,9 +1,13 @@
 export interface ICompany {
-  id: number;
-  coverImg: string;
+  companyId: string;
+  companyName: string;
+  phoneNumber: string;
+  address: IAddress;
   category: string;
-  companyDetails: ICompanyDetails;
-  dayAvailability: IDayAvailability[];
+  description: string;
+  coverPhoto: string;
+
+  openingHours: IOpeningHours[];
   employees: IEmployee[];
   services: IService[];
 }
@@ -24,7 +28,7 @@ export enum City {
   Krakow = 'Krakow',
 }
 
-export enum DayOfTheWeek {
+export enum DayOfWeek {
   Monday = "Monday",
   Tuesday = "Tuesday",
   Wednesday = "Wednesday",
@@ -34,32 +38,27 @@ export enum DayOfTheWeek {
   Sunday = "Sunday"
 }
 
-export interface IDayAvailability{
-  dayOfTheWeek: DayOfTheWeek;
-  startTime: number;
-  endTime: number;
+export interface IOpeningHours {
+  dayOfWeek: DayOfWeek;
+  start: string;
+  end: string;
 }
 
-export interface IAddress{
-  street: string;
+export interface IAddress {
   city: string;
-  localNumber: string;
-}
-
-export interface ICompanyDetails{
-  phone: string;
-  address: IAddress;
-  companyName:string;
-  description: string;
+  zipCode: string;
+  street: string;
+  flatNumber: string;
+  streetNumber: string;
 }
 
 
 export interface IService {
-  id: number;
-  name: string;
+  serviceId: string;
+  serviceName: string;
   price: number;
+  duration: number;
   description: string;
-  duration: string;
   color: string;
   text: string;
 }
@@ -71,7 +70,7 @@ export interface IPagedResults<T> {
 }
 
 export interface IEmployee {
-  id: number;
+  employeeId: number;
   firstName: string;
   lastName: string;
   text: string;
@@ -84,8 +83,8 @@ export interface IClient {
 }
 
 export interface IAppointment {
-  employeeId: number;
-  serviceId: number;
+  employeeId: string;
+  serviceId: string;
   client: IClient;
   startDate: Date;
   endDate: Date;

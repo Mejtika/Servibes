@@ -2,8 +2,9 @@
 using System.Linq;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Servibes.Shared.BuildingBlocks;
 
-namespace Servibes.Shared.Communication
+namespace Servibes.Shared.Communication.Events
 {
     internal sealed class EventMapperCompositionRoot : IEventMapperCompositionRoot
     {

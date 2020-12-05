@@ -11,6 +11,8 @@ using Servibes.Bootstrapper.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Servibes.BusinessProfile.Api;
+using Servibes.Shared;
 
 namespace Servibes.Bootstrapper
 {
@@ -25,6 +27,9 @@ namespace Servibes.Bootstrapper
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSharedModule();
+
+            services.AddBusinessProfileModule(Configuration);
             services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection"), options =>
@@ -81,6 +86,8 @@ namespace Servibes.Bootstrapper
             }
 
             app.UseRouting();
+
+            app.UseSharedModule();
 
             app.UseAuthentication();
             app.UseIdentityServer();

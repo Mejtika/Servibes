@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace Servibes.Shared.Communication
+namespace Servibes.Shared.Communication.Brokers
 {
     public interface IMessageBroker
     {
