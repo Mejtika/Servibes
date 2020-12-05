@@ -2,8 +2,7 @@
 using System.Threading.Tasks;
 using Servibes.Shared.BuildingBlocks;
 
-
-namespace Servibes.Shared.Communication
+namespace Servibes.Shared.Communication.Events
 {
     public interface IEventProcessor
     {

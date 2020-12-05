@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace Servibes.Shared.Communication
+namespace Servibes.Shared.Communication.Brokers
 {
     internal sealed class MessageBroker : IMessageBroker
     {
