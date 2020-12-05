@@ -5,62 +5,54 @@ using Servibes.BusinessProfile.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Servibes.Shared.Communication;
-using DayOfWeek = Servibes.Shared.Enumerations.DayOfWeek;
+using MediatR;
+using Servibes.BusinessProfile.Api.Queries.Company.GetCompany;
+using Servibes.BusinessProfile.Api.Queries.Company.GetAllCompanies;
+using Servibes.Shared.Communication.Brokers;
 
 namespace Servibes.BusinessProfile.Api.Controllers
 {
     [ApiController]
-    [Route("api/company")]
+    [Route("api/companies")]
     public class CompanyController : ControllerBase
     {
         private readonly BusinessProfileContext context;
         private readonly IMessageBroker _broker;
+        private readonly IMediator _mediator;
 
-        public CompanyController(BusinessProfileContext context, IMessageBroker broker)
+        public CompanyController(BusinessProfileContext context, IMessageBroker broker, IMediator mediator)
         {
             this.context = context;
             _broker = broker;
+            this._mediator = mediator;
         }
 
         [HttpGet("{companyId}")]
         public IActionResult GetCompanyById(Guid companyId)
         {
-            //TODO map to DTO
-            var company = context.Companies.Where(c => c.CompanyId == companyId).FirstOrDefault();
+            var result = _mediator.Send(new GetCompanyQuery()
+            {
+                CompanyId = companyId
+            });
 
-            if (company == null)
-                throw new ArgumentException($"Company with id {companyId} doesnt exist.");
-
-            return Ok(company);
+            return Ok(result);
         }
 
-        //[HttpGet("{companyId}/openingHours")]
-        //public IActionResult GetOpeningHoursByCompanyId(Guid companyId)
-        //{
-        //    //TODO map to DTO
-        //    var company = context.Companies.Where(c => c.CompanyId == companyId).FirstOrDefault();
+        [HttpGet]
+        public IActionResult GetAllCompanies(string category = "")
+        {
+            var result = _mediator.Send(new GetAllCompaniesQuery()
+            {
+                Category = category
+            });
 
-        //    if (company == null)
-        //        throw new ArgumentException($"Company with id {companyId} doesnt exist.");
-
-        //    if (company.OpeningHours == null) //Should never happend!
-        //        throw new ArgumentException($"Company with id {companyId} doesnt have any OpeningHours defined.");
-
-        //    return Ok(company.OpeningHours);
-        //}
+            return Ok(result);
+        }
 
         [HttpPost]
         public IActionResult CreateProfile([FromBody]CreateProfileDto profileDto)
         {
-            //foreach Employee of Employees -> EmployeeAddedEvent -> Id, WorkingHours(CompanyOpeningHours) | Employee
-
             var companyId = Guid.NewGuid();
-
-            //List<HoursRange> weekHoursRange = profileDto.OpeningHours.Select(
-            //    oh => new HoursRange(oh.IsOpen, TimeSpan.Parse(oh.OpenHour), TimeSpan.Parse(oh.CloseHour))).ToList();
-
-            
 
             List<Employee> companyEmployees = new List<Employee>();
             profileDto.Employees.ForEach(e =>
@@ -71,7 +63,6 @@ namespace Servibes.BusinessProfile.Api.Controllers
                     EmployeeId = Guid.NewGuid(),
                     FirstName = e.FirstName,
                     LastName = e.LastName,
-                    //WorkingHours = WeekHoursRangeFactory.Create(profileDto.OpeningHours)
                 });
             });
 
@@ -110,8 +101,8 @@ namespace Servibes.BusinessProfile.Api.Controllers
                     profileDto.Address.StreetNumber,
                     profileDto.Address.FlatNumber),
                 Category = profileDto.Category,
+                Description = profileDto.Description,
                 CoverPhoto = profileDto.CoverPhoto,
-                //OpeningHours = WeekHoursRangeFactory.Create(profileDto.OpeningHours)
             };
 
             var evencik = new RegistrationCompleted(
@@ -129,7 +120,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
             return CreatedAtAction(nameof(GetCompanyById), new { companyId } );
         }
 
-        [HttpPut("{companyId}/companyInfo")]
+        [HttpPut("{companyId}")]
         public IActionResult UpdateCompanyInfo([FromBody]UpdateCompanyInfoDto companyInfoDto, Guid companyId)
         {
             var company = context.Companies.Where(c => c.CompanyId == companyId).FirstOrDefault();
@@ -140,6 +131,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
             company.CompanyName = companyInfoDto.CompanyName;
             company.PhoneNumber = PhoneNumber.Create(companyInfoDto.PhoneNumber);
             company.Category = companyInfoDto.Category;
+            company.Description = companyInfoDto.Description;
             company.CoverPhoto = companyInfoDto.CoverPhoto;
             company.Address = Address.Create(companyInfoDto.Address.City,
                 companyInfoDto.Address.ZipCode,
@@ -151,20 +143,5 @@ namespace Servibes.BusinessProfile.Api.Controllers
 
             return NoContent();
         }
-
-        //[HttpPut("{companyId}/openingHours")]
-        //public IActionResult UpdateOpenHours([FromBody]List<HoursRangeDto> openingHours, Guid companyId)
-        //{
-        //    var company = context.Companies.Where(c => c.CompanyId == companyId).FirstOrDefault();
-
-        //    if (company == null)
-        //        throw new ArgumentException($"Company with id {companyId} doesnt exist.");
-
-        //    company.OpeningHours = WeekHoursRangeFactory.Create(openingHours);
-
-        //    context.SaveChanges();
-
-        //    return NoContent();
-        //}
     }
 }
