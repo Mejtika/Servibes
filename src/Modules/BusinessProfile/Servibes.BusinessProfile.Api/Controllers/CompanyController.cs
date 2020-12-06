@@ -9,6 +9,11 @@ using MediatR;
 using Servibes.BusinessProfile.Api.Queries.Company.GetCompany;
 using Servibes.BusinessProfile.Api.Queries.Company.GetAllCompanies;
 using Servibes.Shared.Communication.Brokers;
+using Servibes.BusinessProfile.Api.Commands.Company;
+using Servibes.BusinessProfile.Api.Commands.Company.CreateCompany;
+using System.Threading.Tasks;
+using Servibes.BusinessProfile.Api.Commands.Company.UpdateCompany;
+using Servibes.BusinessProfile.Api.Commands.Company.DeleteCompany;
 
 namespace Servibes.BusinessProfile.Api.Controllers
 {
@@ -17,20 +22,18 @@ namespace Servibes.BusinessProfile.Api.Controllers
     public class CompanyController : ControllerBase
     {
         private readonly BusinessProfileContext context;
-        private readonly IMessageBroker _broker;
-        private readonly IMediator _mediator;
+        private readonly IMediator mediator;
 
-        public CompanyController(BusinessProfileContext context, IMessageBroker broker, IMediator mediator)
+        public CompanyController(BusinessProfileContext context, IMediator mediator)
         {
             this.context = context;
-            _broker = broker;
-            this._mediator = mediator;
+            this.mediator = mediator;
         }
 
         [HttpGet("{companyId}")]
-        public IActionResult GetCompanyById(Guid companyId)
+        public async Task<ActionResult> GetCompanyById(Guid companyId)
         {
-            var result = _mediator.Send(new GetCompanyQuery()
+            var result = await mediator.Send(new GetCompanyQuery()
             {
                 CompanyId = companyId
             });
@@ -39,9 +42,9 @@ namespace Servibes.BusinessProfile.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllCompanies(string category = "")
+        public async Task<ActionResult> GetAllCompanies(string category = "")
         {
-            var result = _mediator.Send(new GetAllCompaniesQuery()
+            var result = await mediator.Send(new GetAllCompaniesQuery()
             {
                 Category = category
             });
@@ -50,96 +53,35 @@ namespace Servibes.BusinessProfile.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateProfile([FromBody]CreateProfileDto profileDto)
+        public async Task<ActionResult> CreateCompany([FromBody]CompanyDto companyDto)
         {
-            var companyId = Guid.NewGuid();
-
-            List<Employee> companyEmployees = new List<Employee>();
-            profileDto.Employees.ForEach(e =>
+            var result = await mediator.Send(new CreateCompanyCommand()
             {
-                companyEmployees.Add(new Employee()
-                {
-                    CompanyId = companyId,
-                    EmployeeId = Guid.NewGuid(),
-                    FirstName = e.FirstName,
-                    LastName = e.LastName,
-                });
+                CompanyDto = companyDto
             });
 
-            List<Service> companyServices = new List<Service>();
-            profileDto.Services.ForEach(s =>
-            {
-                List<Performer> servicePerformers = new List<Performer>();
-                s.Performers.Where(p => p.IsActive).ToList().ForEach(sp =>
-                {
-                    servicePerformers.Add(new Performer()
-                    {
-                        PerformerId = companyEmployees.FirstOrDefault(ce => ce.FirstName == sp.FirstName && ce.LastName == sp.LastName).EmployeeId
-                    });
-                });
-
-                companyServices.Add(new Service()
-                {
-                    ServiceId = Guid.NewGuid(),
-                    CompanyId = companyId,
-                    ServiceName = s.ServiceName,
-                    Description = s.Description,
-                    Duration = s.Duration,
-                    Price = s.Price,
-                    Performers = servicePerformers
-                });
-            });
-
-            Company company = new Company()
-            {
-                CompanyId = companyId,
-                CompanyName = profileDto.CompanyName,
-                PhoneNumber = PhoneNumber.Create(profileDto.PhoneNumber),
-                Address = Address.Create(profileDto.Address.City,
-                    profileDto.Address.ZipCode,
-                    profileDto.Address.Street,
-                    profileDto.Address.StreetNumber,
-                    profileDto.Address.FlatNumber),
-                Category = profileDto.Category,
-                Description = profileDto.Description,
-                CoverPhoto = profileDto.CoverPhoto,
-            };
-
-            var evencik = new RegistrationCompleted(
-                profileDto.OpeningHours,
-                companyEmployees.Select(x => x.EmployeeId).ToList(),
-                companyId);
-
-            _broker.PublishAsync(evencik);
-
-            //context.Companies.Add(company);
-            //context.Employees.AddRange(companyEmployees);
-            //context.Services.AddRange(companyServices);
-            //context.SaveChanges();
-
-            return CreatedAtAction(nameof(GetCompanyById), new { companyId } );
+            return CreatedAtAction(nameof(GetCompanyById), new { result });
         }
 
         [HttpPut("{companyId}")]
-        public IActionResult UpdateCompanyInfo([FromBody]UpdateCompanyInfoDto companyInfoDto, Guid companyId)
+        public async Task<ActionResult> UpdateCompanyInfo([FromBody]UpdateCompanyDto updateCompanyDto, Guid companyId)
         {
-            var company = context.Companies.Where(c => c.CompanyId == companyId).FirstOrDefault();
+            await mediator.Send(new UpdateCompanyCommand()
+            {
+                CompanyId = companyId,
+                UpdateCompanyDto = updateCompanyDto
+            });
 
-            if (company == null)
-                throw new ArgumentException($"Company with id {companyId} doesnt exist.");
+            return NoContent();
+        }
 
-            company.CompanyName = companyInfoDto.CompanyName;
-            company.PhoneNumber = PhoneNumber.Create(companyInfoDto.PhoneNumber);
-            company.Category = companyInfoDto.Category;
-            company.Description = companyInfoDto.Description;
-            company.CoverPhoto = companyInfoDto.CoverPhoto;
-            company.Address = Address.Create(companyInfoDto.Address.City,
-                companyInfoDto.Address.ZipCode,
-                companyInfoDto.Address.Street,
-                companyInfoDto.Address.StreetNumber,
-                companyInfoDto.Address.FlatNumber);
-
-            context.SaveChanges();
+        [HttpDelete("companyId")]
+        public async Task<ActionResult> DeleteCompany(Guid companyId)
+        {
+            await mediator.Send(new DeleteCompanyCommand()
+            {
+                CompanyId = companyId
+            });
 
             return NoContent();
         }

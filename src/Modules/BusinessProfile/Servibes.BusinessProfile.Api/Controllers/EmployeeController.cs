@@ -4,6 +4,7 @@ using Servibes.BusinessProfile.Api.Dto;
 using Servibes.BusinessProfile.Api.Model;
 using Servibes.BusinessProfile.Api.Models;
 using Servibes.BusinessProfile.Api.Queries.Employees.GetCompanyEmployees;
+using Servibes.BusinessProfile.Api.Queries.Employees.GetEmployeeById;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +28,13 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpGet("{companyId}/employees/{employeeId}")]
         public IActionResult GetEmployeeById(Guid companyId, Guid employeeId)
         {
-            var employee = context.Employees.FirstOrDefault(e => e.EmployeeId == employeeId && e.CompanyId == companyId);
+            var result = mediator.Send(new GetEmployeeByIdQuery()
+            {
+                CompanyId = companyId,
+                EmployeeId = employeeId
+            });
 
-            if (employee == null)
-                throw new ArgumentException($"Employee with id {employeeId} doesnt exist.");
-
-            return Ok(employee);
+            return Ok(result);
         }
 
         [HttpGet("{companyId}/employees")]

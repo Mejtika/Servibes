@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using MediatR;
-using Servibes.BusinessProfile.Api.Models;
+using Servibes.BusinessProfile.Api.Commands.Company;
 
 namespace Servibes.BusinessProfile.Api
 {
     public class RegistrationCompleted : INotification
     {
-        public RegistrationCompleted(List<HoursRangeDto> hoursRangeDtos, List<Guid> employeeId, Guid companyId)
+        public RegistrationCompleted(List<CompanyHoursRangeDto> hoursRangeDtos, List<Guid> employeeId, Guid companyId)
         {
             HoursRangeDtos = hoursRangeDtos;
             EmployeeId = employeeId;
@@ -17,6 +17,6 @@ namespace Servibes.BusinessProfile.Api
 
         public Guid CompanyId { get; }
         public List<Guid> EmployeeId { get; }
-        public List<HoursRangeDto> HoursRangeDtos { get; }
+        public List<CompanyHoursRangeDto> HoursRangeDtos { get; }
     }
 }

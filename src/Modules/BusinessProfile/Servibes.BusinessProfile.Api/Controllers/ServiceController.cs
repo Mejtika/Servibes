@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Servibes.BusinessProfile.Api.Model;
 using Servibes.BusinessProfile.Api.Models;
 using Servibes.BusinessProfile.Api.Queries.Services.GetCompanyServices;
+using Servibes.BusinessProfile.Api.Queries.Services.GetServiceById;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +27,13 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpGet("{companyId}/services/{serviceId}")]
         public ActionResult<Service> GetServiceById(Guid companyId, Guid serviceId)
         {
-            var service = context.Services.FirstOrDefault(s => s.ServiceId == serviceId && s.CompanyId == companyId);
+            var result = mediator.Send(new GetServiceByIdQuery()
+            {
+                CompanyId = companyId,
+                ServiceId = serviceId
+            });
 
-            if (service == null)
-                throw new ArgumentException($"Service with id {serviceId} doesnt exist for company id {companyId}.");
-
-            return Ok(service);
+            return Ok(result);
         }
 
         [HttpGet("{company}/services")]
