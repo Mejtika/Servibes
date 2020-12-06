@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Servibes.BusinessProfile.Api.Commands.Company
+namespace Servibes.BusinessProfile.Api.Commands
 {
-    public class CompanyHoursRangeDto
+    public class HoursRangeDto
     {
         public DayOfWeek DayOfWeek { get; set; }
         public bool IsAvailable { get; set; }
