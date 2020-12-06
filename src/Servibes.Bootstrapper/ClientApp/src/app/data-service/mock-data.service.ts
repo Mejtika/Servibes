@@ -69,7 +69,7 @@ export class MockDataService {
          { employeeId: 2, firstName: "Arkadiuszek", lastName: "Arkadiuszkowy", text: "Arkadiuszek Arkadiuszkowy", color: "#07da63" },
          { employeeId: 3, firstName: "Krasnoludek", lastName: "Robotaju", text: "Krasnoludek Robotaju", color: "#ed2939" },
        ],
-       coverPhoto: "assets/recommended/2.jpeg",
+       coverPhoto: "assets/recommended/2.PNG",
        openingHours: [
          { dayOfWeek: DayOfWeek.Monday, start: "08:00", end: "16:00" },
          { dayOfWeek: DayOfWeek.Tuesday, start: "08:00", end: "16:00" },
