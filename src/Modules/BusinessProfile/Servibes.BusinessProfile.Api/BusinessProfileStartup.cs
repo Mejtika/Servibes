@@ -34,6 +34,10 @@ namespace Servibes.BusinessProfile.Api
 
         public static IApplicationBuilder UseBusinessProfileModule(this IApplicationBuilder app)
         {
+            using var serviceScope = app.ApplicationServices.CreateScope();
+            var dbContext = serviceScope.ServiceProvider.GetService<BusinessProfileContext>();
+            dbContext.SeedData();
+
             return app;
         }
     }

@@ -63,6 +63,9 @@ namespace Servibes.Bootstrapper
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddScoped<IdentityDataSeeder>();
+            services.AddHostedService<SetupIdentityDataSeeder>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -88,6 +91,7 @@ namespace Servibes.Bootstrapper
             app.UseRouting();
 
             app.UseSharedModule();
+            app.UseBusinessProfileModule();
 
             app.UseAuthentication();
             app.UseIdentityServer();
