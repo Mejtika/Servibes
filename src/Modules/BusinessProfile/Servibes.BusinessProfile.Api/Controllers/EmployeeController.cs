@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Servibes.BusinessProfile.Api.Commands;
 using Servibes.BusinessProfile.Api.Commands.Employee;
 using Servibes.BusinessProfile.Api.Commands.Employee.CreateEmployee;
 using Servibes.BusinessProfile.Api.Commands.Employee.DeleteEmployee;

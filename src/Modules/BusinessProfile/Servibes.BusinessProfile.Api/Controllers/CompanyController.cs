@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Servibes.BusinessProfile.Api.Dto;
-using Servibes.BusinessProfile.Api.Model;
-using Servibes.BusinessProfile.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
