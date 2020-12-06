@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Servibes.BusinessProfile.Api.Commands.Employee
+namespace Servibes.BusinessProfile.Api.Commands
 {
     public class EmployeeDto
     {
