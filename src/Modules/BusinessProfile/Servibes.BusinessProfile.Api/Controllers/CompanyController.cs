@@ -21,12 +21,10 @@ namespace Servibes.BusinessProfile.Api.Controllers
     [Route("api/companies")]
     public class CompanyController : ControllerBase
     {
-        private readonly BusinessProfileContext context;
         private readonly IMediator mediator;
 
-        public CompanyController(BusinessProfileContext context, IMediator mediator)
+        public CompanyController(IMediator mediator)
         {
-            this.context = context;
             this.mediator = mediator;
         }
 
