@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Servibes.BusinessProfile.Api.Queries.Services.GetCompanyServices
+namespace Servibes.BusinessProfile.Api.Queries.Services
 {
     public class CompanyServicesDto
     {
