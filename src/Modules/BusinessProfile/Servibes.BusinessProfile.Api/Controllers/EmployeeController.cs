@@ -1,14 +1,16 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Servibes.BusinessProfile.Api.Dto;
-using Servibes.BusinessProfile.Api.Model;
-using Servibes.BusinessProfile.Api.Models;
+using Servibes.BusinessProfile.Api.Commands.Employee;
+using Servibes.BusinessProfile.Api.Commands.Employee.CreateEmployee;
+using Servibes.BusinessProfile.Api.Commands.Employee.DeleteEmployee;
+using Servibes.BusinessProfile.Api.Commands.Employee.UpdateEmployee;
 using Servibes.BusinessProfile.Api.Queries.Employees.GetCompanyEmployees;
 using Servibes.BusinessProfile.Api.Queries.Employees.GetEmployeeById;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Servibes.BusinessProfile.Api.Controllers
 {
@@ -49,58 +51,38 @@ namespace Servibes.BusinessProfile.Api.Controllers
         }
 
         [HttpPost("{companyId}/employees")]
-        public IActionResult CreateEmployee([FromBody]EmployeeDto employeeDto, Guid companyId)
+        public async Task<ActionResult> CreateEmployee([FromBody]EmployeeDto employeeDto, Guid companyId)
         {
-            var company = context.Companies.FirstOrDefault(c => c.CompanyId == companyId);
-
-            if (company == null)
-                throw new ArgumentException($"Company with id {companyId} doesnt exist.");
-
-            Employee employee = new Employee()
+            var result = await mediator.Send(new CreateEmployeeCommand()
             {
-                EmployeeId = Guid.NewGuid(),
                 CompanyId = companyId,
-                FirstName = employeeDto.FirstName,
-                LastName = employeeDto.LastName,
-            };
+                EmployeeDto = employeeDto
+            });
 
-            context.Employees.Add(employee);
-
-            return CreatedAtAction(nameof(GetEmployeeById), new { employee.EmployeeId });
+            return CreatedAtAction(nameof(GetEmployeeById), new { result });
         }
 
         [HttpPut("{companyId}/employees/{employeeId}")]
-        public IActionResult UpdateEmployee([FromBody]EmployeeForUpdateDto employeeDto, Guid companyId, Guid employeeId)
+        public async Task<ActionResult> UpdateEmployee([FromBody] Commands.Employee.UpdateEmployee.EmployeeForUpdateDto employeeDto, Guid companyId, Guid employeeId)
         {
-            var employee = context.Employees.FirstOrDefault(e => e.EmployeeId == employeeId);
-
-            if (employee == null)
-                throw new ArgumentException($"Employee with id {employeeId} doesn't exist.");
-
-            var company = context.Companies.FirstOrDefault(c => c.CompanyId == companyId);
-
-            if (company == null)
-                throw new ArgumentException($"Company with id {companyId} doesn't exist.");
-
-            employee.CompanyId = companyId;
-            employee.FirstName = employeeDto.FirstName;
-            employee.LastName = employeeDto.LastName;
-
-            context.Employees.Add(employee);
-            context.SaveChanges();
+            await mediator.Send(new UpdateEmployeeCommand()
+            {
+                CompanyId = companyId,
+                EmployeeId = employeeId,
+                EmployeeForUpdateDto = employeeDto
+            });
 
             return NoContent();
         }
 
         [HttpDelete("{companyId}/employees/{employeeId}")]
-        public IActionResult DeleteEmployee(Guid companyId, Guid employeeId)
+        public async Task<ActionResult> DeleteEmployee(Guid companyId, Guid employeeId)
         {
-            var employee = context.Employees.FirstOrDefault(e => e.EmployeeId == employeeId && e.CompanyId == companyId);
-
-            if (employee == null)
-                throw new ArgumentException($"Employee with id {employeeId} doesn't exist.");
-
-            context.Employees.Remove(employee);
+            await mediator.Send(new DeleteEmployeeCommand()
+            {
+                CompanyId = companyId,
+                EmployeeId = employeeId
+            });
 
             return NoContent();
         }
