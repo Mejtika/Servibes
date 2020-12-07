@@ -7,14 +7,14 @@
     <div class="row justify-content-md-center">
       <div class="col-4">
         <a [routerLink]="['/client/companies/', company.id]">
-          <img class="img-fluid cover-img rounded" [src]="company.coverImg"/> 
+          <img class="img-fluid cover-img rounded" [src]="company.coverPhoto"/> 
         </a>
       </div>
       <div class="col-7">
         <a [routerLink]="['/client/companies/', company.id]">
-          <h4>{{ company.companyDetails.companyName }}</h4>
+          <h4>{{ company.companyName }}</h4>
         </a>
-        <h6 class="address-header">{{ company.companyDetails.address.city }}</h6>
+        <h6 class="address-header">{{ company.address.city }}</h6>
         <hr/>
         <div *ngFor="let service of company['services'] | slice:0:3">
           <div class="row">
