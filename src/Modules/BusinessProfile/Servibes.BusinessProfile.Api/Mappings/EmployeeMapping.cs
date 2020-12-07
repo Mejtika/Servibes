@@ -11,7 +11,7 @@ namespace Servibes.BusinessProfile.Api.Mappings
     {
         public EmployeeMapping()
         {
-            this.CreateMap<Employee, CompanyEmployeesDto>();
+            this.CreateMap<Employee, CompanyEmployeeDto>();
         }
     }
 }

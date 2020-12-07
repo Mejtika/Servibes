@@ -6,10 +6,10 @@ namespace Servibes.BusinessProfile.Api.Queries.Company
 {
     public class CompanyAddressDto
     {
-        public string City { get; }
-        public string ZipCode { get; }
-        public string Street { get; }
-        public string FlatNumber { get; }
-        public string StreetNumber { get; }
+        public string City { get; set; }
+        public string ZipCode { get; set; }
+        public string Street { get; set; }
+        public string FlatNumber { get; set; }
+        public string StreetNumber { get; set; }
     }
 }

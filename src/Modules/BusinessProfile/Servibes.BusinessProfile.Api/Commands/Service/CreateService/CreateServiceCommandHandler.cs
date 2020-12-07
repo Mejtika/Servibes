@@ -38,6 +38,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Service.CreateService
             {
                 service.Performers.Add(new Model.Performer()
                 {
+                    //TODO: Add employee existance checking or add performers by EmployeeId directly
                     PerformerId = companyEmployees.FirstOrDefault(ce => ce.FirstName == e.FirstName && ce.LastName == e.LastName).EmployeeId
                 });
             });

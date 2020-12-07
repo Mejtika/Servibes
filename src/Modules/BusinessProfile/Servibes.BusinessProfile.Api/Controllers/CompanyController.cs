@@ -70,7 +70,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
             return NoContent();
         }
 
-        [HttpDelete("companyId")]
+        [HttpDelete("{companyId}")]
         public async Task<ActionResult> DeleteCompany(Guid companyId)
         {
             await mediator.Send(new DeleteCompanyCommand()

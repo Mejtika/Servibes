@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Servibes.BusinessProfile.Api.Queries.Employees.GetEmployeeById
 {
-    public class GetEmployeeByIdQueryHandler : IRequestHandler<GetEmployeeByIdQuery, CompanyEmployeesDto>
+    public class GetEmployeeByIdQueryHandler : IRequestHandler<GetEmployeeByIdQuery, CompanyEmployeeDto>
     {
         private readonly BusinessProfileContext context;
         private readonly IMapper mapper;
@@ -20,14 +20,14 @@ namespace Servibes.BusinessProfile.Api.Queries.Employees.GetEmployeeById
             this.mapper = mapper;
         }
 
-        public Task<CompanyEmployeesDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
+        public Task<CompanyEmployeeDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
         {
-            var employee = context.Employees.Where(e => e.EmployeeId == request.EmployeeId && e.CompanyId == request.CompanyId);
+            var employee = context.Employees.Where(e => e.EmployeeId == request.EmployeeId && e.CompanyId == request.CompanyId).FirstOrDefault();
 
             if (employee == null)
                 throw new ArgumentException($"Employee with id {request.EmployeeId} and company id {request.CompanyId} doesnt exist.");
 
-            return Task.FromResult(mapper.Map<CompanyEmployeesDto>(employee));
+            return Task.FromResult(mapper.Map<CompanyEmployeeDto>(employee));
         }
     }
 }

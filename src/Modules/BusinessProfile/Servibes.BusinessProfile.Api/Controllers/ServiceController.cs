@@ -29,9 +29,9 @@ namespace Servibes.BusinessProfile.Api.Controllers
         }
 
         [HttpGet("{companyId}/services/{serviceId}")]
-        public ActionResult<Service> GetServiceById(Guid companyId, Guid serviceId)
+        public async Task<ActionResult> GetServiceById(Guid companyId, Guid serviceId)
         {
-            var result = mediator.Send(new GetServiceByIdQuery()
+            var result = await mediator.Send(new GetServiceByIdQuery()
             {
                 CompanyId = companyId,
                 ServiceId = serviceId
@@ -40,10 +40,10 @@ namespace Servibes.BusinessProfile.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{company}/services")]
-        public IActionResult GetAllCompanyServices(Guid companyId)
+        [HttpGet("{companyId}/services")]
+        public async Task<ActionResult> GetAllCompanyServices(Guid companyId)
         {
-            var result = this.mediator.Send(new GetCompanyServicesQuery()
+            var result = await this.mediator.Send(new GetCompanyServicesQuery()
             {
                 CompanyId = companyId
             });

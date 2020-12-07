@@ -22,7 +22,7 @@ namespace Servibes.BusinessProfile.Api.Queries.Services.GetServiceById
 
         public Task<CompanyServicesDto> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
         {
-            var service = context.Services.Where(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId);
+            var service = context.Services.Where(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId).FirstOrDefault();
 
             if (service == null)
                 throw new ArgumentException($"Service with id {request.ServiceId} and company id {request.CompanyId} doesnt exist.");

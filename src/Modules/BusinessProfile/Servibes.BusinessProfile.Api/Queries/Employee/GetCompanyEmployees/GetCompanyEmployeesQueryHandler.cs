@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Servibes.BusinessProfile.Api.Queries.Employees.GetCompanyEmployees
 {
-    public class GetCompanyEmployeesQueryHandler : IRequestHandler<GetCompanyEmployeesQuery, IEnumerable<CompanyEmployeesDto>>
+    public class GetCompanyEmployeesQueryHandler : IRequestHandler<GetCompanyEmployeesQuery, IEnumerable<CompanyEmployeeDto>>
     {
         private readonly BusinessProfileContext context;
         private readonly IMapper mapper;
@@ -20,14 +20,14 @@ namespace Servibes.BusinessProfile.Api.Queries.Employees.GetCompanyEmployees
             this.mapper = mapper;
         }
 
-        public Task<IEnumerable<CompanyEmployeesDto>> Handle(GetCompanyEmployeesQuery request, CancellationToken cancellationToken)
+        public Task<IEnumerable<CompanyEmployeeDto>> Handle(GetCompanyEmployeesQuery request, CancellationToken cancellationToken)
         {
             var employees = context.Employees.Where(e => e.CompanyId == request.CompanyId).ToList();
 
             if (employees.Count() == 0)
                 throw new ArgumentException($"Company with id {request.CompanyId} doesnt have any employees.");
 
-            return Task.FromResult(mapper.Map<IEnumerable<CompanyEmployeesDto>>(employees));
+            return Task.FromResult(mapper.Map<IEnumerable<CompanyEmployeeDto>>(employees));
         }
     }
 }

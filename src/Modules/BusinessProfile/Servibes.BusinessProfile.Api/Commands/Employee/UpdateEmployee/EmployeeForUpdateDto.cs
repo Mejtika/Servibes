@@ -8,6 +8,5 @@ namespace Servibes.BusinessProfile.Api.Commands.Employee.UpdateEmployee
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public List<HoursRangeDto> WorkingHours { get; set; }
     }
 }
