@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Servibes.Availability.Core;
 using Servibes.Availability.Core.Events;
@@ -69,6 +70,43 @@ namespace Servibes.Availability.UnitTests
             employee.ChangeWorkingHours(company.OpeningHours, newEmployeeWorkingHours);
 
             employee.WorkingHours.Should().Be(newEmployeeWorkingHours);
+        }
+
+        [Fact]
+        public void ShouldAdjustEmployeeWorkingHoursToCompaniesOpeningHours()
+        {
+            var employeeId = Guid.NewGuid();
+            var companyId = Guid.NewGuid();
+            var employeeHoursRanges = new List<HoursRange>
+            {
+                HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
+                HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(14), TimeSpan.FromHours(17)),
+                HoursRange.Create(DayOfWeek.Wednesday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
+                HoursRange.Create(DayOfWeek.Thursday, true, TimeSpan.FromHours(13), TimeSpan.FromHours(18)),
+                HoursRange.Create(DayOfWeek.Friday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
+                HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
+                HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
+            };
+
+            var employeeWorkingHours = WeekHoursRange.Create(employeeHoursRanges);
+            var employee = Employee.Create(employeeId, companyId, employeeWorkingHours);
+
+            var companyHoursRanges = new List<HoursRange>
+            {
+                HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(13), TimeSpan.FromHours(18)),
+                HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
+                HoursRange.Create(DayOfWeek.Wednesday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
+                HoursRange.Create(DayOfWeek.Thursday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
+                HoursRange.Create(DayOfWeek.Friday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
+                HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
+                HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
+            };
+            var companyOpeningHours = WeekHoursRange.Create(companyHoursRanges);
+            var company = Company.Create(companyId, companyOpeningHours);
+
+            employee.AdjustWorkingHours(company.OpeningHours);
+
+            employee.WorkingHours.Should().Be(company.OpeningHours);
         }
     }
 }

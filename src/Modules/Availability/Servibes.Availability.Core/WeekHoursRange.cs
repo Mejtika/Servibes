@@ -15,6 +15,9 @@ namespace Servibes.Availability.Core
 
         public IEnumerable<HoursRange> HoursRanges { get; }
 
+        public HoursRange GetByDayOfWeek(DayOfWeek dayOfWeek)
+            => HoursRanges.SingleOrDefault(x => x.DayOfWeek == dayOfWeek);
+ 
         private WeekHoursRange(IEnumerable<HoursRange> weekHoursRanges)
         {
             HoursRanges = weekHoursRanges;

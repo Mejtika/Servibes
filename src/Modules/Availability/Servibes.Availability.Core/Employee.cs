@@ -57,25 +57,23 @@ namespace Servibes.Availability.Core
         private bool IsInWeekWorkingRange(Reservation reservation)
             => !reservation.IsLongPeriodReservation() && !reservation.IsOutOfRange(WorkingHours.HoursRanges);
 
-        public void ChangeWorkingHours(WeekHoursRange companyOpeningHours, WeekHoursRange workingHours)
+        public void ChangeWorkingHours(WeekHoursRange companyOpeningHours, WeekHoursRange newWorkingHours)
         {
             var areWorkingHoursWithin = companyOpeningHours.HoursRanges.Select(x =>
-                workingHours.HoursRanges.SingleOrDefault(y => y.DayOfWeek == x.DayOfWeek).IsWithin(x)).All(x => x);
+                newWorkingHours.HoursRanges.SingleOrDefault(y => y.DayOfWeek == x.DayOfWeek).IsWithin(x)).All(x => x);
 
             if (!areWorkingHoursWithin)
             {
                 throw new Exception("Employee working hours are colliding with company opening hours.");
             }
 
-            WorkingHours = workingHours;
+            WorkingHours = newWorkingHours;
         }
 
-        public void TrimWorkingHours(WeekHoursRange trimmedWorkingHours)
+        public void AdjustWorkingHours(WeekHoursRange companyOpeningHours)
         {
-            WorkingHours = trimmedWorkingHours;
+            WorkingHours = companyOpeningHours;
         }
-
-        public bool CanBeTrimmed(WeekHoursRange companyOpeningHours) => true;
 
         public void ReleaseReservation(Reservation reservation)
         {
