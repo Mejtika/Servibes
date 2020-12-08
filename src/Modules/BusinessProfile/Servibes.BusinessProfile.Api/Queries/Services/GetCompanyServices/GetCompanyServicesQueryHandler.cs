@@ -23,7 +23,7 @@ namespace Servibes.BusinessProfile.Api.Queries.Services.GetCompanyServices
         {
             var services = _context.Services.Where(s => s.CompanyId == request.CompanyId).ToList();
 
-            if (services.Count() == 0)
+            if (!services.Any())
                 throw new ArgumentException($"Company with id {request.CompanyId} doesnt have any services.");
 
             return Task.FromResult(_mapper.Map<IEnumerable<CompanyServicesDto>>(services));

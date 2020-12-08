@@ -23,7 +23,7 @@ namespace Servibes.BusinessProfile.Api.Queries.Employees.GetCompanyEmployees
         {
             var employees = _context.Employees.Where(e => e.CompanyId == request.CompanyId).ToList();
 
-            if (employees.Count() == 0)
+            if (!employees.Any())
                 throw new ArgumentException($"Company with id {request.CompanyId} doesnt have any employees.");
 
             return Task.FromResult(_mapper.Map<IEnumerable<CompanyEmployeeDto>>(employees));

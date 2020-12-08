@@ -20,7 +20,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Services.CreateService
         {
             var companyEmployees = _context.Employees.Where(e => e.CompanyId == request.CompanyId);
 
-            if (companyEmployees.Count() == 0)
+            if (!companyEmployees.Any())
                 throw new ArgumentException($"Company with id {request.CompanyId} doesnt have any employees.");
 
             Service service = new Service()

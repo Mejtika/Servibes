@@ -25,7 +25,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Services.UpdateService
 
             var companyEmployees = _context.Employees.Where(e => e.CompanyId == service.CompanyId).ToList();
 
-            if (companyEmployees.Count == 0)
+            if (!companyEmployees.Any())
                 throw new ArgumentException($"Company with id {service.CompanyId} doesnt have any employees.");
 
             service.ServiceName = request.ServiceDto.ServiceName;
