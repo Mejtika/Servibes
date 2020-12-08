@@ -8,16 +8,16 @@ namespace Servibes.BusinessProfile.Api.Commands.Service.CreateService
 {
     public class CreateServiceCommandHandler : IRequestHandler<CreateServiceCommand, Guid>
     {
-        private readonly BusinessProfileContext context;
+        private readonly BusinessProfileContext _context;
 
         public CreateServiceCommandHandler(BusinessProfileContext context)
         {
-            this.context = context;
+            this._context = context;
         }
 
         public Task<Guid> Handle(CreateServiceCommand request, CancellationToken cancellationToken)
         {
-            var companyEmployees = context.Employees.Where(e => e.CompanyId == request.CompanyId);
+            var companyEmployees = _context.Employees.Where(e => e.CompanyId == request.CompanyId);
 
             if (companyEmployees.Count() == 0)
                 throw new ArgumentException($"Company with id {request.CompanyId} doesnt have any employees.");
@@ -41,8 +41,8 @@ namespace Servibes.BusinessProfile.Api.Commands.Service.CreateService
                 });
             });
 
-            context.Services.Add(service);
-            context.SaveChanges();
+            _context.Services.Add(service);
+            _context.SaveChanges();
 
             return Task.FromResult(service.ServiceId);
         }

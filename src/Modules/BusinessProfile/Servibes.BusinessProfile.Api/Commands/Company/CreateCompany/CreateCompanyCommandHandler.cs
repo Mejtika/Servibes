@@ -11,13 +11,13 @@ namespace Servibes.BusinessProfile.Api.Commands.Company.CreateCompany
 {
     public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand, Guid>
     {
-        private readonly BusinessProfileContext context;
-        private readonly IMessageBroker broker;
+        private readonly BusinessProfileContext _context;
+        private readonly IMessageBroker _broker;
 
         public CreateCompanyCommandHandler(BusinessProfileContext context, IMessageBroker broker)
         {
-            this.context = context;
-            this.broker = broker;
+            this._context = context;
+            this._broker = broker;
         }
 
         public Task<Guid> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
@@ -80,12 +80,12 @@ namespace Servibes.BusinessProfile.Api.Commands.Company.CreateCompany
                 companyEmployees.Select(x => x.EmployeeId).ToList(),
                 companyId);
 
-            broker.PublishAsync(evencik);
+            _broker.PublishAsync(evencik);
 
-            context.Companies.Add(company);
-            context.Employees.AddRange(companyEmployees);
-            context.Services.AddRange(companyServices);
-            context.SaveChanges();
+            _context.Companies.Add(company);
+            _context.Employees.AddRange(companyEmployees);
+            _context.Services.AddRange(companyServices);
+            _context.SaveChanges();
 
             return Task.FromResult(companyId);
         }

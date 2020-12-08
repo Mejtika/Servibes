@@ -15,17 +15,17 @@ namespace Servibes.BusinessProfile.Api.Controllers
     [Route("api/companies")]
     public class EmployeeController : ControllerBase
     {
-        private readonly IMediator mediator;
+        private readonly IMediator _mediator;
 
         public EmployeeController(IMediator mediator)
         {
-            this.mediator = mediator;
+            this._mediator = mediator;
         }
 
         [HttpGet("{companyId}/employees/{employeeId}")]
         public async Task<ActionResult> GetEmployeeById(Guid companyId, Guid employeeId)
         {
-            var result = await mediator.Send(new GetEmployeeByIdQuery()
+            var result = await _mediator.Send(new GetEmployeeByIdQuery()
             {
                 CompanyId = companyId,
                 EmployeeId = employeeId
@@ -37,7 +37,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpGet("{companyId}/employees")]
         public async Task<ActionResult> GetAllCompanyEmployees(Guid companyId)
         {
-            var result = await mediator.Send(new GetCompanyEmployeesQuery()
+            var result = await _mediator.Send(new GetCompanyEmployeesQuery()
             {
                 CompanyId = companyId
             });
@@ -48,7 +48,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpPost("{companyId}/employees")]
         public async Task<ActionResult> CreateEmployee([FromBody]EmployeeDto employeeDto, Guid companyId)
         {
-            var result = await mediator.Send(new CreateEmployeeCommand()
+            var result = await _mediator.Send(new CreateEmployeeCommand()
             {
                 CompanyId = companyId,
                 EmployeeDto = employeeDto
@@ -60,7 +60,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpPut("{companyId}/employees/{employeeId}")]
         public async Task<ActionResult> UpdateEmployee([FromBody] Commands.Employee.UpdateEmployee.EmployeeForUpdateDto employeeDto, Guid companyId, Guid employeeId)
         {
-            await mediator.Send(new UpdateEmployeeCommand()
+            await _mediator.Send(new UpdateEmployeeCommand()
             {
                 CompanyId = companyId,
                 EmployeeId = employeeId,
@@ -73,7 +73,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpDelete("{companyId}/employees/{employeeId}")]
         public async Task<ActionResult> DeleteEmployee(Guid companyId, Guid employeeId)
         {
-            await mediator.Send(new DeleteEmployeeCommand()
+            await _mediator.Send(new DeleteEmployeeCommand()
             {
                 CompanyId = companyId,
                 EmployeeId = employeeId

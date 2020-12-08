@@ -15,17 +15,17 @@ namespace Servibes.BusinessProfile.Api.Controllers
     [Route("api/companies")]
     public class CompanyController : ControllerBase
     {
-        private readonly IMediator mediator;
+        private readonly IMediator _mediator;
 
         public CompanyController(IMediator mediator)
         {
-            this.mediator = mediator;
+            this._mediator = mediator;
         }
 
         [HttpGet("{companyId}")]
         public async Task<ActionResult> GetCompanyById(Guid companyId)
         {
-            var result = await mediator.Send(new GetCompanyQuery()
+            var result = await _mediator.Send(new GetCompanyQuery()
             {
                 CompanyId = companyId
             });
@@ -36,7 +36,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAllCompanies(string category = "")
         {
-            var result = await mediator.Send(new GetAllCompaniesQuery()
+            var result = await _mediator.Send(new GetAllCompaniesQuery()
             {
                 Category = category
             });
@@ -47,7 +47,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateCompany([FromBody]CompanyDto companyDto)
         {
-            var result = await mediator.Send(new CreateCompanyCommand()
+            var result = await _mediator.Send(new CreateCompanyCommand()
             {
                 CompanyDto = companyDto
             });
@@ -58,7 +58,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpPut("{companyId}")]
         public async Task<ActionResult> UpdateCompanyInfo([FromBody]UpdateCompanyDto updateCompanyDto, Guid companyId)
         {
-            await mediator.Send(new UpdateCompanyCommand()
+            await _mediator.Send(new UpdateCompanyCommand()
             {
                 CompanyId = companyId,
                 UpdateCompanyDto = updateCompanyDto
@@ -70,7 +70,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpDelete("{companyId}")]
         public async Task<ActionResult> DeleteCompany(Guid companyId)
         {
-            await mediator.Send(new DeleteCompanyCommand()
+            await _mediator.Send(new DeleteCompanyCommand()
             {
                 CompanyId = companyId
             });

@@ -8,28 +8,28 @@ namespace Servibes.BusinessProfile.Api.Commands.Company.DeleteCompany
 {
     public class DeleteCompanyCommandHandler : IRequestHandler<DeleteCompanyCommand>
     {
-        private readonly BusinessProfileContext context;
+        private readonly BusinessProfileContext _context;
 
         public DeleteCompanyCommandHandler(BusinessProfileContext context)
         {
-            this.context = context;
+            this._context = context;
         }
 
         public Task<Unit> Handle(DeleteCompanyCommand request, CancellationToken cancellationToken)
         {
-            var company = context.Companies.Where(c => c.CompanyId == request.CompanyId).FirstOrDefault();
+            var company = _context.Companies.FirstOrDefault(c => c.CompanyId == request.CompanyId);
 
             if (company == null)
                 throw new ArgumentException($"Company with id {request.CompanyId} doesnt exist.");
 
-            var companyEmployees = context.Employees.Where(e => e.CompanyId == request.CompanyId).ToList();
-            var companyServices = context.Services.Where(s => s.CompanyId == request.CompanyId).ToList();
+            var companyEmployees = _context.Employees.Where(e => e.CompanyId == request.CompanyId).ToList();
+            var companyServices = _context.Services.Where(s => s.CompanyId == request.CompanyId).ToList();
 
-            context.Companies.Remove(company);
-            context.Employees.RemoveRange(companyEmployees);
-            context.Services.RemoveRange(companyServices);
+            _context.Companies.Remove(company);
+            _context.Employees.RemoveRange(companyEmployees);
+            _context.Services.RemoveRange(companyServices);
 
-            context.SaveChanges();
+            _context.SaveChanges();
 
             return Unit.Task;
         }

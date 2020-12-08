@@ -11,7 +11,6 @@ namespace Servibes.BusinessProfile.Api.Commands.Company
         public string Description { get; set; }
         public string CoverPhoto { get; set; }
         public CompanyAddressDto Address { get; set; }
-
         public List<EmployeeDto> Employees { get; set; }
         public List<HoursRangeDto> OpeningHours { get; set; }
         public List<ServiceDto> Services { get; set; }

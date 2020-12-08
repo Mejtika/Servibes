@@ -8,22 +8,22 @@ namespace Servibes.BusinessProfile.Api.Commands.Service.DeleteService
 {
     public class DeleteServiceCommandHandler : IRequestHandler<DeleteServiceCommand>
     {
-        private readonly BusinessProfileContext context;
+        private readonly BusinessProfileContext _context;
 
         public DeleteServiceCommandHandler(BusinessProfileContext context)
         {
-            this.context = context;
+            this._context = context;
         }
 
         public Task<Unit> Handle(DeleteServiceCommand request, CancellationToken cancellationToken)
         {
-            var service = context.Services.Where(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId).FirstOrDefault();
+            var service = _context.Services.FirstOrDefault(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId);
 
             if (service == null)
                 throw new ArgumentException($"Service with id {request.ServiceId} and company id {request.CompanyId} doesnt exist.");
 
-            context.Services.Remove(service);
-            context.SaveChanges();
+            _context.Services.Remove(service);
+            _context.SaveChanges();
 
             return Unit.Task;
         }

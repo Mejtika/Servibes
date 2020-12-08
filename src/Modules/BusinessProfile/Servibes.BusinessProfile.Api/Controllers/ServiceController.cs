@@ -15,19 +15,19 @@ namespace Servibes.BusinessProfile.Api.Controllers
     [Route("api/companies")]
     public class ServiceController : ControllerBase
     {
-        private readonly BusinessProfileContext context;
-        private readonly IMediator mediator;
+        private readonly BusinessProfileContext _context;
+        private readonly IMediator _mediator;
 
         public ServiceController(BusinessProfileContext context, IMediator mediator)
         {
-            this.context = context;
-            this.mediator = mediator;
+            this._context = context;
+            this._mediator = mediator;
         }
 
         [HttpGet("{companyId}/services/{serviceId}")]
         public async Task<ActionResult> GetServiceById(Guid companyId, Guid serviceId)
         {
-            var result = await mediator.Send(new GetServiceByIdQuery()
+            var result = await _mediator.Send(new GetServiceByIdQuery()
             {
                 CompanyId = companyId,
                 ServiceId = serviceId
@@ -39,7 +39,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpGet("{companyId}/services")]
         public async Task<ActionResult> GetAllCompanyServices(Guid companyId)
         {
-            var result = await this.mediator.Send(new GetCompanyServicesQuery()
+            var result = await this._mediator.Send(new GetCompanyServicesQuery()
             {
                 CompanyId = companyId
             });
@@ -50,7 +50,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpPost("{companyId}/services")]
         public async Task<ActionResult> CreateService([FromBody]ServiceDto serviceDto, Guid companyId)
         {
-            var result = await mediator.Send(new CreateServiceCommand()
+            var result = await _mediator.Send(new CreateServiceCommand()
             {
                 CompanyId = companyId,
                 ServicDto = serviceDto
@@ -62,7 +62,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpPut("{companyId}/services/{serviceId}")]
         public async Task<ActionResult> UpdateService([FromBody] ServiceDto serviceDto, Guid companyId, Guid serviceId)
         {
-            await mediator.Send(new UpdateServiceCommand()
+            await _mediator.Send(new UpdateServiceCommand()
             {
                 CompanyId = companyId,
                 ServiceId = serviceId,
@@ -75,7 +75,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpDelete("{companyId}/services/{serviceId}")]
         public async Task<ActionResult> DeleteService(Guid companyId, Guid serviceId)
         {
-            await mediator.Send(new DeleteServiceCommand()
+            await _mediator.Send(new DeleteServiceCommand()
             {
                 CompanyId = companyId,
                 ServiceId = serviceId

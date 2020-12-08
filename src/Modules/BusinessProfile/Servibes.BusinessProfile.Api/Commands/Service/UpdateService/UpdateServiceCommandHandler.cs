@@ -8,21 +8,21 @@ namespace Servibes.BusinessProfile.Api.Commands.Service.UpdateService
 {
     public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand>
     {
-        private readonly BusinessProfileContext context;
+        private readonly BusinessProfileContext _context;
 
         public UpdateServiceCommandHandler(BusinessProfileContext context)
         {
-            this.context = context;
+            this._context = context;
         }
 
         public Task<Unit> Handle(UpdateServiceCommand request, CancellationToken cancellationToken)
         {
-            var service = context.Services.FirstOrDefault(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId);
+            var service = _context.Services.FirstOrDefault(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId);
 
             if (service == null)
                 throw new ArgumentException($"Service with id {request.ServiceId} and company id {request.CompanyId} doesnt exist.");
 
-            var companyEmployees = context.Employees.Where(e => e.CompanyId == service.CompanyId).ToList();
+            var companyEmployees = _context.Employees.Where(e => e.CompanyId == service.CompanyId).ToList();
 
             if (companyEmployees.Count == 0)
                 throw new ArgumentException($"Company with id {service.CompanyId} doesnt have any employees.");
@@ -41,8 +41,8 @@ namespace Servibes.BusinessProfile.Api.Commands.Service.UpdateService
                 });
             });
 
-            context.Services.Update(service);
-            context.SaveChanges();
+            _context.Services.Update(service);
+            _context.SaveChanges();
 
             return Unit.Task;
         }

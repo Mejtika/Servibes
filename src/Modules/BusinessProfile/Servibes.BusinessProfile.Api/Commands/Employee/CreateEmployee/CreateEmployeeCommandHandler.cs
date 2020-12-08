@@ -8,16 +8,16 @@ namespace Servibes.BusinessProfile.Api.Commands.Employee.CreateEmployee
 {
     public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Guid>
     {
-        private readonly BusinessProfileContext context;
+        private readonly BusinessProfileContext _context;
 
         public CreateEmployeeCommandHandler(BusinessProfileContext context)
         {
-            this.context = context;
+            this._context = context;
         }
 
         public Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var company = context.Companies.FirstOrDefault(c => c.CompanyId == request.CompanyId);
+            var company = _context.Companies.FirstOrDefault(c => c.CompanyId == request.CompanyId);
 
             if (company == null)
                 throw new ArgumentException($"Company with id {request.CompanyId} doesnt exist.");
@@ -30,8 +30,8 @@ namespace Servibes.BusinessProfile.Api.Commands.Employee.CreateEmployee
                 LastName = request.EmployeeDto.LastName,
             };
 
-            context.Employees.Add(employee);
-            context.SaveChanges();
+            _context.Employees.Add(employee);
+            _context.SaveChanges();
 
             return Task.FromResult(employee.EmployeeId);
         }
