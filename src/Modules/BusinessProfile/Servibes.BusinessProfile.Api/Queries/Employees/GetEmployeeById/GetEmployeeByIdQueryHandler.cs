@@ -20,7 +20,7 @@ namespace Servibes.BusinessProfile.Api.Queries.Employees.GetEmployeeById
 
         public Task<CompanyEmployeeDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
         {
-            var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == request.EmployeeId && e.CompanyId == request.CompanyId);
+            var employee = _context.Employees.SingleOrDefault(e => e.EmployeeId == request.EmployeeId && e.CompanyId == request.CompanyId);
 
             if (employee == null)
                 throw new ArgumentException($"Employee with id {request.EmployeeId} and company id {request.CompanyId} doesnt exist.");

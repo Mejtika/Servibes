@@ -18,7 +18,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Services.CreateService
 
         public Task<Guid> Handle(CreateServiceCommand request, CancellationToken cancellationToken)
         {
-            var companyEmployees = _context.Employees.Where(e => e.CompanyId == request.CompanyId);
+            var companyEmployees = _context.Employees.Where(e => e.CompanyId == request.CompanyId).ToList();
 
             if (!companyEmployees.Any())
                 throw new ArgumentException($"Company with id {request.CompanyId} doesnt have any employees.");

@@ -44,7 +44,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany
                 {
                     servicePerformers.Add(new Performer()
                     {
-                        PerformerId = companyEmployees.FirstOrDefault(ce => ce.FirstName == sp.FirstName && ce.LastName == sp.LastName).EmployeeId
+                        PerformerId = companyEmployees.SingleOrDefault(ce => ce.FirstName == sp.FirstName && ce.LastName == sp.LastName).EmployeeId
                     });
                 });
 

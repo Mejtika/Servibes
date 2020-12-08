@@ -17,7 +17,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Services.DeleteService
 
         public Task<Unit> Handle(DeleteServiceCommand request, CancellationToken cancellationToken)
         {
-            var service = _context.Services.FirstOrDefault(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId);
+            var service = _context.Services.SingleOrDefault(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId);
 
             if (service == null)
                 throw new ArgumentException($"Service with id {request.ServiceId} and company id {request.CompanyId} doesnt exist.");

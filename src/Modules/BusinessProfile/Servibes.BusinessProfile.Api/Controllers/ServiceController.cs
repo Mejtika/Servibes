@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Servibes.BusinessProfile.Api.Commands.Service;
 using Servibes.BusinessProfile.Api.Queries.Services.GetCompanyServices;
 using Servibes.BusinessProfile.Api.Queries.Services.GetServiceById;
 using System;

@@ -17,7 +17,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Employees.UpdateEmployee
 
         public Task<Unit> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var employee = _context.Employees.FirstOrDefault(e => e.EmployeeId == request.EmployeeId && e.CompanyId == request.CompanyId);
+            var employee = _context.Employees.SingleOrDefault(e => e.EmployeeId == request.EmployeeId && e.CompanyId == request.CompanyId);
 
             if (employee == null)
                 throw new ArgumentException($"Employee with id {request.EmployeeId} and company id {request.CompanyId} doesn't exist.");
@@ -25,7 +25,6 @@ namespace Servibes.BusinessProfile.Api.Commands.Employees.UpdateEmployee
             employee.FirstName = request.EmployeeForUpdateDto.FirstName;
             employee.LastName = request.EmployeeForUpdateDto.LastName;
 
-            _context.Employees.Update(employee);
             _context.SaveChanges();
 
             return Unit.Task;

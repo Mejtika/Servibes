@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Servibes.BusinessProfile.Api.Commands.Service;
 using Servibes.BusinessProfile.Api.Commands.Services;
 
 namespace Servibes.BusinessProfile.Api.Commands.Companies

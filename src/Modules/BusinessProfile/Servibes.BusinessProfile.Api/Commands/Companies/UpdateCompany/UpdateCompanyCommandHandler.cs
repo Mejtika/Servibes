@@ -18,7 +18,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.UpdateCompany
 
         public Task<Unit> Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
         {
-            var company = _context.Companies.FirstOrDefault(c => c.CompanyId == request.CompanyId);
+            var company = _context.Companies.SingleOrDefault(c => c.CompanyId == request.CompanyId);
 
             if (company == null)
                 throw new ArgumentException($"Company with id {request.CompanyId} doesnt exist.");

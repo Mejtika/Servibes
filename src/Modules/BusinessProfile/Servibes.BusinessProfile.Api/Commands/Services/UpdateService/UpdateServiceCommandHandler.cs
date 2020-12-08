@@ -18,7 +18,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Services.UpdateService
 
         public Task<Unit> Handle(UpdateServiceCommand request, CancellationToken cancellationToken)
         {
-            var service = _context.Services.FirstOrDefault(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId);
+            var service = _context.Services.SingleOrDefault(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId);
 
             if (service == null)
                 throw new ArgumentException($"Service with id {request.ServiceId} and company id {request.CompanyId} doesnt exist.");
@@ -42,7 +42,6 @@ namespace Servibes.BusinessProfile.Api.Commands.Services.UpdateService
                 });
             });
 
-            _context.Services.Update(service);
             _context.SaveChanges();
 
             return Unit.Task;

@@ -20,7 +20,7 @@ namespace Servibes.BusinessProfile.Api.Queries.Companies.GetCompany
 
         public Task<CompanyDto> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
         {
-            var company = _context.Companies.FirstOrDefault(c => c.CompanyId == request.CompanyId);
+            var company = _context.Companies.SingleOrDefault(c => c.CompanyId == request.CompanyId);
 
             if (company == null)
                 throw new ArgumentException($"Company with id {request.CompanyId} doesnt exist.");
