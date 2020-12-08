@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 
 import { filter } from "rxjs/operators";
+import { forkJoin } from "rxjs";
 
 import { Category, ICompany } from '../../shared/interfaces/company';
 import { MockDataService } from '../../data-service/mock-data.service';
 import { ActivatedRoute } from '@angular/router';
+import { CompanyDataService } from 'src/app/data-service/company-data.servce';
+import { ServicesDataService } from 'src/app/data-service/services-data.service';
 
 @Component({
     selector: 'companies-list',
@@ -16,7 +19,9 @@ export class CompaniesListComponent {
     _category: Category;
 
     constructor(private dataService: MockDataService,
-        private route: ActivatedRoute) {
+      private companyDataService: CompanyDataService,
+      private servicesDataService: ServicesDataService,
+      private route: ActivatedRoute) {
     }
 
     set category(category: Category) {
@@ -35,15 +40,20 @@ export class CompaniesListComponent {
                 this.category = params.category;
             });
 
-
-        this.dataService.getCompanies(this.category).subscribe(result => {
-            this.companies = result;
-        });
+        this.getCompanies(this.category);
     }
 
     getCompanies(category: Category) {
-        this.dataService.getCompanies(this.category).subscribe(result => {
-            this.companies = result;
+        this.companyDataService.getAllCompanies(this.category).subscribe(result => {
+          this.companies = result;
+
+          //TODO: Fix this to some kind of rxjs operation (to do two requests at once and combine them)
+
+          this.companies.forEach(c => {
+            this.servicesDataService.getAllCompanyServices(c.companyId).subscribe(services => {
+              c.services = services;
+            });
+          });
         });
     }
 }
