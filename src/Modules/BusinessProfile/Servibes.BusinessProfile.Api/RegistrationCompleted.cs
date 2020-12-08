@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using MediatR;
 using Servibes.BusinessProfile.Api.Commands;
-using Servibes.BusinessProfile.Api.Commands.Company;
 
 namespace Servibes.BusinessProfile.Api
 {

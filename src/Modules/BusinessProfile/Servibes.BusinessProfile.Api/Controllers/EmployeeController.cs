@@ -1,16 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Servibes.BusinessProfile.Api.Commands;
-using Servibes.BusinessProfile.Api.Commands.Employee;
 using Servibes.BusinessProfile.Api.Commands.Employee.CreateEmployee;
 using Servibes.BusinessProfile.Api.Commands.Employee.DeleteEmployee;
 using Servibes.BusinessProfile.Api.Commands.Employee.UpdateEmployee;
 using Servibes.BusinessProfile.Api.Queries.Employees.GetCompanyEmployees;
 using Servibes.BusinessProfile.Api.Queries.Employees.GetEmployeeById;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Servibes.BusinessProfile.Api.Controllers

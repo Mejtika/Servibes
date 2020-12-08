@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using MediatR;
 using Servibes.BusinessProfile.Api.Queries.Company.GetCompany;
 using Servibes.BusinessProfile.Api.Queries.Company.GetAllCompanies;
-using Servibes.Shared.Communication.Brokers;
 using Servibes.BusinessProfile.Api.Commands.Company;
 using Servibes.BusinessProfile.Api.Commands.Company.CreateCompany;
 using System.Threading.Tasks;

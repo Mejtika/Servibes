@@ -1,7 +1,4 @@
-﻿using Servibes.BusinessProfile.Api.Commands.Employee;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Servibes.BusinessProfile.Api.Commands.Service
 {

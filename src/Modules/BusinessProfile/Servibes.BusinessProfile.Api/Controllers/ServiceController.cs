@@ -4,13 +4,9 @@ using Servibes.BusinessProfile.Api.Commands.Service;
 using Servibes.BusinessProfile.Api.Commands.Service.CreateService;
 using Servibes.BusinessProfile.Api.Commands.Service.DeleteService;
 using Servibes.BusinessProfile.Api.Commands.Service.UpdateService;
-using Servibes.BusinessProfile.Api.Model;
 using Servibes.BusinessProfile.Api.Queries.Services.GetCompanyServices;
 using Servibes.BusinessProfile.Api.Queries.Services.GetServiceById;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Servibes.BusinessProfile.Api.Controllers

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Servibes.BusinessProfile.Api.Commands.Company
+﻿namespace Servibes.BusinessProfile.Api.Commands.Company
 {
     public class CompanyAddressDto
     {

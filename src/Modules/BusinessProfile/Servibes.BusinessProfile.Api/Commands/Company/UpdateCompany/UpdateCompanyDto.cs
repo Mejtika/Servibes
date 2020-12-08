@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Servibes.BusinessProfile.Api.Commands.Company.UpdateCompany
+﻿namespace Servibes.BusinessProfile.Api.Commands.Company.UpdateCompany
 {
     public class UpdateCompanyDto
     {
