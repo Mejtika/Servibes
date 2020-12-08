@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Servibes.BusinessProfile.Api.Commands;
-using Servibes.BusinessProfile.Api.Commands.Employee.CreateEmployee;
-using Servibes.BusinessProfile.Api.Commands.Employee.DeleteEmployee;
-using Servibes.BusinessProfile.Api.Commands.Employee.UpdateEmployee;
 using Servibes.BusinessProfile.Api.Queries.Employees.GetCompanyEmployees;
 using Servibes.BusinessProfile.Api.Queries.Employees.GetEmployeeById;
 using System;
 using System.Threading.Tasks;
+using Servibes.BusinessProfile.Api.Commands.Employees.CreateEmployee;
+using Servibes.BusinessProfile.Api.Commands.Employees.DeleteEmployee;
+using Servibes.BusinessProfile.Api.Commands.Employees.UpdateEmployee;
 
 namespace Servibes.BusinessProfile.Api.Controllers
 {
@@ -58,7 +58,7 @@ namespace Servibes.BusinessProfile.Api.Controllers
         }
 
         [HttpPut("{companyId}/employees/{employeeId}")]
-        public async Task<ActionResult> UpdateEmployee([FromBody] Commands.Employee.UpdateEmployee.EmployeeForUpdateDto employeeDto, Guid companyId, Guid employeeId)
+        public async Task<ActionResult> UpdateEmployee([FromBody] EmployeeForUpdateDto employeeDto, Guid companyId, Guid employeeId)
         {
             await _mediator.Send(new UpdateEmployeeCommand()
             {

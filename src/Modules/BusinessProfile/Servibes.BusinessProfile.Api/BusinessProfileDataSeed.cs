@@ -1,7 +1,7 @@
-﻿using Servibes.BusinessProfile.Api.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Servibes.BusinessProfile.Api.Models;
 
 namespace Servibes.BusinessProfile.Api
 {

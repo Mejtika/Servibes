@@ -1,13 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Servibes.BusinessProfile.Api.Commands.Service;
-using Servibes.BusinessProfile.Api.Commands.Service.CreateService;
-using Servibes.BusinessProfile.Api.Commands.Service.DeleteService;
-using Servibes.BusinessProfile.Api.Commands.Service.UpdateService;
 using Servibes.BusinessProfile.Api.Queries.Services.GetCompanyServices;
 using Servibes.BusinessProfile.Api.Queries.Services.GetServiceById;
 using System;
 using System.Threading.Tasks;
+using Servibes.BusinessProfile.Api.Commands.Services;
+using Servibes.BusinessProfile.Api.Commands.Services.CreateService;
+using Servibes.BusinessProfile.Api.Commands.Services.DeleteService;
+using Servibes.BusinessProfile.Api.Commands.Services.UpdateService;
 
 namespace Servibes.BusinessProfile.Api.Controllers
 {

@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using MediatR;
-using Servibes.BusinessProfile.Api.Queries.Company.GetCompany;
-using Servibes.BusinessProfile.Api.Queries.Company.GetAllCompanies;
-using Servibes.BusinessProfile.Api.Commands.Company;
-using Servibes.BusinessProfile.Api.Commands.Company.CreateCompany;
 using System.Threading.Tasks;
-using Servibes.BusinessProfile.Api.Commands.Company.UpdateCompany;
-using Servibes.BusinessProfile.Api.Commands.Company.DeleteCompany;
+using Servibes.BusinessProfile.Api.Commands.Companies;
+using Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany;
+using Servibes.BusinessProfile.Api.Commands.Companies.DeleteCompany;
+using Servibes.BusinessProfile.Api.Commands.Companies.UpdateCompany;
+using Servibes.BusinessProfile.Api.Queries.Companies.GetAllCompanies;
+using Servibes.BusinessProfile.Api.Queries.Companies.GetCompany;
 
 namespace Servibes.BusinessProfile.Api.Controllers
 {

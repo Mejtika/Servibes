@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Servibes.BusinessProfile.Api.Model;
-using Servibes.BusinessProfile.Api.Queries.Company;
+using Servibes.BusinessProfile.Api.Models;
+using Servibes.BusinessProfile.Api.Queries.Companies;
 
 namespace Servibes.BusinessProfile.Api.Mappings
 {
