@@ -1,15 +1,15 @@
 <div *ngIf="company" class="container">
     <div class="row justify-content-md-center">
         <div class="col-7 company-main">
-            <img  class="img-fluid rounded" [src]="company.coverImg"/>
+            <img  class="img-fluid rounded" [src]="company.coverPhoto"/>
 
-            <h3>{{ company.companyDetails.companyName }}</h3>
-            <h6 class="company-address">{{ company.companyDetails.address.city }}</h6>
+            <h3>{{ company.companyName }}</h3>
+            <h6 class="company-address">{{ company.address.city }}</h6>
             <h5 class="company-services-header">Usługi: </h5>
 
             <div *ngFor="let service of company.services">
                 <div class="row">
-                  <p class="col-8 service-name">{{ service.name }}</p>
+                  <p class="col-8 service-name">{{ service.serviceName }}</p>
                   <p class="col-2 service-price">{{ service.price }} PLN</p>
                   <button class="col-2 book-button btn btn-primary ">Book</button>
                   <span class="col-8 service-description">{{ service.description }}</span>
@@ -22,7 +22,7 @@
             <img src="assets/map.png" class="map rounded mx-auto img-fluid"/>
 
             <h6 class="company-side-header">Opis: </h6>
-            <p class="company-description">{{ company.companyDetails.companyName }} {{ company.companyDetails.description }}</p>
+            <p class="company-description">{{ company.companyName }} {{ company.description }}</p>
 
             <h6 class="company-side-header">Pracownicy</h6>
 
@@ -37,39 +37,15 @@
             <h6 class="company-side-header">Kontakt i godziny otwarcia</h6>
             <div class="company-side-contact text-center">
                 <i class="fas fa-mobile-alt"></i>
-                {{company.companyDetails.phone}}
+                {{ company.phoneNumber }}
             </div>
 
             <hr/>
-            
+
             <div class="company-side-availability">
-                <div class="row company-side-availability-single">
-                    <span class="col-6 text-left day-of-the-week">Poniedziałek</span>
-                    <span class="col-6 text-right time-span">{{ company.dayAvailability[0].startTime }} - {{company.dayAvailability[0].endTime}}</span>
-                </div>
-                <div class="row company-side-availability-single">
-                    <span class="col-6 text-left day-of-the-week">Wtorek</span>
-                    <span class="col-6 text-right time-span">08:00 - 21:00</span>
-                </div>
-                <div class="row company-side-availability-single">
-                    <span class="col-6 text-left day-of-the-week">Środa</span>
-                    <span class="col-6 text-right time-span">08:00 - 21:00</span>
-                </div>
-                <div class="row company-side-availability-single">
-                    <span class="col-6 text-left day-of-the-week">Czwartek</span>
-                    <span class="col-6 text-right time-span">08:00 - 21:00</span>
-                </div>
-                <div class="row company-side-availability-single">
-                    <span class="col-6 text-left day-of-the-week">Piątek</span>
-                    <span class="col-6 text-right time-span">08:00 - 21:00</span>
-                </div>
-                <div class="row company-side-availability-single">
-                    <span class="col-6 text-left day-of-the-week">Sobota</span>
-                    <span class="col-6 text-right time-span">08:00 - 21:00</span>
-                </div>
-                <div class="row company-side-availability-single">
-                    <span class="col-6 text-left day-of-the-week">Niedziela</span>
-                    <span class="col-6 text-right time-span">Zamknięte</span>
+                <div *ngFor="let openingHour of company.openingHours" class="row company-side-availability-single">
+                    <span class="col-6 text-left day-of-the-week">{{ openingHour.dayOfWeek }}</span>
+                    <span class="col-6 text-right time-span">{{ openingHour.start }} - {{ openingHour.end }}</span>
                 </div>
             </div>
         </div>
