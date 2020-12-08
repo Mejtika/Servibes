@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using Servibes.BusinessProfile.Api.Model;
-using Servibes.BusinessProfile.Api.Queries.Employees.GetCompanyEmployees;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Servibes.BusinessProfile.Api.Models;
+using Servibes.BusinessProfile.Api.Queries.Employees;
 
 namespace Servibes.BusinessProfile.Api.Mappings
 {
@@ -11,7 +8,7 @@ namespace Servibes.BusinessProfile.Api.Mappings
     {
         public EmployeeMapping()
         {
-            this.CreateMap<Employee, CompanyEmployeesDto>();
+            this.CreateMap<Employee, CompanyEmployeeDto>();
         }
     }
 }

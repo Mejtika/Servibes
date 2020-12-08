@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Servibes.BusinessProfile.Api.Model;
-
+using Servibes.BusinessProfile.Api.Models;
 
 namespace Servibes.BusinessProfile.Api
 {

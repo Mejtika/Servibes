@@ -1,16 +1,15 @@
-﻿using Servibes.BusinessProfile.Api.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Servibes.BusinessProfile.Api.Models;
 
 namespace Servibes.BusinessProfile.Api
 {
     public static class BusinessProfileDataSeed
     {
-        private static Random random = new Random();
+        private static Random _random = new Random();
 
-        private static int NewRandomInt() => random.Next(100);
+        private static int NewRandomInt() => _random.Next(100);
 
         public static void SeedData(this BusinessProfileContext context)
         {
