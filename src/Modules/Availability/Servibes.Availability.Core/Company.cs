@@ -17,6 +17,7 @@ namespace Servibes.Availability.Core
             CompanyId = companyId;
             OpeningHours = openingHours;
         }
+
         public static Company Create(Guid CompanyId, WeekHoursRange openingHours)
         {
             return new Company(CompanyId, openingHours);

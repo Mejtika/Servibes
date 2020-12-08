@@ -40,7 +40,7 @@ namespace Servibes.Availability.Core
 
         public void AddReservation(Reservation reservation)
         { 
-            if (_reservations.Any(IsColliding) && IsInWeekWorkingRange(reservation))
+            if (_reservations.Any(IsColliding) && !reservation.IsInWeekWorkingRange(WorkingHours.HoursRanges))
             {
                 AddDomainEvent(new EmployeeReservationCanceled(this, reservation));
                 return;
@@ -54,8 +54,6 @@ namespace Servibes.Availability.Core
             bool IsColliding(Reservation r) => r.IsCollidingWith(reservation);
         }
 
-        private bool IsInWeekWorkingRange(Reservation reservation)
-            => !reservation.IsLongPeriodReservation() && !reservation.IsOutOfRange(WorkingHours.HoursRanges);
 
         public void ChangeWorkingHours(WeekHoursRange companyOpeningHours, WeekHoursRange newWorkingHours)
         {

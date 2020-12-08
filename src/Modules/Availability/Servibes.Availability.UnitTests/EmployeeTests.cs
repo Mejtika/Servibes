@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Servibes.Availability.UnitTests
 {
-    public class EmployeeTest
+    public class EmployeeTests
     {
         [Fact]
         public void ShouldCreateEmployee()

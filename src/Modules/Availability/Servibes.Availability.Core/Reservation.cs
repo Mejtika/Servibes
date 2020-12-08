@@ -25,11 +25,9 @@ namespace Servibes.Availability.Core
             return new Reservation(start, end);
         }
 
-        public bool IsOutOfRange(IEnumerable<HoursRange> hoursRanges)
+        public bool IsInWeekWorkingRange(IEnumerable<HoursRange> hoursRanges)
             => hoursRanges.SingleOrDefault(x => x.DayOfWeek == Start.DayOfWeek)
                 .IsCollidingWith(ToHoursRange());
-
-        public bool IsLongPeriodReservation() => (End - Start).Hours > 12;
 
         public bool IsCollidingWith(Reservation reservation)
             => !(reservation.End <= Start || reservation.Start >= End);
@@ -38,6 +36,6 @@ namespace Servibes.Availability.Core
             => HoursRange.Create(Start.DayOfWeek, true, Start.TimeOfDay, End.TimeOfDay);
 
         private static bool AreDatesCorrect(DateTime start, DateTime end, DateTime now)
-            => (start < end) && (start > now) && (end > now);
+            => (start < end) && (start > now) && (end > now) && start.DayOfWeek == end.DayOfWeek;
     }
 }

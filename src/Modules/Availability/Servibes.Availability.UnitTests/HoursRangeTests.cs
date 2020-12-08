@@ -7,9 +7,9 @@ using Xunit;
 
 namespace Servibes.Availability.UnitTests
 {
-    public class HoursRangeTest
+    public class HoursRangeTests
     {
-        public static List<object[]> TestAnswerData()
+        public static List<object[]> TestHoursRangesData()
         {
             return new List<object[]>
             {
@@ -37,7 +37,7 @@ namespace Servibes.Availability.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(TestAnswerData))]
+        [MemberData(nameof(TestHoursRangesData))]
         public void ShouldCheckForCollision(bool baseAvailability, DayOfWeek baseDay, TimeSpan baseStart, TimeSpan baseEnd, 
             bool otherAvailability, DayOfWeek otherDay, TimeSpan otherStart, TimeSpan otherEnd, bool expected)
         {
