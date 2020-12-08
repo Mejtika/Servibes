@@ -27,5 +27,10 @@ namespace Servibes.BusinessProfile.Api.Models
 
             return new PhoneNumber(phoneNumber.ToLowerInvariant());
         }
+
+        public override string ToString()
+        {
+            return Value;
+        }
     }
 }
