@@ -1,8 +1,10 @@
 ﻿using System;
 using Servibes.Appointments.Core.Shared;
+using Servibes.Appointments.Core.TimeReservations.Events;
+using Servibes.Appointments.Core.TimeReservations.Exceptions;
 using Servibes.Shared.BuildingBlocks;
 
-namespace Servibes.Appointments.Core.TimeReservation
+namespace Servibes.Appointments.Core.TimeReservations
 {
     public class TimeReservation : Entity, IAggregateRoot
     {

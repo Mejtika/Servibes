@@ -1,7 +1,7 @@
 ﻿using System;
 using Servibes.Shared.Exceptions;
 
-namespace Servibes.Appointments.Core.TimeReservation
+namespace Servibes.Appointments.Core.TimeReservations.Exceptions
 {
     public class TimeReservationIsAlreadyCanceledException : DomainException
     {

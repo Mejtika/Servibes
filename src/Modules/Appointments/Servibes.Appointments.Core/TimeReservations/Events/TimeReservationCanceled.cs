@@ -1,6 +1,6 @@
 ﻿using Servibes.Shared.BuildingBlocks;
 
-namespace Servibes.Appointments.Core.TimeReservation
+namespace Servibes.Appointments.Core.TimeReservations.Events
 {
     public class TimeReservationCanceled : IDomainEvent
     {

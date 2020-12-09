@@ -1,7 +1,9 @@
 ﻿using System;
 using FluentAssertions;
 using Servibes.Appointments.Core.Shared;
-using Servibes.Appointments.Core.TimeReservation;
+using Servibes.Appointments.Core.TimeReservations;
+using Servibes.Appointments.Core.TimeReservations.Events;
+using Servibes.Appointments.Core.TimeReservations.Exceptions;
 using Xunit;
 
 namespace Servibes.Appointments.UnitTests
