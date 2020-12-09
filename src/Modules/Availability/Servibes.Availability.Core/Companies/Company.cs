@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Servibes.Availability.Core.Events;
+using Servibes.Availability.Core.Companies.Events;
+using Servibes.Availability.Core.Shared;
 using Servibes.Shared.BuildingBlocks;
 
-namespace Servibes.Availability.Core
+namespace Servibes.Availability.Core.Companies
 {
     public class Company : Entity, IAggregateRoot
     {
@@ -20,7 +19,9 @@ namespace Servibes.Availability.Core
 
         public static Company Create(Guid CompanyId, WeekHoursRange openingHours)
         {
-            return new Company(CompanyId, openingHours);
+            var company = new Company(CompanyId, openingHours);
+            company.AddDomainEvent(new CompanyAvailabilityCreated(company));
+            return company;
         }
 
         public void ChangeOpeningHours(WeekHoursRange openingHours)
