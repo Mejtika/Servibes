@@ -14,7 +14,7 @@ namespace Servibes.Availability.UnitTests
         public void CompanyOpeningHoursCanBeChanged()
         {
             var companyId = Guid.NewGuid();
-            var companyHoursRanges = new List<HoursRange>
+            var companyOpeningHours = new List<HoursRange>
             {
                 HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
@@ -24,11 +24,10 @@ namespace Servibes.Availability.UnitTests
                 HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
             };
-            var companyOpeningHours = WeekHoursRange.Create(companyHoursRanges);
             var company = Company.Create(companyId, companyOpeningHours);
             company.ClearDomainEvents();
 
-            var newOpeningHoursRanges = new List<HoursRange>
+            var newOpeningHours = new List<HoursRange>
             {
                 HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(13), TimeSpan.FromHours(17)),
                 HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(13), TimeSpan.FromHours(17)),
@@ -38,8 +37,6 @@ namespace Servibes.Availability.UnitTests
                 HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(16), TimeSpan.FromHours(17)),
                 HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(10), TimeSpan.FromHours(17)),
             };
-            var newOpeningHours = WeekHoursRange.Create(newOpeningHoursRanges);
-
             company.ChangeOpeningHours(newOpeningHours);
 
             company.DomainEvents.Should().ContainSingle();

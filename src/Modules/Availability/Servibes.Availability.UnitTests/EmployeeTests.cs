@@ -98,7 +98,7 @@ namespace Servibes.Availability.UnitTests
         {
             var employeeId = Guid.NewGuid();
             var companyId = Guid.NewGuid();
-            var hoursRanges = new List<HoursRange>
+            var workingHours = new List<HoursRange>
             {
                 HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
@@ -108,9 +108,7 @@ namespace Servibes.Availability.UnitTests
                 HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
             };
-            var weekWorkingHours = WeekHoursRange.Create(hoursRanges);
-
-            var employee = Employee.Create(employeeId, companyId, weekWorkingHours);
+            var employee = Employee.Create(employeeId, companyId, workingHours);
 
             employee.DomainEvents.Should().ContainSingle();
             employee.DomainEvents.Should().AllBeOfType<EmployeeAvailabilityCreatedDomainEvent>();
@@ -122,7 +120,7 @@ namespace Servibes.Availability.UnitTests
         {
             var employeeId = Guid.NewGuid();
             var companyId = Guid.NewGuid();
-            var companyHoursRanges = new List<HoursRange>
+            var companyOpeningHours = new List<HoursRange>
             {
                 HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
@@ -132,10 +130,10 @@ namespace Servibes.Availability.UnitTests
                 HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
             };
-            var companyOpeningHours = WeekHoursRange.Create(companyHoursRanges);
-            var company = Company.Create(companyId, companyOpeningHours);
             var employee = Employee.Create(employeeId, companyId, companyOpeningHours);
-            var newEmployeeHoursRanges = new List<HoursRange>
+            employee.ClearDomainEvents();
+
+            var newEmployeeWorkingHours = new List<HoursRange>
             {
                 HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(13), TimeSpan.FromHours(17)),
                 HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(13), TimeSpan.FromHours(17)),
@@ -145,11 +143,10 @@ namespace Servibes.Availability.UnitTests
                 HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(16), TimeSpan.FromHours(17)),
                 HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(10), TimeSpan.FromHours(17)),
             };
-            var newEmployeeWorkingHours = WeekHoursRange.Create(newEmployeeHoursRanges);
+            employee.ChangeWorkingHours(companyOpeningHours, newEmployeeWorkingHours);
 
-            employee.ChangeWorkingHours(company.OpeningHours, newEmployeeWorkingHours);
-
-            employee.WorkingHours.Should().Be(newEmployeeWorkingHours);
+            employee.DomainEvents.Should().ContainSingle();
+            employee.DomainEvents.Should().AllBeOfType<EmployeeWorkingHoursChangedDomainEvent>();
         }
 
         [Theory]
@@ -158,7 +155,7 @@ namespace Servibes.Availability.UnitTests
         {
             var employeeId = Guid.NewGuid();
             var companyId = Guid.NewGuid();
-            var companyHoursRanges = new List<HoursRange>
+            var companyOpeningHours = new List<HoursRange>
             {
                 HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
@@ -168,10 +165,10 @@ namespace Servibes.Availability.UnitTests
                 HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
             };
-            var companyOpeningHours = WeekHoursRange.Create(companyHoursRanges);
-            var company = Company.Create(companyId, companyOpeningHours);
             var employee = Employee.Create(employeeId, companyId, companyOpeningHours);
-            var newEmployeeHoursRanges = new List<HoursRange>
+            employee.ClearDomainEvents();
+
+            var newEmployeeWorkingHours = new List<HoursRange>
             {
                 HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(13), TimeSpan.FromHours(17)),
                 HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(13), TimeSpan.FromHours(17)),
@@ -181,9 +178,8 @@ namespace Servibes.Availability.UnitTests
                 HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(16), TimeSpan.FromHours(17)),
                 HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(10), TimeSpan.FromHours(17)),
             };
-            var newEmployeeWorkingHours = WeekHoursRange.Create(newEmployeeHoursRanges);
 
-            employee.Invoking(employee => employee.ChangeWorkingHours(company.OpeningHours, newEmployeeWorkingHours))
+            employee.Invoking(employee => employee.ChangeWorkingHours(companyOpeningHours, newEmployeeWorkingHours))
                 .Should().Throw<IncorrectWorkingHoursException>()
                 .WithMessage("Employee working hours are colliding with company opening hours.");
         }
@@ -194,7 +190,7 @@ namespace Servibes.Availability.UnitTests
         {
             var employeeId = Guid.NewGuid();
             var companyId = Guid.NewGuid();
-            var companyHoursRanges = new List<HoursRange>
+            var companyOpeningHours = new List<HoursRange>
             {
                 HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
@@ -204,10 +200,10 @@ namespace Servibes.Availability.UnitTests
                 HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
             };
-            var companyOpeningHours = WeekHoursRange.Create(companyHoursRanges);
-            var company = Company.Create(companyId, companyOpeningHours);
             var employee = Employee.Create(employeeId, companyId, companyOpeningHours);
-            var newEmployeeHoursRanges = new List<HoursRange>
+            employee.ClearDomainEvents();
+
+            var newEmployeeWorkingHours = new List<HoursRange>
             {
                 HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(13), TimeSpan.FromHours(17)),
                 HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(13), TimeSpan.FromHours(17)),
@@ -217,9 +213,8 @@ namespace Servibes.Availability.UnitTests
                 HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(16), TimeSpan.FromHours(17)),
                 HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(10), TimeSpan.FromHours(17)),
             };
-            var newEmployeeWorkingHours = WeekHoursRange.Create(newEmployeeHoursRanges);
 
-            employee.Invoking(employee => employee.ChangeWorkingHours(company.OpeningHours, newEmployeeWorkingHours))
+            employee.Invoking(employee => employee.ChangeWorkingHours(companyOpeningHours, newEmployeeWorkingHours))
                 .Should().Throw<IncorrectWorkingHoursException>()
                 .WithMessage("Found mismatch between employee's and company days availability.");
         }
@@ -229,7 +224,7 @@ namespace Servibes.Availability.UnitTests
         {
             var employeeId = Guid.NewGuid();
             var companyId = Guid.NewGuid();
-            var employeeHoursRanges = new List<HoursRange>
+            var employeeWorkingHours = new List<HoursRange>
             {
                 HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(14), TimeSpan.FromHours(17)),
@@ -239,9 +234,10 @@ namespace Servibes.Availability.UnitTests
                 HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
             };
-            var employeeWorkingHours = WeekHoursRange.Create(employeeHoursRanges);
             var employee = Employee.Create(employeeId, companyId, employeeWorkingHours);
-            var companyHoursRanges = new List<HoursRange>
+            employee.ClearDomainEvents();
+
+            var companyOpeningHours = new List<HoursRange>
             {
                 HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(13), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
@@ -251,12 +247,10 @@ namespace Servibes.Availability.UnitTests
                 HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(12), TimeSpan.FromHours(18)),
             };
-            var companyOpeningHours = WeekHoursRange.Create(companyHoursRanges);
-            var company = Company.Create(companyId, companyOpeningHours);
+            employee.AdjustWorkingHours(companyOpeningHours);
 
-            employee.AdjustWorkingHours(company.OpeningHours);
-
-            employee.WorkingHours.Should().Be(company.OpeningHours);
+            employee.DomainEvents.Should().ContainSingle();
+            employee.DomainEvents.Should().AllBeOfType<EmployeeWorkingHoursChangedDomainEvent>();
         }
 
         [Fact]
@@ -400,7 +394,7 @@ namespace Servibes.Availability.UnitTests
         {
             var employeeId = Guid.NewGuid();
             var companyId = Guid.NewGuid();
-            var employeeHoursRanges = new List<HoursRange>
+            var employeeWorkingHours = new List<HoursRange>
             {
                 HoursRange.Create(DayOfWeek.Monday, true, TimeSpan.FromHours(10), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Tuesday, true, TimeSpan.FromHours(10), TimeSpan.FromHours(18)),
@@ -410,7 +404,6 @@ namespace Servibes.Availability.UnitTests
                 HoursRange.Create(DayOfWeek.Saturday, false, TimeSpan.FromHours(10), TimeSpan.FromHours(18)),
                 HoursRange.Create(DayOfWeek.Sunday, false, TimeSpan.FromHours(10), TimeSpan.FromHours(18)),
             };
-            var employeeWorkingHours = WeekHoursRange.Create(employeeHoursRanges);
             var employee = Employee.Create(employeeId, companyId, employeeWorkingHours);
             employee.ClearDomainEvents();
             return employee;

@@ -10,19 +10,19 @@ namespace Servibes.Availability.Core.Shared
         public TimeSpan Start { get; }
         public TimeSpan End { get; }
 
-        private HoursRange(bool isAvailable, TimeSpan start, TimeSpan end, DayOfWeek day)
+        private HoursRange(bool isAvailable, TimeSpan start, TimeSpan end, DayOfWeek dayOfWeek)
         {
             IsAvailable = isAvailable;
             Start = start;
             End = end;
-            DayOfWeek = day;
+            DayOfWeek = dayOfWeek;
         }
 
-        public static HoursRange Create(DayOfWeek day, bool isAvailable, TimeSpan start, TimeSpan end)
+        public static HoursRange Create(DayOfWeek dayOfWeek, bool isAvailable, TimeSpan start, TimeSpan end)
         {
             if (end < start)
                 throw new Exception();
-            return new HoursRange(isAvailable, start, end, day);
+            return new HoursRange(isAvailable, start, end, dayOfWeek);
         }
 
         public bool IsCollidingWith(HoursRange other)

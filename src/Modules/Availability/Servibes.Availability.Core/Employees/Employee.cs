@@ -15,21 +15,31 @@ namespace Servibes.Availability.Core.Employees
 
         private Guid _companyId;
 
-        public WeekHoursRange WorkingHours { get; private set; }
+        private List<HoursRange> _workingHours;
 
-        private ISet<Reservation> _reservations = new HashSet<Reservation>();
+        private ISet<Reservation> _reservations;
 
-        private ISet<TimeOff> _timeOffs = new HashSet<TimeOff>();
+        private ISet<TimeOff> _timeOffs;
 
-        private Employee(Guid employeeId, Guid companyId, WeekHoursRange workingHours)
+        private Employee()
+        {
+            _workingHours = new List<HoursRange>();
+            _reservations = new HashSet<Reservation>();
+            _timeOffs = new HashSet<TimeOff>();
+        }
+
+        private Employee(Guid employeeId, Guid companyId, List<HoursRange> workingHours)
         {
             EmployeeId = employeeId;
             _companyId = companyId;
-            WorkingHours = workingHours;
+            _workingHours = workingHours;
+            _reservations = new HashSet<Reservation>();
+            _timeOffs = new HashSet<TimeOff>();
         }
 
-        public static Employee Create(Guid employeeId, Guid companyId, WeekHoursRange workingHours)
+        public static Employee Create(Guid employeeId, Guid companyId, List<HoursRange> workingHours)
         {
+            CheckForDaysCorrectness(workingHours);
             var resource = new Employee(employeeId, companyId, workingHours);
             resource.AddDomainEvent(new EmployeeAvailabilityCreatedDomainEvent(resource));
             return resource;
@@ -38,7 +48,7 @@ namespace Servibes.Availability.Core.Employees
         public void AddReservation(Reservation reservation)
         { 
             if (_timeOffs.Any(HasCollidingReservation) ||
-                !reservation.IsInWeekWorkingRange(WorkingHours.HoursRanges) ||
+                !reservation.IsInWeekWorkingRange(_workingHours) ||
                 _reservations.Any(IsColliding))
             {
                 AddDomainEvent(new EmployeeReservationCanceledDomainEvent(this, reservation));
@@ -100,8 +110,11 @@ namespace Servibes.Availability.Core.Employees
             AddDomainEvent(new EmployeeAvailabilityDeletedDomainEvent(this));
         }
 
-        public void ChangeWorkingHours(WeekHoursRange companyOpeningHours, WeekHoursRange newWorkingHours)
+        public void ChangeWorkingHours(List<HoursRange> companyOpeningHours, List<HoursRange> newWorkingHours)
         {
+            CheckForDaysCorrectness(companyOpeningHours);
+            CheckForDaysCorrectness(newWorkingHours);
+
             var canChangeWorkingHours = CanChangeWorkingHours(companyOpeningHours, newWorkingHours);
 
             if (!canChangeWorkingHours)
@@ -109,21 +122,23 @@ namespace Servibes.Availability.Core.Employees
                 throw new IncorrectWorkingHoursException("Employee working hours are colliding with company opening hours.");
             }
 
-            WorkingHours = newWorkingHours;
+            _workingHours = newWorkingHours;
+            AddDomainEvent(new EmployeeWorkingHoursChangedDomainEvent(this));
         }
 
-        public void AdjustWorkingHours(WeekHoursRange companyOpeningHours)
+        public void AdjustWorkingHours(List<HoursRange> companyOpeningHours)
         {
-            WorkingHours = companyOpeningHours;
+            CheckForDaysCorrectness(companyOpeningHours);
+            _workingHours = companyOpeningHours;
+            AddDomainEvent(new EmployeeWorkingHoursChangedDomainEvent(this));
         }
 
-        private bool CanChangeWorkingHours(WeekHoursRange companyOpeningHours, WeekHoursRange newWorkingHours)
+        private bool CanChangeWorkingHours(List<HoursRange> companyOpeningHours, List<HoursRange> newWorkingHours)
         {
-            return companyOpeningHours.HoursRanges
+            return companyOpeningHours
                 .Select(openingHourRange =>
                 {
                     var newWorkingHourRange = newWorkingHours
-                        .HoursRanges
                         .SingleOrDefault(workingHoursRange => workingHoursRange.DayOfWeek == openingHourRange.DayOfWeek);
                     return AreWorkingHoursCorrect(openingHourRange, newWorkingHourRange);
                 }).ToList().All(x => x);
@@ -137,5 +152,20 @@ namespace Servibes.Availability.Core.Employees
                 (true, false) => true,
                 _ => throw new IncorrectWorkingHoursException($"Found mismatch between employee's and company days availability."),
             };
+
+        private static void CheckForDaysCorrectness(List<HoursRange> weekHoursRanges)
+        {
+            if (weekHoursRanges.Count != Enum.GetNames(typeof(DayOfWeek)).Length)
+            {
+                throw new IncorrectHoursRangesException("Wrong number of week days.");
+            }
+
+            var daysOfTheWeek = Enum.GetNames(typeof(DayOfWeek)).ToList();
+            var daysInWorkingHours = weekHoursRanges.Select(x => x.DayOfWeek.ToString()).ToList();
+            if (daysOfTheWeek.Except(daysInWorkingHours).Any())
+            {
+                throw new IncorrectHoursRangesException("Missing some week day.");
+            }
+        }
     }
 }
