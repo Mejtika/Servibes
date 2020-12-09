@@ -22,6 +22,11 @@ namespace Servibes.Appointments.Core.Appointments
 
         private readonly ReservationDate _reservedDate;
 
+        private Appointment()
+        {
+
+        }
+
         private Appointment(Guid appointmentId, Guid reserveeId, Guid companyId, Employee employee,
             Service service, AppointmentStatus status, ReservationDate reservedDate)
         {

@@ -16,6 +16,11 @@ namespace Servibes.Appointments.Core.TimeReservation
 
         private bool _isCanceled;
 
+        private TimeReservation()
+        {
+
+        }
+
         private TimeReservation(Guid timeReservationId, Guid companyId, Guid employeeId, ReservationDate reservedDate)
         {
             TimeReservationId = timeReservationId;
