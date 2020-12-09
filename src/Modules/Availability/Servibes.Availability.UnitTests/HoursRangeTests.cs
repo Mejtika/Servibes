@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using FluentAssertions;
 using Servibes.Availability.Core;
+using Servibes.Availability.Core.Shared;
 using Xunit;
 
 namespace Servibes.Availability.UnitTests
@@ -31,8 +32,8 @@ namespace Servibes.Availability.UnitTests
                     true, DayOfWeek.Thursday, new TimeSpan(0,18, 5, 0) , new TimeSpan(0, 22, 45, 0), false},
                 new object[] { true, DayOfWeek.Monday, new TimeSpan(0,18, 30, 0) , new TimeSpan(0, 19, 45, 0),
                     true, DayOfWeek.Monday, new TimeSpan(0,11, 0, 0) , new TimeSpan(0, 16, 0, 0), false},
-                new object[] { true, DayOfWeek.Monday, new TimeSpan(0,14, 0, 0) , new TimeSpan(0, 18, 0, 0),
-                    true, DayOfWeek.Monday, new TimeSpan(0,13, 50, 50) , new TimeSpan(0, 13, 58, 1), false},
+                new object[] { false, DayOfWeek.Monday, new TimeSpan(0,14, 0, 0) , new TimeSpan(0, 18, 0, 0),
+                    false, DayOfWeek.Monday, new TimeSpan(0,13, 50, 50) , new TimeSpan(0, 14, 58, 1), false},
             };
         }
 
