@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Servibes.Shared\Servibes.Shared.csproj" />
     <ProjectReference Include="..\Servibes.Availability.Application\Servibes.Availability.Application.csproj" />
+    <ProjectReference Include="..\Servibes.Availability.Core\Servibes.Availability.Core.csproj" />
   </ItemGroup>
 
 </Project>

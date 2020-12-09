@@ -6,5 +6,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Servibes.Availability.Infrastructure\Servibes.Availability.Infrastructure.csproj" />
+  </ItemGroup>
 
 </Project>
