@@ -24,7 +24,17 @@ namespace Servibes.Appointments.Core.Shared
         }
 
         private static bool AreDatesCorrect(DateTime start, DateTime end, DateTime now)
-            => (start < end) && (start > now) && (end > now) && start.DayOfWeek == end.DayOfWeek;
+        {
+            return StartDateIsEarlierThanEndDate() &&
+                   StartDateIsInFuture() &&
+                   EndDateIsInFuture() &&
+                   ReservationIsShorterThanOneDay();
+
+            bool StartDateIsEarlierThanEndDate() => start < end;
+            bool StartDateIsInFuture() => start > now;
+            bool EndDateIsInFuture() => start > now;
+            bool ReservationIsShorterThanOneDay() => (end - start).TotalHours < 24;
+        }
 
         public bool IsInReservationTime(DateTime date) => Start <= date && End >= date;
 
