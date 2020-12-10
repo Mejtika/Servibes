@@ -15,6 +15,9 @@ import { CompanyPageComponent } from './company-page/company-page.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { LoginMenuComponent } from "../../api-authorization/login-menu/login-menu.component";
+import { CompanyDataService } from '../data-service/company-data.servce';
+import { ServicesDataService } from '../data-service/services-data.service';
+import { EmployeeDataService } from '../data-service/employee-data.service';
 
 let jQuery = window['$'];
 
@@ -59,9 +62,12 @@ const routes: Routes = [
         FormsModule,
         ReactiveFormsModule
     ],
-    providers: [ 
-        MockDataService, 
-        { provide: JQUERY_TOKEN, useValue: jQuery } 
+    providers: [
+        MockDataService,
+        CompanyDataService,
+        ServicesDataService,
+        EmployeeDataService,
+        { provide: JQUERY_TOKEN, useValue: jQuery }
       ]
 })
 export class ClientModule {

@@ -11,10 +11,10 @@ using Servibes.Bootstrapper.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Servibes.Appointments.Api;
-using Servibes.Availability.Api;
 using Servibes.BusinessProfile.Api;
 using Servibes.Shared;
+using Servibes.Availability.Api;
+using Servibes.Appointments.Api;
 
 namespace Servibes.Bootstrapper
 {
