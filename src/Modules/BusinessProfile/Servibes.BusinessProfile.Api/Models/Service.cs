@@ -7,7 +7,7 @@ namespace Servibes.BusinessProfile.Api.Models
     {
         public Guid ServiceId { get; set; }
         public string ServiceName { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
         public double Duration { get; set; }
         public string Description { get; set; }
         public Guid CompanyId { get; set; }

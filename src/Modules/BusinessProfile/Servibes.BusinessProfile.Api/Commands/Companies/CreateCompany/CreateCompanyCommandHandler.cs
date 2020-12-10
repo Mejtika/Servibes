@@ -75,12 +75,12 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany
                 CoverPhoto = request.CompanyDto.CoverPhoto,
             };
 
-            var evencik = new RegistrationCompleted(
-                request.CompanyDto.OpeningHours,
-                companyEmployees.Select(x => x.EmployeeId).ToList(),
-                companyId);
+            //var evencik = new RegistrationCompleted(
+            //    request.CompanyDto.OpeningHours,
+            //    companyEmployees.Select(x => x.EmployeeId).ToList(),
+            //    companyId);
 
-            _broker.PublishAsync(evencik);
+            //_broker.PublishAsync(evencik);
 
             _context.Companies.Add(company);
             _context.Employees.AddRange(companyEmployees);

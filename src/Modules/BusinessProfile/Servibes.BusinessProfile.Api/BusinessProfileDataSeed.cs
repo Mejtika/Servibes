@@ -63,7 +63,7 @@ namespace Servibes.BusinessProfile.Api
                 ServiceName = "Test service " + randomInt,
                 Description = "Description of a test service " + randomInt,
                 Duration = 10.0d,
-                Price = 100.55d,
+                Price = 105.55m,
                 Performers = performers.Select(p => new Performer() { PerformerId = p.EmployeeId }).ToList()
             };
 
