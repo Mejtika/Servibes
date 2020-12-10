@@ -49,7 +49,6 @@ namespace Servibes.Shared.Communication
 
         public async Task PublishAsync(object moduleBroadcast)
         {
-            var tasks = new List<Task>();
             var path = moduleBroadcast.GetType().Name;
 
             //Szukamy rejestracji po typie wiadomości.
@@ -62,9 +61,8 @@ namespace Servibes.Shared.Communication
             {
                 var action = registration.Action;
                 var receiverBroadcast = TranslateType(moduleBroadcast, registration.ReceiverType);
-                tasks.Add(action(_serviceProvider, receiverBroadcast));
+                await action(_serviceProvider, receiverBroadcast);
             }
-            await Task.WhenAll(tasks);
         }
 
         private static object TranslateType(object @object, Type type)

@@ -11,6 +11,8 @@ using Servibes.Bootstrapper.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Servibes.Appointments.Api;
+using Servibes.Availability.Api;
 using Servibes.BusinessProfile.Api;
 using Servibes.Shared;
 
@@ -28,8 +30,10 @@ namespace Servibes.Bootstrapper
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSharedModule();
-
             services.AddBusinessProfileModule(Configuration);
+            services.AddAvailabilityModule(Configuration);
+            services.AddAppointmentsModule(Configuration);
+
             services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection"), options =>
@@ -92,6 +96,8 @@ namespace Servibes.Bootstrapper
 
             app.UseSharedModule();
             app.UseBusinessProfileModule();
+            app.UseAvailabilityModule();
+            app.UseAppointmentsModule();
 
             app.UseAuthentication();
             app.UseIdentityServer();
