@@ -6,10 +6,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Servibes.Shared\Servibes.Shared.csproj" />
+    <ProjectReference Include="..\Servibes.Availability.Core\Servibes.Availability.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
 
 </Project>

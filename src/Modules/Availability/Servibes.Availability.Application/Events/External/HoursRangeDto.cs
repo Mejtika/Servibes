@@ -1,6 +1,6 @@
-﻿using Servibes.Shared.Enumerations;
+﻿using System;
 
-namespace Servibes.Availability.Application
+namespace Servibes.Availability.Application.Events.External
 {
     public class HoursRangeDto
     {
