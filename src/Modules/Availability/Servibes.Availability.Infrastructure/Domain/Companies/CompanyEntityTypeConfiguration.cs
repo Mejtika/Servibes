@@ -19,7 +19,7 @@ namespace Servibes.Availability.Infrastructure.Domain.Companies
                 b.WithOwner().HasForeignKey("CompanyId");
                 b.ToTable("OpeningHours");
                 b.Property<Guid>("OpeningHoursId");
-                b.HasKey("OpeningHoursId");
+                b.HasKey("OpeningHoursId", "CompanyId");
                 b.Property(p => p.IsAvailable).HasColumnName("IsAvailable");
                 b.Property(p => p.DayOfWeek).HasColumnName("DayOfWeek")
                     .HasConversion(new EnumToStringConverter<DayOfWeek>());

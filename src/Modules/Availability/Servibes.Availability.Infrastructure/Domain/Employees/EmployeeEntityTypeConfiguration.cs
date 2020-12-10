@@ -20,7 +20,7 @@ namespace Servibes.Availability.Infrastructure.Domain.Employees
                 b.WithOwner().HasForeignKey("EmployeeId");
                 b.ToTable("WorkingHours");
                 b.Property<Guid>("WorkingHourId");
-                b.HasKey("WorkingHourId");
+                b.HasKey("WorkingHourId", "EmployeeId");
                 b.Property(p => p.IsAvailable).HasColumnName("IsAvailable");
                 b.Property(p => p.DayOfWeek).HasColumnName("DayOfWeek")
                     .HasConversion(new EnumToStringConverter<DayOfWeek>());
@@ -33,7 +33,7 @@ namespace Servibes.Availability.Infrastructure.Domain.Employees
                 b.WithOwner().HasForeignKey("EmployeeId");
                 b.ToTable("Reservations");
                 b.Property<Guid>("ReservationId");
-                b.HasKey("ReservationId");
+                b.HasKey("ReservationId", "EmployeeId");
                 b.Property(p => p.Start).HasColumnName("Start");
                 b.Property(p => p.End).HasColumnName("End");
             });
@@ -43,7 +43,7 @@ namespace Servibes.Availability.Infrastructure.Domain.Employees
                 b.WithOwner().HasForeignKey("EmployeeId");
                 b.ToTable("TimeOffs");
                 b.Property<Guid>("TimeOffId");
-                b.HasKey("TimeOffId");
+                b.HasKey("TimeOffId", "EmployeeId");
                 b.Property(p => p.Start).HasColumnName("Start");
                 b.Property(p => p.End).HasColumnName("End");
             });

@@ -12,7 +12,7 @@ namespace Servibes.Availability.Core.Shared
 
         private HoursRange(bool isAvailable, TimeSpan start, TimeSpan end, DayOfWeek dayOfWeek)
         {
-            IsAvailable = isAvailable;
+            IsAvailable = isAvailable; 
             Start = start;
             End = end;
             DayOfWeek = dayOfWeek;

@@ -32,6 +32,8 @@ namespace Servibes.Availability.Core.Companies
             return company;
         }
 
+        public List<HoursRange> GetOpeningHours() => _openingHours;
+        
         public void ChangeOpeningHours(List<HoursRange> openingHours)
         {
             CheckForDaysCorrectness(openingHours);
