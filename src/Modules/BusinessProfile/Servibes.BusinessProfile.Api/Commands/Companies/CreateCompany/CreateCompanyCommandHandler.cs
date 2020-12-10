@@ -20,7 +20,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany
             _broker = broker;
         }
 
-        public Task<Guid> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
         {
             var companyId = Guid.NewGuid();
 
@@ -75,19 +75,26 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany
                 CoverPhoto = request.CompanyDto.CoverPhoto,
             };
 
-            _context.Companies.Add(company);
-            _context.Employees.AddRange(companyEmployees);
-            _context.Services.AddRange(companyServices);
-            _context.SaveChanges();
+            await _context.Companies.AddAsync(company, cancellationToken);
+            await _context.Employees.AddRangeAsync(companyEmployees, cancellationToken);
+            await _context.Services.AddRangeAsync(companyServices, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
 
-            var registrationCompleted = new RegistrationCompleted(
+            var @event = new RegistrationCompletedEvent(
                 companyId,
                 request.CompanyDto.OpeningHours);
-            _broker.PublishAsync(registrationCompleted);
-            var events = companyEmployees.Select(x => new EmployeeAdded(x.EmployeeId, x.CompanyId));
-            _broker.PublishAsync(events);
+            await _broker.PublishAsync(@event);
 
-            return Task.FromResult(companyId);
+            var events = companyEmployees
+                .Select(x => 
+                new EmployeeAddedEvent(x.EmployeeId, x.CompanyId));
+
+            foreach (var employeeAddedEvent in events)
+            {
+                await _broker.PublishAsync(employeeAddedEvent);
+            }
+
+            return companyId;
         }
     }
 }
