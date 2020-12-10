@@ -18,8 +18,12 @@ namespace Servibes.Shared.Communication.Brokers
 
         public async Task PublishAsync(IEnumerable<INotification> events)
         {
-            var tasks = events.Select(PublishAsync).ToArray();
-            await Task.WhenAll(tasks);
+            var tasks = events.Select(PublishAsync).ToList();
+
+            foreach (var task in tasks)
+            {
+                await task;
+            }
         }
     }
 }
