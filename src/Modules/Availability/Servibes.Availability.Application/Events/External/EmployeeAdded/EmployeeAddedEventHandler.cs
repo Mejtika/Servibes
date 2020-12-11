@@ -35,7 +35,7 @@ namespace Servibes.Availability.Application.Events.External.EmployeeAdded
             var employee = Employee.Create(notification.EmployeeId, notification.CompanyId, openingHours);
 
             await _employeeRepository.AddAsync(employee);
-            _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync(cancellationToken);
         }
     }
 }

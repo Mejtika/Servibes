@@ -5,7 +5,6 @@ namespace Servibes.Availability.Application
 {
     public interface IAvailabilityUnitOfWork
     {
-        //Task<int> CommitAsync(CancellationToken cancellationToken = default);
-        int Commit();
+        Task<int> CommitAsync(CancellationToken cancellationToken = default);
     }
 }
