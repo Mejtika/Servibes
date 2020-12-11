@@ -22,7 +22,7 @@ namespace Servibes.Appointments.UnitTests
             var timeReservation = TimeReservation.Create(timeReservationId, companyId, employeeId, reservationDate);
 
             timeReservation.DomainEvents.Should().ContainSingle();
-            timeReservation.DomainEvents.Should().AllBeOfType<TimeReservationStateChangedDomainEvent>();
+            timeReservation.DomainEvents.Should().AllBeOfType<TimeReservationStateChanged>();
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace Servibes.Appointments.UnitTests
             timeReservation.Cancel(now);
 
             timeReservation.DomainEvents.Should().ContainSingle();
-            timeReservation.DomainEvents.Should().AllBeOfType<TimeReservationStateChangedDomainEvent>();
+            timeReservation.DomainEvents.Should().AllBeOfType<TimeReservationStateChanged>();
         }
 
         [Fact]
