@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Servibes.Appointments.Application;
+using Servibes.Appointments.Core.Appointments;
 using Servibes.Shared;
+using Servibes.Shared.Communication.Events;
 
 namespace Servibes.Appointments.Infrastructure
 {
@@ -22,6 +25,10 @@ namespace Servibes.Appointments.Infrastructure
                         sqlServerOptions.MigrationsHistoryTable("__AppointmentsMigrationsHistory", "appointments");
                     });
             });
+
+            services.AddSingleton<IEventMapper, EventMapper>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            services.AddScoped<IAppointmentUnitOfWork, AppointmentsUnitOfWork>();
 
             return services;
         }
