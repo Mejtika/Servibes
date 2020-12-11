@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Servibes.Availability.Api.Requests;
 using Servibes.Availability.Application.Companies.GetCompanyOpeningHours;
+using Servibes.Availability.Application.Employees.GetEmployeeAvailableHours;
 using Servibes.Availability.Application.Employees.GetEmployeeWorkingHours;
 
 namespace Servibes.Availability.Api
@@ -44,6 +46,13 @@ namespace Servibes.Availability.Api
         public async Task<IActionResult> GetOpeningHours(Guid companyId)
         {
             var response = await _mediator.Send(new GetCompanyOpeningHoursQuery(companyId));
+            return Ok(response);
+        }
+
+        [HttpGet("{companyId}/employees/{employeeId}/availability")]
+        public async Task<IActionResult> GetEmployeeDayAvailability(Guid companyId, Guid employeeId, [FromQuery]EmployeeDayAvailabilityRequest request)
+        {
+            var response = await _mediator.Send(new GetEmployeeAvailableHoursQuery(employeeId, companyId, request.Date, request.Duration));
             return Ok(response);
         }
     }
