@@ -1,14 +1,18 @@
-﻿using Servibes.Shared.BuildingBlocks;
+﻿using System;
+using Servibes.Shared.BuildingBlocks;
 
 namespace Servibes.Appointments.Core.Appointments.Events
 {
     public class AppointmentStateChanged : IDomainEvent
     {
-        public Appointment Appointment { get; }
+        public Guid AppointmentId { get; }
 
-        public AppointmentStateChanged(Appointment appointment)
+        public AppointmentStatus Status { get; }
+
+        public AppointmentStateChanged(Guid appointmentId, AppointmentStatus status)
         {
-            Appointment = appointment;
+            AppointmentId = appointmentId;
+            Status = status;
         }
     }
 }

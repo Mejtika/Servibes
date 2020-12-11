@@ -22,6 +22,8 @@ namespace Servibes.Appointments.Core.Appointments
 
         private readonly ReservationDate _reservedDate;
 
+        private string _cancellationReason;
+
         private Appointment()
         {
 
@@ -37,6 +39,7 @@ namespace Servibes.Appointments.Core.Appointments
             _service = service;
             _status = status;
             _reservedDate = reservedDate;
+            _cancellationReason = string.Empty;
         }
 
         public static Appointment Create(Guid appointmentId, Guid reserveeId, Guid companyId, Employee employee,
@@ -45,7 +48,7 @@ namespace Servibes.Appointments.Core.Appointments
 
             var appointment = new Appointment(appointmentId, reserveeId, companyId, employee, service,
                 AppointmentStatus.NotConfirmed, reservedDate);
-            appointment.AddDomainEvent(new AppointmentStateChanged(appointment));
+            appointment.AddDomainEvent(new AppointmentStateChanged(appointment.AppointmentId, appointment._status));
             return appointment;
         }
 
@@ -57,10 +60,10 @@ namespace Servibes.Appointments.Core.Appointments
             }
 
             _status = AppointmentStatus.Confirmed;
-            AddDomainEvent(new AppointmentStateChanged(this));
+            AddDomainEvent(new AppointmentStateChanged(AppointmentId, _status));
         }
 
-        public void Cancel(DateTime now)
+        public void Cancel(DateTime now, string reason)
         {
             if (_status != AppointmentStatus.Confirmed)
             {
@@ -78,7 +81,8 @@ namespace Servibes.Appointments.Core.Appointments
             }
 
             _status = AppointmentStatus.Canceled;
-            AddDomainEvent(new AppointmentStateChanged(this));
+            _cancellationReason = reason ?? string.Empty;
+            AddDomainEvent(new AppointmentStateChanged(AppointmentId, _status));
         }
 
         public void MarkAsNoShow(DateTime now)
@@ -94,7 +98,8 @@ namespace Servibes.Appointments.Core.Appointments
             }
 
             _status = AppointmentStatus.NoShow;
-            AddDomainEvent(new AppointmentStateChanged(this));
+            _cancellationReason = "The customer didn't come";
+            AddDomainEvent(new AppointmentStateChanged(AppointmentId, _status));
         }
 
         public void Finish(DateTime now)
@@ -110,7 +115,7 @@ namespace Servibes.Appointments.Core.Appointments
             }
 
             _status = AppointmentStatus.Finished;
-            AddDomainEvent(new AppointmentStateChanged(this));
+            AddDomainEvent(new AppointmentStateChanged(AppointmentId, _status));
         }
     }
 }
