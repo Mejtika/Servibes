@@ -4,16 +4,17 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Servibes.Availability.Application.Companies.GetCompanyOpeningHours;
+using Servibes.Availability.Application.Employees.GetEmployeeWorkingHours;
 
 namespace Servibes.Availability.Api
 {
     [ApiController]
     [Route("api/companies")]
-    public class AvailabilityController : ControllerBase
+    public class BusinessAvailabilityController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public AvailabilityController(IMediator mediator)
+        public BusinessAvailabilityController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -33,10 +34,10 @@ namespace Servibes.Availability.Api
         }
 
         [HttpGet("{companyId}/employees/{employeeId}/workingHours")]
-        public IActionResult GetWorkingHours(Guid companyId, Guid employeeId)
+        public async Task<IActionResult> GetWorkingHours(Guid companyId, Guid employeeId)
         {
-
-            return Ok();
+            var response = await _mediator.Send(new GetEmployeeWorkingHoursQuery(employeeId, companyId));
+            return Ok(response);
         }
 
         [HttpGet("{companyId}/openingHours")]

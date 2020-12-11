@@ -29,7 +29,7 @@ namespace Servibes.Bootstrapper
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSharedModule();
+            services.AddSharedModule(Configuration);
             services.AddBusinessProfileModule(Configuration);
             services.AddAvailabilityModule(Configuration);
             services.AddAppointmentsModule(Configuration);

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Servibes.Availability.Application.Events.External
+namespace Servibes.Availability.Application.Shared
 {
     public class HoursRangeDto
     {

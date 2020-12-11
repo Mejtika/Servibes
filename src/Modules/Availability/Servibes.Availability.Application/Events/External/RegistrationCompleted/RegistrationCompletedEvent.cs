@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MediatR;
+using Servibes.Availability.Application.Shared;
 
 namespace Servibes.Availability.Application.Events.External.RegistrationCompleted
 {
