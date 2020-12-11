@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace Servibes.Appointments.Application.Events
+namespace Servibes.Appointments.Application.Events.TimeReservations
 {
     public class TimeReservationCreatedEvent : INotification
     {
