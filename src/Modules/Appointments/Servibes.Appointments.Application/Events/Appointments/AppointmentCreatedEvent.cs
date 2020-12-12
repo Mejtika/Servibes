@@ -5,11 +5,17 @@ namespace Servibes.Appointments.Application.Events.Appointments
 {
     public class AppointmentCreatedEvent : INotification
     {
-        public Guid AppointmentId { get; }
+        public Guid EmployeeId { get; }
 
-        public AppointmentCreatedEvent(Guid appointmentId)
+        public DateTime Start { get; }
+
+        public DateTime End { get; }
+
+        public AppointmentCreatedEvent(Guid employeeId, DateTime start, DateTime end )
         {
-            AppointmentId = appointmentId;
+            EmployeeId = employeeId;
+            Start = start;
+            End = end;
         }
     }
 }

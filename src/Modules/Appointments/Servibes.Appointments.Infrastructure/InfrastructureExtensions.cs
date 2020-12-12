@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Servibes.Appointments.Application;
+using Servibes.Appointments.Application.Events.External.ReservationAdded;
 using Servibes.Appointments.Core.Appointments;
 using Servibes.Shared;
 using Servibes.Shared.Communication.Events;
@@ -35,7 +36,8 @@ namespace Servibes.Appointments.Infrastructure
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
-            app.UseModuleRequests();
+            app.UseModuleRequests()
+                .Subscribe<ReservationAddedEvent>();
 
             return app;
         }

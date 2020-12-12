@@ -7,9 +7,15 @@ namespace Servibes.Appointments.Application.Events.Appointments
     {
         public Guid AppointmentId { get; }
 
-        public AppointmentFinishedEvent(Guid appointmentId)
+        public Guid EmployeeId { get; }
+
+        public Guid CompanyId { get; }
+
+        public AppointmentFinishedEvent(Guid appointmentId, Guid employeeId, Guid companyId)
         {
             AppointmentId = appointmentId;
+            EmployeeId = employeeId;
+            CompanyId = companyId;
         }
     }
 }
