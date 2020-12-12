@@ -2,7 +2,6 @@
 using FluentAssertions;
 using Servibes.Appointments.Core.Shared;
 using Servibes.Appointments.Core.TimeReservations;
-using Servibes.Appointments.Core.TimeReservations.Events;
 using Servibes.Appointments.Core.TimeReservations.Exceptions;
 using Xunit;
 
@@ -23,28 +22,30 @@ namespace Servibes.Appointments.UnitTests
             var timeReservation = TimeReservation.Create(timeReservationId, companyId, employeeId, reservationDate);
 
             timeReservation.DomainEvents.Should().ContainSingle();
-            timeReservation.DomainEvents.Should().AllBeOfType<TimeReservationCreated>();
+            timeReservation.DomainEvents.Should().AllBeOfType<TimeReservationStateChanged>();
         }
 
         [Fact]
         public void TimeReservationCanBeCanceled()
         {
             var timeReservation = CreateTimeReservation();
+            var now = DateTime.Today.AddHours(11);
 
-            timeReservation.Cancel();
+            timeReservation.Cancel(now);
 
             timeReservation.DomainEvents.Should().ContainSingle();
-            timeReservation.DomainEvents.Should().AllBeOfType<TimeReservationCanceled>();
+            timeReservation.DomainEvents.Should().AllBeOfType<TimeReservationStateChanged>();
         }
 
         [Fact]
-        public void CanceledTimeReservationCannotBeCanceledOnceMore()
+        public void TimeReservationWithPassedDateCannotBeCanceled()
         {
             var timeReservation = CreateCanceledTimeReservation();
+            var now = DateTime.Today.AddHours(14).AddMinutes(1);
 
-            timeReservation.Invoking(timeReservation => timeReservation.Cancel())
-                .Should().Throw<TimeReservationIsAlreadyCanceledException>()
-                .WithMessage($"Cannot cancel already canceled time reservation {timeReservation.TimeReservationId}.");
+            timeReservation.Invoking(timeReservation => timeReservation.Cancel(now))
+                .Should().Throw<CannotCancelFinishedTimeReservationException>()
+                .WithMessage($"Finished time reservation {timeReservation.TimeReservationId} cannot be canceled.");
         }
 
         private static TimeReservation CreateTimeReservation()
@@ -64,7 +65,8 @@ namespace Servibes.Appointments.UnitTests
         private static TimeReservation CreateCanceledTimeReservation()
         {
             var timeReservation = CreateTimeReservation();
-            timeReservation.Cancel();
+            var now = DateTime.Today.AddHours(10);
+            timeReservation.Cancel(now);
             timeReservation.ClearDomainEvents();
             return timeReservation;
         }

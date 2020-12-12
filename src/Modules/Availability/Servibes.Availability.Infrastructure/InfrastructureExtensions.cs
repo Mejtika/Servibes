@@ -1,11 +1,9 @@
-﻿using System;
-using System.Reflection;
-using MediatR;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Servibes.Availability.Application;
+using Servibes.Availability.Application.Events.External.AppointmentCreated;
 using Servibes.Availability.Application.Events.External.EmployeeAdded;
 using Servibes.Availability.Application.Events.External.RegistrationCompleted;
 using Servibes.Availability.Core.Companies;
@@ -40,7 +38,8 @@ namespace Servibes.Availability.Infrastructure
         {
             app.UseModuleRequests()
                 .Subscribe<EmployeeAddedEvent>()
-                .Subscribe<RegistrationCompletedEvent>();
+                .Subscribe<RegistrationCompletedEvent>()
+                .Subscribe<AppointmentCreatedEvent>();
 
             return app;
         }

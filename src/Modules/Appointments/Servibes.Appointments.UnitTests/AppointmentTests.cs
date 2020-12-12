@@ -53,7 +53,7 @@ namespace Servibes.Appointments.UnitTests
             var appointment = CreateConfirmedAppointment();
 
             var now = DateTime.Today.AddHours(14).AddMinutes(1);
-            appointment.Invoking(appointment => appointment.Cancel(now))
+            appointment.Invoking(appointment => appointment.Cancel(now, "canceled"))
                 .Should().Throw<CannotCancelFinishedAppointmentException>();
         }
 
@@ -63,7 +63,7 @@ namespace Servibes.Appointments.UnitTests
             var appointment = CreateConfirmedAppointment();
 
             var now = DateTime.Today.AddHours(11);
-            appointment.Cancel(now);
+            appointment.Cancel(now, "canceled");
 
             appointment.DomainEvents.Should().ContainSingle();
             appointment.DomainEvents.Should().AllBeOfType<AppointmentStateChanged>();
@@ -75,7 +75,7 @@ namespace Servibes.Appointments.UnitTests
             var appointment = CreateAppointment();
 
             var now = DateTime.Today.AddHours(14).AddMinutes(1);
-            appointment.Invoking(appointment => appointment.Cancel(now))
+            appointment.Invoking(appointment => appointment.Cancel(now, "canceled"))
                 .Should().Throw<CannotChangeAppointmentStateException>()
                 .WithMessage($"Cannot change state for appointment {appointment.AppointmentId} from {AppointmentStatus.NotConfirmed} to {AppointmentStatus.Canceled}");
         }
@@ -86,7 +86,7 @@ namespace Servibes.Appointments.UnitTests
             var appointment = CreateConfirmedAppointment();
 
             var now = DateTime.Today.AddHours(13);
-            appointment.Invoking(appointment => appointment.Cancel(now))
+            appointment.Invoking(appointment => appointment.Cancel(now, "canceled"))
                 .Should().Throw<CannotCancelStartedAppointmentException>()
                 .WithMessage($"Cannot cancel appointment {appointment.AppointmentId}, it is already started.");
         }
@@ -177,7 +177,7 @@ namespace Servibes.Appointments.UnitTests
             var appointment = CreateAppointment();
             appointment.Confirm();
             var now = DateTime.Today.AddHours(11);
-            appointment.Cancel(now);
+            appointment.Cancel(now, "canceled");
             appointment.ClearDomainEvents();
             return appointment;
         }

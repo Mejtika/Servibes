@@ -1,6 +1,6 @@
 ﻿using System;
+using Servibes.Appointments.Core.Appointments.Exceptions;
 using Servibes.Appointments.Core.Shared;
-using Servibes.Appointments.Core.TimeReservations.Events;
 using Servibes.Appointments.Core.TimeReservations.Exceptions;
 using Servibes.Shared.BuildingBlocks;
 
@@ -16,37 +16,58 @@ namespace Servibes.Appointments.Core.TimeReservations
 
         private readonly ReservationDate _reservedDate;
 
-        private bool _isCanceled;
+        private TimeReservationStatus _status;
 
         private TimeReservation()
         {
 
         }
 
-        private TimeReservation(Guid timeReservationId, Guid companyId, Guid employeeId, ReservationDate reservedDate)
+        private TimeReservation(Guid timeReservationId, Guid companyId, Guid employeeId, ReservationDate reservedDate, TimeReservationStatus status)
         {
             TimeReservationId = timeReservationId;
             _companyId = companyId;
             _employeeId = employeeId;
             _reservedDate = reservedDate;
-            _isCanceled = false;
+            _status = status;
         }
 
         public static TimeReservation Create(Guid timeReservationId, Guid companyId, Guid employeeId, ReservationDate reservedDate)
         {
-            var timeReservation = new TimeReservation(timeReservationId, companyId, employeeId, reservedDate);
-            timeReservation.AddDomainEvent(new TimeReservationCreated(timeReservation));
+            var timeReservation = new TimeReservation(timeReservationId, companyId, employeeId, reservedDate, TimeReservationStatus.Created);
+            timeReservation.AddDomainEvent(new TimeReservationStateChanged(timeReservationId, timeReservation._status));
             return timeReservation;
         }
 
-        public void Cancel()
+        public void Cancel(DateTime now)
         {
-            if (_isCanceled)
+            if (_reservedDate.HasPassed(now))
             {
-                throw new TimeReservationIsAlreadyCanceledException(TimeReservationId);
+                throw new CannotCancelFinishedTimeReservationException(TimeReservationId);
             }
-            _isCanceled = true;
-            AddDomainEvent(new TimeReservationCanceled(this));
+
+            if (_status != TimeReservationStatus.Created)
+            {
+                throw new CannotChangeTimeReservationStateException(TimeReservationId, _status, TimeReservationStatus.Canceled);
+            }
+            _status = TimeReservationStatus.Canceled;
+            AddDomainEvent(new TimeReservationStateChanged(TimeReservationId, _status));
+        }
+
+        public void Finish(DateTime now)
+        {
+            if (!_reservedDate.HasPassed(now))
+            {
+                throw new TimeReservationDateIsNotPassedException(TimeReservationId);
+            }
+
+            if (_status != TimeReservationStatus.Created)
+            {
+                throw new CannotChangeTimeReservationStateException(TimeReservationId, _status, TimeReservationStatus.Canceled);
+            }
+
+            _status = TimeReservationStatus.Finished;
+            AddDomainEvent(new TimeReservationStateChanged(TimeReservationId, _status));
         }
     }
 }

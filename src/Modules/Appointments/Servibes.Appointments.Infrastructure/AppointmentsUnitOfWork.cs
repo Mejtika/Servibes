@@ -1,14 +1,14 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Servibes.Availability.Application;
+using Servibes.Appointments.Application;
 
-namespace Servibes.Availability.Infrastructure
+namespace Servibes.Appointments.Infrastructure
 {
-    public class AvailabilityUnitOfWork : IAvailabilityUnitOfWork
+    public class AppointmentsUnitOfWork : IAppointmentUnitOfWork
     {
-        private readonly AvailabilityContext _context;
+        private readonly AppointmentsContext _context;
 
-        public AvailabilityUnitOfWork(AvailabilityContext context)
+        public AppointmentsUnitOfWork(AppointmentsContext context)
         {
             _context = context;
         }
