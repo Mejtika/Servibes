@@ -30,17 +30,17 @@ export class MockDataService {
          { serviceId: "6", color:  "#cb6bb2", text: "Textowa usługa", serviceName: "Testowa usługa", price: 99.99, description: "Skończyły się pomysły :(", duration: 15},
         ],
        employees: [
-        { employeeId: 1, firstName: "Mateuszek", lastName: "Mateuszkowy", text: "Mateuszek Mateuszkowy", color: "#187bcd" },
-        { employeeId: 2, firstName: "Arkadiuszek", lastName: "Arkadiuszkowy", text: "Arkadiuszek Arkadiuszkowy", color: "#07da63" },
-        { employeeId: 3, firstName: "Krasnoludek", lastName: "Robotaju", text: "Krasnoludek Robotaju", color: "#ed2939" },
+        { employeeId: "1", firstName: "Mateuszek", lastName: "Mateuszkowy", text: "Mateuszek Mateuszkowy", color: "#187bcd" },
+        { employeeId: "2", firstName: "Arkadiuszek", lastName: "Arkadiuszkowy", text: "Arkadiuszek Arkadiuszkowy", color: "#07da63" },
+        { employeeId: "3", firstName: "Krasnoludek", lastName: "Robotaju", text: "Krasnoludek Robotaju", color: "#ed2939" },
        ],
        coverPhoto: "assets/recommended/1.jpeg",
        openingHours: [
-         { dayOfWeek: DayOfWeek.Monday, start: "08:00", end: "16:00" },
-         { dayOfWeek: DayOfWeek.Tuesday, start: "08:00", end: "16:00" },
-         { dayOfWeek: DayOfWeek.Wednesday, start: "08:00", end: "16:00" },
-         { dayOfWeek: DayOfWeek.Thursday, start: "08:00", end: "16:00" },
-         { dayOfWeek: DayOfWeek.Friday, start: "08:00", end: "16:00" }
+         { dayOfWeek: DayOfWeek.Monday, start: "08:00", end: "16:00", isAvailable: true },
+         { dayOfWeek: DayOfWeek.Tuesday, start: "08:00", end: "16:00", isAvailable: true },
+         { dayOfWeek: DayOfWeek.Wednesday, start: "08:00", end: "16:00", isAvailable: true },
+         { dayOfWeek: DayOfWeek.Thursday, start: "08:00", end: "16:00", isAvailable: true },
+         { dayOfWeek: DayOfWeek.Friday, start: "08:00", end: "16:00", isAvailable: true }
        ]
      },
      {
@@ -65,17 +65,17 @@ export class MockDataService {
          { serviceId: "6", color: "#cb6bb2", text: "Textowa usługa", serviceName: "Testowa usługa", price: 99.99, description: "Skończyły się pomysły :(", duration: 15 },
        ],
        employees: [
-         { employeeId: 1, firstName: "Mateuszek", lastName: "Mateuszkowy", text: "Mateuszek Mateuszkowy", color: "#187bcd" },
-         { employeeId: 2, firstName: "Arkadiuszek", lastName: "Arkadiuszkowy", text: "Arkadiuszek Arkadiuszkowy", color: "#07da63" },
-         { employeeId: 3, firstName: "Krasnoludek", lastName: "Robotaju", text: "Krasnoludek Robotaju", color: "#ed2939" },
+         { employeeId: "1", firstName: "Mateuszek", lastName: "Mateuszkowy", text: "Mateuszek Mateuszkowy", color: "#187bcd" },
+         { employeeId: "2", firstName: "Arkadiuszek", lastName: "Arkadiuszkowy", text: "Arkadiuszek Arkadiuszkowy", color: "#07da63" },
+         { employeeId: "3", firstName: "Krasnoludek", lastName: "Robotaju", text: "Krasnoludek Robotaju", color: "#ed2939" },
        ],
        coverPhoto: "assets/recommended/2.PNG",
        openingHours: [
-         { dayOfWeek: DayOfWeek.Monday, start: "08:00", end: "16:00" },
-         { dayOfWeek: DayOfWeek.Tuesday, start: "08:00", end: "16:00" },
-         { dayOfWeek: DayOfWeek.Wednesday, start: "08:00", end: "16:00" },
-         { dayOfWeek: DayOfWeek.Thursday, start: "08:00", end: "16:00" },
-         { dayOfWeek: DayOfWeek.Friday, start: "08:00", end: "16:00" }
+         { dayOfWeek: DayOfWeek.Monday, start: "08:00", end: "16:00", isAvailable: true },
+         { dayOfWeek: DayOfWeek.Tuesday, start: "08:00", end: "16:00", isAvailable: true },
+         { dayOfWeek: DayOfWeek.Wednesday, start: "08:00", end: "16:00", isAvailable: true },
+         { dayOfWeek: DayOfWeek.Thursday, start: "08:00", end: "16:00", isAvailable: true },
+         { dayOfWeek: DayOfWeek.Friday, start: "08:00", end: "16:00", isAvailable: true }
        ]
      },
    ];

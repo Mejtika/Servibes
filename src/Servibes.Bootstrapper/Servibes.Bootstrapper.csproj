@@ -41,12 +41,17 @@
     <ProjectReference Include="..\Modules\Appointments\Servibes.Appointments.Api\Servibes.Appointments.Api.csproj" />
     <ProjectReference Include="..\Modules\Availability\Servibes.Availability.Api\Servibes.Availability.Api.csproj" />
     <ProjectReference Include="..\Modules\BusinessProfile\Servibes.BusinessProfile.Api\Servibes.BusinessProfile.Api.csproj" />
+    <ProjectReference Include="..\Shared\Servibes.Shared\Servibes.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\business-main\business-services\profile-service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\business-main\models\BusinessProfile.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\core\services\api.service.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\client-main\company-page\client-reservation\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
