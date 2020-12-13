@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
     BrowserModule,
     AppRoutingModule,
     ApiAuthorizationModule,
+    NgbModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }],
