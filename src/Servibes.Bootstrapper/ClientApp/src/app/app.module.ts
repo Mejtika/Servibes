@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrModule } from 'ngx-toastr';
+import { ErrorHandlerInterceptor } from './core/interceptors/error-handler.interceptor';
 
 @NgModule({
   declarations: [
@@ -22,11 +24,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     ApiAuthorizationModule,
     NgbModule,
+    ToastrModule.forRoot()
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }],
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlerInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
+export class AppModule {
 
 }
