@@ -2,14 +2,13 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { formatDate } from '@angular/common';
 
 import { ICompany, IEmployee, IService, IServiceHours } from '../../../shared/interfaces/company';
-import { ModalComponent } from '../../../shared/components/modal/modal.component';
 
 import { ServicesDataService } from '../../../data-service/services-data.service';
 import { EmployeeDataService } from '../../../data-service/employee-data.service';
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AppointmentDataService } from '../../../data-service/appointment-data.service';
-import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'client-reservation',
@@ -20,8 +19,8 @@ export class ClientReservationComponent {
   company: ICompany;
   service: IService;
 
-  private step: number = 1;
-  private maxStep: number = 4;
+  public step: number = 1;
+  public maxStep: number = 4;
   public canMoveToNextStep: boolean;
 
   public selectedDate: Date = new Date();
@@ -37,7 +36,7 @@ export class ClientReservationComponent {
     private servicesDataService: ServicesDataService,
     private employeeDataService: EmployeeDataService,
     private appointmentDataService: AppointmentDataService,
-    private modalService: BsModalService) {
+    private toastr: ToastrService) {
   }
 
   ngOnInit() {
@@ -106,10 +105,18 @@ export class ClientReservationComponent {
 
     console.log('appointment object', appointmentObject);
 
-    this.appointmentDataService.postAppointment(this.company.companyId, this.selectedEmployee.employeeId, appointmentObject).subscribe(result => {
+    this.appointmentDataService.postAppointment(this.company.companyId, this.selectedEmployee.employeeId, appointmentObject).subscribe(result  => {
       console.log('created appointment with data', appointmentObject);
       this.closeModal();
-    });
+      this.toastr.success("Reservation created successfuly!");
+    },
+    (error) => {
+      console.log(error);
+    },
+    () => {
+      console.log('reservation completed');
+    },
+    );
   }
 
   public closeModal() {
