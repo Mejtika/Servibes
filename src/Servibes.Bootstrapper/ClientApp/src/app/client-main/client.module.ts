@@ -21,6 +21,8 @@ import { ServicesDataService } from '../data-service/services-data.service';
 import { EmployeeDataService } from '../data-service/employee-data.service';
 import { AppointmentDataService } from '../data-service/appointment-data.service';
 
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 let jQuery = window['$'];
 
 const routes: Routes = [
@@ -63,7 +65,9 @@ const routes: Routes = [
         RouterModule.forChild(routes),
 
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+
+        ModalModule.forRoot()
     ],
     providers: [
         MockDataService,

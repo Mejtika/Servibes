@@ -13,7 +13,7 @@
                 <div class="row">
                   <p class="col-8 service-name">{{ service.serviceName }}</p>
                   <p class="col-2 service-price">{{ service.price }} PLN</p>
-                  <button class="col-2 book-button btn btn-primary" modal-trigger="bookingModal" (click)="selectService(service)">Book</button>
+                  <button class="col-2 book-button btn btn-primary" (click)="selectService(service)">Book</button>
                   <span class="col-8 service-description">{{ service.description }}</span>
                   <span class="col-2 service-duration">{{ service.duration }} min</span>
                 </div>
@@ -55,11 +55,11 @@
     </div>
 </div>
 
-<modal #modal [closeOnBodyClick]="false"
+<!--<modal #modal [closeOnBodyClick]="false"
        elementId="bookingModal"
        title="Service booking">
 
-  <!-- <div *ngIf="!selectedEmployee && serviceEmployees">
+  <div *ngIf="!selectedEmployee && serviceEmployees">
     <label>Select reservation date: </label>
     <input type="date" [(ngModel)]="selectedDate" />
   </div>
@@ -74,10 +74,10 @@
     <div class="list-group-item" *ngFor="let hour of serviceAvailableHours" (click)="createAppointment(hour)">
       {{ hour.time }}
     </div>
-  </div> -->
-  <client-reservation *ngIf="selectedService"
+  </div>-->
+  <!--<client-reservation *ngIf="selectedService"
     [company]="this.company"
     [service]="this.selectedService"
-  ></client-reservation>
+  ></client-reservation>-->
 
-</modal>
+<!--</modal>-->

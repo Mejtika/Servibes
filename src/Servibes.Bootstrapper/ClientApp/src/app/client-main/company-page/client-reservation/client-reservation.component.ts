@@ -7,38 +7,72 @@ import { ModalComponent } from '../../../shared/components/modal/modal.component
 import { ServicesDataService } from '../../../data-service/services-data.service';
 import { EmployeeDataService } from '../../../data-service/employee-data.service';
 
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { AppointmentDataService } from '../../../data-service/appointment-data.service';
+import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
+
 @Component({
   selector: 'client-reservation',
   templateUrl: './client-reservation.component.html',
   styleUrls: ['./client-reservation.component.css']
 })
 export class ClientReservationComponent {
-  @Input() company: ICompany;
-  @Input() service: IService;
+  company: ICompany;
+  service: IService;
+
+  private step: number = 1;
+  private maxStep: number = 4;
+  public canMoveToNextStep: boolean;
 
   public selectedDate: Date = new Date();
 
   public serviceEmployees: IEmployee[];
   public selectedEmployee: IEmployee;
 
-  public selectedService: IService;
   public serviceAvailableHours: IServiceHours[];
+  public selectedHour: IServiceHours;
 
   constructor(
+    public bsModalRef: BsModalRef,
     private servicesDataService: ServicesDataService,
-    private employeeDataService: EmployeeDataService) {
-
+    private employeeDataService: EmployeeDataService,
+    private appointmentDataService: AppointmentDataService,
+    private modalService: BsModalService) {
   }
 
   ngOnInit() {
     this.servicesDataService.getServiceEmployees(this.company.companyId, this.service.serviceId).subscribe(result => {
-      console.log('companyId', this.company.companyId);
-      console.log('serviceId', this.service.serviceId);
-
-      console.log('serviceEmployees', result);
-
       this.serviceEmployees = result;
     });
+
+    this.canMoveToNextStep = this.checkIfCanMoveToNextStep();
+  }
+
+  private checkIfCanMoveToNextStep(): boolean {
+    if (this.step == 1 && this.selectedDate != null)
+      return true;
+
+    if (this.step == 2 && this.selectedEmployee != null)
+      return true;
+
+    if (this.step == 3 && this.selectedHour != null)
+      return true;
+
+    return false;
+  }
+
+  public nextStep() {
+    if (this.step < this.maxStep)
+      this.step++;
+
+    this.canMoveToNextStep = this.checkIfCanMoveToNextStep();
+  }
+
+  public prevStep() {
+    if (this.step > 1)
+      this.step--;
+
+    this.canMoveToNextStep = this.checkIfCanMoveToNextStep();
   }
 
   public selectEmployee(employee: IEmployee) {
@@ -46,25 +80,49 @@ export class ClientReservationComponent {
 
     console.log('selectedDate', this.selectedDate);
 
-    this.employeeDataService.getEmployeeDayAvailability(this.company.companyId, this.selectedEmployee.employeeId, formatDate(this.selectedDate, 'yyyy-MM-dd', 'en_US'), this.selectedService.duration).subscribe(result => {
+    this.employeeDataService.getEmployeeDayAvailability(this.company.companyId, this.selectedEmployee.employeeId, formatDate(this.selectedDate, 'yyyy-MM-dd', 'en_US'), this.service.duration).subscribe(result => {
       this.serviceAvailableHours = result;
 
       console.log('serviceAvailableHours', result);
     });
+
+    this.canMoveToNextStep = this.checkIfCanMoveToNextStep();
   }
 
-  public createAppointment(hour: IServiceHours) {
-      console.log('created appointment on ', hour);
+  public selectHour(hour: IServiceHours) {
+    this.selectedHour = hour;
 
+    this.canMoveToNextStep = this.checkIfCanMoveToNextStep();
+  }
+
+  public createReservation() {
+    const appointmentObject = {
+      employeeName: this.selectedEmployee.firstName + " " + this.selectedEmployee.lastName,
+      serviceName: this.service.serviceName,
+      servicePrice: this.service.price,
+      serviceDuration: this.service.duration,
+      start: formatDate(this.selectedDate, 'yyy-MM-dd', "en_US") + "T" + this.selectedHour.time
+    };
+
+    console.log('appointment object', appointmentObject);
+
+    this.appointmentDataService.postAppointment(this.company.companyId, this.selectedEmployee.employeeId, appointmentObject).subscribe(result => {
+      console.log('created appointment with data', appointmentObject);
+      this.closeModal();
+    });
+  }
+
+  public closeModal() {
     this.resetSelectedData();
-    //this.bookingModal.closeModalOnEscape();
+    this.bsModalRef.hide();
   }
 
   public resetSelectedData() {
-      this.selectedDate = new Date();
-      this.serviceEmployees = null;
-      this.selectedEmployee = null;
-      this.selectedService = null;
-      this.serviceAvailableHours = null;
+    this.selectedDate = new Date();
+    this.selectedHour = null;
+    this.serviceEmployees = null;
+    this.selectedEmployee = null;
+    this.serviceAvailableHours = null;
+    this.step = 1;
   }
 }

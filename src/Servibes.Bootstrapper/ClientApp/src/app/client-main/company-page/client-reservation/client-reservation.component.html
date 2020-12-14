@@ -1,16 +1,58 @@
-  <div *ngIf="!selectedEmployee && serviceEmployees">
-    <label>Select reservation date: </label>
-    <input type="date" [(ngModel)]="selectedDate" />
-  </div>
+  <div class="container modal-content">
+    <div class="modal-header">
+      <h6>Create new reservation</h6>
+      <button type="button"
+              class="close"
+              aria-label="Close"
+              (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
 
-  <div class="list-group" *ngIf="!selectedEmployee && serviceEmployees">
-    <div class="list-group-item" *ngFor="let employee of serviceEmployees" (click)="selectEmployee(employee)">
-      {{ employee.firstName }} {{ employee.lastName }}
+  <div class="modal-body" *ngIf="step == 1">
+    <div class="row">
+      <div class="col-5">
+        <h6>Select reservation date: </h6>
+      </div>
+      <div class="col-7">
+        <input class="" type="date" [(ngModel)]="selectedDate" />
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" *ngIf="step == 2">
+    <div class="list-group">
+      <button type="button" class="list-group-item list-group-item-action" *ngFor="let employee of serviceEmployees" (click)="selectEmployee(employee)">
+        {{ employee.firstName }} {{ employee.lastName }}
+      </button>
     </div>
   </div>
 
-  <div class="list-group" *ngIf="selectedService && selectedEmployee && serviceAvailableHours">
-    <div class="list-group-item" *ngFor="let hour of serviceAvailableHours" (click)="createAppointment(hour)">
-      {{ hour.time }}
+  <div class="modal-body" *ngIf="step == 3">
+    <div class="list-group">
+      <button type="button" class="list-group-item list-group-item-action" *ngFor="let hour of serviceAvailableHours" (click)="selectHour(hour)">
+        {{ hour.time }}
+      </button>
     </div>
   </div>
+
+  <div class="modal-body" *ngIf="step == 4">
+    <div>
+      <h4>Summary:</h4>
+      <h6>{{ service.serviceName }}</h6>
+      <h6>Employee: {{ selectedEmployee.firstName }} {{ selectedEmployee.lastName }}</h6>
+      <h6>Date: {{ selectedDate }} {{ selectedHour.time }} </h6>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="row">
+      <div class="col-6">
+        <button type="button" class="btn btn-primary float-left" (click)="prevStep()" *ngIf="step > 1">Prev</button>
+      </div>
+      <div class="col-6">
+        <button type="button" class="btn btn-primary float-right" (click)="nextStep()" [disabled]="!canMoveToNextStep" *ngIf="step != maxStep">Next</button>
+        <button type="button" class="btn btn-primary float-right" (click)="createReservation()" *ngIf="step == maxStep">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
