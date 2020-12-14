@@ -54,30 +54,3 @@
         </div>
     </div>
 </div>
-
-<!--<modal #modal [closeOnBodyClick]="false"
-       elementId="bookingModal"
-       title="Service booking">
-
-  <div *ngIf="!selectedEmployee && serviceEmployees">
-    <label>Select reservation date: </label>
-    <input type="date" [(ngModel)]="selectedDate" />
-  </div>
-
-  <div class="list-group" *ngIf="!selectedEmployee && serviceEmployees">
-    <div class="list-group-item" *ngFor="let employee of serviceEmployees" (click)="selectEmployee(employee)">
-      {{ employee.firstName }} {{ employee.lastName }}
-    </div>
-  </div>
-
-  <div class="list-group" *ngIf="selectedService && selectedEmployee && serviceAvailableHours">
-    <div class="list-group-item" *ngFor="let hour of serviceAvailableHours" (click)="createAppointment(hour)">
-      {{ hour.time }}
-    </div>
-  </div>-->
-  <!--<client-reservation *ngIf="selectedService"
-    [company]="this.company"
-    [service]="this.selectedService"
-  ></client-reservation>-->
-
-<!--</modal>-->

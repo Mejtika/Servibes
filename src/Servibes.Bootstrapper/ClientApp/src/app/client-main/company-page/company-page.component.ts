@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
+import { BsModalService } from "ngx-bootstrap/modal";
 
 import { CompanyDataService } from 'src/app/data-service/company-data.servce';
 import { EmployeeDataService } from 'src/app/data-service/employee-data.service';
@@ -9,10 +9,7 @@ import { ServicesDataService } from 'src/app/data-service/services-data.service'
 
 import { ICompany, IService, IEmployee, IServiceHours } from 'src/app/shared/interfaces/company';
 import { forkJoin } from 'rxjs';
-import { ModalComponent } from '../../shared/components/modal/modal.component';
 import { ClientReservationComponent } from './client-reservation/client-reservation.component';
-import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
-
 
 @Component({
     selector: 'company-page',
@@ -30,10 +27,6 @@ export class CompanyPageComponent {
      public selectedEmployee: IEmployee;
 
     public serviceAvailableHours: IServiceHours[];
-
-    private modalRef: BsModalRef;
-
-    @ViewChild("modal") modal: ModalComponent;
 
     constructor(
         private companyDataService: CompanyDataService,
@@ -75,10 +68,6 @@ export class CompanyPageComponent {
 
       console.log('initialState', initialState);
 
-      this.modalRef = this.modalService.show(ClientReservationComponent, { initialState });
-
-      this.modalRef.onHide.asObservable().subscribe(x => {
-        this.modalService.show(ConfirmModalComponent);
-      });
+      this.modalService.show(ClientReservationComponent, { initialState });
     }
 }
