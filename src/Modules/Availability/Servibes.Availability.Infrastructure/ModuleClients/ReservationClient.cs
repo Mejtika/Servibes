@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Servibes.Availability.Application;
+using Servibes.Availability.Application.ModuleClients;
 using Servibes.Shared.Communication;
 
-namespace Servibes.Availability.Infrastructure
+namespace Servibes.Availability.Infrastructure.ModuleClients
 {
-    public class ReservationApiClient : IReservationApiClient
+    public class ReservationClient : IReservationClient
     {
         private readonly IModuleClient _client;
 
-        public ReservationApiClient(IModuleClient client)
+        public ReservationClient(IModuleClient client)
         {
             _client = client;
         }

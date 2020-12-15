@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Servibes.Availability.Application.ModuleClients;
 using Servibes.Availability.Core.Employees;
 using Servibes.Shared.Communication.Events;
 using Servibes.Shared.Services;
@@ -14,20 +15,20 @@ namespace Servibes.Availability.Application.Employees.MakeReservation
         private readonly IAvailabilityUnitOfWork _unitOfWork;
         private readonly IEventProcessor _eventProcessor;
         private readonly IDateTimeServer _dateTime;
-        private readonly IReservationApiClient _reservationApiClient;
+        private readonly IReservationClient _reservationClient;
 
         public MakeReservationCommandHandler(
             IEmployeeRepository employeeRepository,
             IAvailabilityUnitOfWork unitOfWork,
             IEventProcessor eventProcessor,
             IDateTimeServer dateTime,
-            IReservationApiClient reservationApiClient)
+            IReservationClient reservationClient)
         {
             _employeeRepository = employeeRepository;
             _unitOfWork = unitOfWork;
             _eventProcessor = eventProcessor;
             _dateTime = dateTime;
-            _reservationApiClient = reservationApiClient;
+            _reservationClient = reservationClient;
         }
 
         public async Task<Unit> Handle(MakeReservationCommand request, CancellationToken cancellationToken)
@@ -44,7 +45,7 @@ namespace Servibes.Availability.Application.Employees.MakeReservation
                 throw new Exception($"Employee doesn't work in company {request.CompanyId}");
             }
 
-            var reservationDataDto = await _reservationApiClient.GetReservationData(request.EmployeeId, request.ServiceId);
+            var reservationDataDto = await _reservationClient.GetReservationData(request.EmployeeId, request.ServiceId);
 
             var reservationSnapshot = CreateReservationSnapshot(request, reservationDataDto);
 

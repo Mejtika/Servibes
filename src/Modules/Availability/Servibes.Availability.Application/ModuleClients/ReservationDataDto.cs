@@ -1,4 +1,4 @@
-﻿namespace Servibes.Availability.Application
+﻿namespace Servibes.Availability.Application.ModuleClients
 {
     public class ReservationDataDto
     {
