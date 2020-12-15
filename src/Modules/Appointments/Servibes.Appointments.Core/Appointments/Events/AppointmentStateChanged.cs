@@ -1,4 +1,5 @@
 ﻿using System;
+using Servibes.Appointments.Core.Shared;
 using Servibes.Shared.BuildingBlocks;
 
 namespace Servibes.Appointments.Core.Appointments.Events
@@ -7,24 +8,34 @@ namespace Servibes.Appointments.Core.Appointments.Events
     {
         public Guid AppointmentId { get; }
 
-        public Guid EmployeeId { get; }
+        public Guid ReserveeId { get; }
 
         public Guid CompanyId { get; }
 
-        public DateTime Start { get; }
+        public Employee Employee { get; }
 
-        public DateTime End { get; }
+        public ReservationDate ReservedDate { get; }
 
         public AppointmentStatus Status { get; }
 
-        public AppointmentStateChanged(Guid appointmentId, Guid employeeId, Guid companyId, DateTime start, DateTime end, AppointmentStatus status)
+        public string CancellationReason { get; }
+
+        public AppointmentStateChanged(
+            Guid appointmentId,
+            Guid reserveeId,
+            Guid companyId,
+            Employee employee,
+            ReservationDate reservedDate,
+            AppointmentStatus status,
+            string cancellationReason)
         {
             AppointmentId = appointmentId;
-            EmployeeId = employeeId;
+            ReserveeId = reserveeId;
             CompanyId = companyId;
-            Start = start;
-            End = end;
+            Employee = employee;
+            ReservedDate = reservedDate;
             Status = status;
+            CancellationReason = cancellationReason;
         }
     }
 }

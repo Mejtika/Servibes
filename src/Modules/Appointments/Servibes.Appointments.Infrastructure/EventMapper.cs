@@ -16,18 +16,51 @@ namespace Servibes.Appointments.Infrastructure
         public INotification Map(IDomainEvent domainEvent)
             => domainEvent switch
             {
-                AppointmentStateChanged @event when @event.Status == AppointmentStatus.NotConfirmed => new AppointmentCreatedEvent(@event.EmployeeId, @event.Start, @event.End),
-                AppointmentStateChanged @event when @event.Status == AppointmentStatus.Confirmed => new AppointmentConfirmedEvent(@event.AppointmentId, @event.EmployeeId, @event.CompanyId),
-                AppointmentStateChanged @event when @event.Status == AppointmentStatus.Canceled => new AppointmentCanceledEvent(@event.AppointmentId, @event.EmployeeId, @event.CompanyId),
-                AppointmentStateChanged @event when @event.Status == AppointmentStatus.NoShow => new AppointmentCanceledEvent(@event.AppointmentId, @event.EmployeeId, @event.CompanyId),
-                AppointmentStateChanged @event when @event.Status == AppointmentStatus.Finished => new AppointmentFinishedEvent(@event.AppointmentId, @event.EmployeeId, @event.CompanyId),
-                TimeReservationStateChanged @event when @event.Status == TimeReservationStatus.Created => new TimeReservationCreatedEvent(@event.TimeReservationId),
-                TimeReservationStateChanged @event when @event.Status == TimeReservationStatus.Canceled => new TimeReservationCanceledEvent(@event.TimeReservationId),
-                TimeReservationStateChanged @event when @event.Status == TimeReservationStatus.Finished => new TimeReservationFinishedEvent(@event.TimeReservationId),
+                AppointmentStateChanged @event when @event.Status == AppointmentStatus.Confirmed => AppointmentCreatedEvent(@event),
+                AppointmentStateChanged @event when @event.Status == AppointmentStatus.Canceled => AppointmentCanceledEvent(@event),
+                AppointmentStateChanged @event when @event.Status == AppointmentStatus.NoShow => AppointmentCanceledEvent(@event),
+                AppointmentStateChanged @event when @event.Status == AppointmentStatus.Finished => AppointmentFinishedEvent(@event),
+                TimeReservationStateChanged @event when @event.Status == TimeReservationStatus.Created => new TimeReservationCreatedEvent(@event.TimeReservationId, @event.CompanyId, @event.EmployeeId),
+                TimeReservationStateChanged @event when @event.Status == TimeReservationStatus.Canceled => new TimeReservationCanceledEvent(@event.TimeReservationId, @event.CompanyId, @event.EmployeeId, @event.Date.Start),
+                TimeReservationStateChanged @event when @event.Status == TimeReservationStatus.Finished => new TimeReservationFinishedEvent(@event.TimeReservationId, @event.CompanyId, @event.EmployeeId, @event.Date.Start),
                 _ => null
             };
 
         public IEnumerable<INotification> MapAll(IEnumerable<IDomainEvent> domainEvents)
             => domainEvents.Select(Map);
+
+        private AppointmentCreatedEvent AppointmentCreatedEvent(AppointmentStateChanged @event)
+        {
+            return new AppointmentCreatedEvent(
+                @event.AppointmentId,
+                @event.ReserveeId,
+                @event.CompanyId,
+                @event.Employee.EmployeeId,
+                @event.ReservedDate.Start,
+                @event.ReservedDate.End);
+        }
+
+        private AppointmentCanceledEvent AppointmentCanceledEvent(AppointmentStateChanged @event)
+        {
+            return new AppointmentCanceledEvent(
+                @event.AppointmentId,
+                @event.ReserveeId,
+                @event.CompanyId,
+                @event.Employee.EmployeeId,
+                @event.ReservedDate.Start,
+                @event.ReservedDate.End,
+                @event.CancellationReason);
+        }
+
+        private AppointmentFinishedEvent AppointmentFinishedEvent(AppointmentStateChanged @event)
+        {
+            return new AppointmentFinishedEvent(
+                @event.AppointmentId,
+                @event.ReserveeId,
+                @event.CompanyId,
+                @event.Employee.EmployeeId,
+                @event.ReservedDate.Start,
+                @event.ReservedDate.End);
+        }
     }
 }

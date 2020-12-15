@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Servibes.Appointments.Core.Appointments;
 
-namespace Servibes.Appointments.Infrastructure
+namespace Servibes.Appointments.Infrastructure.Domain.Appointments
 {
     public class AppointmentRepository : IAppointmentRepository
     {
