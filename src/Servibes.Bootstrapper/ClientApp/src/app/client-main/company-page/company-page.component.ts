@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+import { BsModalService } from "ngx-bootstrap/modal";
+
 import { CompanyDataService } from 'src/app/data-service/company-data.servce';
 import { EmployeeDataService } from 'src/app/data-service/employee-data.service';
-import { MockDataService } from 'src/app/data-service/mock-data.service';
 import { ServicesDataService } from 'src/app/data-service/services-data.service';
 
-import { ICompany } from 'src/app/shared/interfaces/company';
+import { ICompany, IService, IEmployee, IServiceHours } from 'src/app/shared/interfaces/company';
+import { forkJoin } from 'rxjs';
+import { ClientReservationComponent } from './client-reservation/client-reservation.component';
 
 @Component({
     selector: 'company-page',
@@ -14,39 +18,56 @@ import { ICompany } from 'src/app/shared/interfaces/company';
 })
 export class CompanyPageComponent {
     company: ICompany;
+    public weekDays: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+     public selectedService: IService;
+
+     public selectedDate: Date = new Date();
+
+     public serviceEmployees: IEmployee[];
+     public selectedEmployee: IEmployee;
+
+    public serviceAvailableHours: IServiceHours[];
 
     constructor(
         private companyDataService: CompanyDataService,
         private servicesDataService: ServicesDataService,
         private employeeDataService: EmployeeDataService,
-        private activatedRoute: ActivatedRoute) {
+        private activatedRoute: ActivatedRoute,
+        private modalService: BsModalService) {
 
     }
 
     ngOnInit() {
         const companyId: string = this.activatedRoute.snapshot.paramMap.get('id');
 
-        /*this.dataService.getCompany(id).subscribe(result => {
-            this.company = result;
-        });*/
+        this.loadCompanyData(companyId);
+    }
 
-        //TODO: Fix 3 api calls into 1 using rxjs
+    loadCompanyData(companyId: string) {
+        let company = this.companyDataService.getCompanyById(companyId);
+        let openingHours = this.companyDataService.getCompanyOpeningHours(companyId);
+        let services = this.servicesDataService.getAllCompanyServices(companyId);
+        let employees = this.employeeDataService.getAllCompanyEmployees(companyId);
 
-        this.companyDataService.getCompanyById(companyId).subscribe(result => {
-          this.company = result;
-          console.log('company', result);
+        forkJoin([company, openingHours, services, employees]).subscribe(result => {
+            result[0].openingHours = result[1];
+            result[0].services = result[2];
+            result[0].employees = result[3];
 
-          this.servicesDataService.getAllCompanyServices(companyId).subscribe(result => {
-            this.company.services = result;
-            console.log('services', result);
-          });
-
-          this.employeeDataService.getAllCompanyEmployees(companyId).subscribe(result => {
-            this.company.employees = result;
-            console.log('employees', result);
-          });
+            this.company = result[0];
         });
+  }
 
+    public selectService(service: IService) {
+      this.selectedService = service;
 
+      const initialState = {
+        service: service,
+        company: this.company
+      };
+
+      console.log('initialState', initialState);
+
+      this.modalService.show(ClientReservationComponent, { initialState });
     }
 }

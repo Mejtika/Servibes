@@ -40,8 +40,13 @@ export enum DayOfWeek {
 
 export interface IOpeningHours {
   dayOfWeek: DayOfWeek;
+  isAvailable: boolean;
   start: string;
   end: string;
+}
+
+export interface IServiceHours {
+  time: string;
 }
 
 export interface IAddress {
@@ -70,7 +75,7 @@ export interface IPagedResults<T> {
 }
 
 export interface IEmployee {
-  employeeId: number;
+  employeeId: string;
   firstName: string;
   lastName: string;
   text: string;

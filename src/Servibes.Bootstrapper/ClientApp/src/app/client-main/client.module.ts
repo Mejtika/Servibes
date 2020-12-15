@@ -11,6 +11,7 @@ import { JQUERY_TOKEN } from '../shared/services/jQuery.service';
 import { ClientFooterComponent } from './client-footer/client-footer.component';
 import { ClientMainComponent } from './client-main.component';
 import { ClientNavbarComponent } from './client-navbar/client-navbar.component';
+import { ClientReservationComponent } from './company-page/client-reservation/client-reservation.component';
 import { CompanyPageComponent } from './company-page/company-page.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
@@ -18,6 +19,9 @@ import { LoginMenuComponent } from "../../api-authorization/login-menu/login-men
 import { CompanyDataService } from '../data-service/company-data.servce';
 import { ServicesDataService } from '../data-service/services-data.service';
 import { EmployeeDataService } from '../data-service/employee-data.service';
+import { AppointmentDataService } from '../data-service/appointment-data.service';
+
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 let jQuery = window['$'];
 
@@ -52,7 +56,8 @@ const routes: Routes = [
         ClientFooterComponent,
         ModalComponent,
         ModalTriggerDirective,
-        CompanyPageComponent
+        CompanyPageComponent,
+        ClientReservationComponent
     ],
     imports: [
         CommonModule,
@@ -60,13 +65,16 @@ const routes: Routes = [
         RouterModule.forChild(routes),
 
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+
+        ModalModule.forRoot()
     ],
     providers: [
         MockDataService,
         CompanyDataService,
         ServicesDataService,
         EmployeeDataService,
+        AppointmentDataService,
         { provide: JQUERY_TOKEN, useValue: jQuery }
       ]
 })

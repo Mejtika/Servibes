@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiService } from '../core/services/api.service';
 
-import { ICompany, Category } from '../shared/interfaces/company';
+import { ICompany, Category, IOpeningHours } from '../shared/interfaces/company';
 
 @Injectable()
 export class CompanyDataService extends ApiService<ICompany> {
@@ -21,6 +21,10 @@ export class CompanyDataService extends ApiService<ICompany> {
 
   public getCompanyById(companyId: string) : Observable<ICompany> {
     return this.get(`companies/${companyId}`);
+  }
+
+  public getCompanyOpeningHours(companyId: string): Observable<IOpeningHours[]> {
+    return this.get(`companies/${companyId}/openingHours`);
   }
 
   public getCategories(): string[] {

@@ -4,16 +4,18 @@
             <img  class="img-fluid rounded" [src]="company.coverPhoto"/>
 
             <h3>{{ company.companyName }}</h3>
-            <h6 class="company-address">{{ company.address.city }}</h6>
+            <h6 class="company-address">
+              {{ company.address.city }}, {{ company.address.street }}
+              {{company.address.streetNumber }} <span *ngIf="company.address.flatNumber != ''">/ {{ company.address.flatNumber }}</span></h6>
             <h5 class="company-services-header">Usługi: </h5>
 
             <div *ngFor="let service of company.services">
                 <div class="row">
                   <p class="col-8 service-name">{{ service.serviceName }}</p>
                   <p class="col-2 service-price">{{ service.price }} PLN</p>
-                  <button class="col-2 book-button btn btn-primary ">Book</button>
+                  <button class="col-2 book-button btn btn-primary" (click)="selectService(service)">Book</button>
                   <span class="col-8 service-description">{{ service.description }}</span>
-                  <span class="col-2 service-duration">{{ service.duration }}</span>
+                  <span class="col-2 service-duration">{{ service.duration }} min</span>
                 </div>
                 <hr/>
               </div>
@@ -44,8 +46,9 @@
 
             <div class="company-side-availability">
                 <div *ngFor="let openingHour of company.openingHours" class="row company-side-availability-single">
-                    <span class="col-6 text-left day-of-the-week">{{ openingHour.dayOfWeek }}</span>
-                    <span class="col-6 text-right time-span">{{ openingHour.start }} - {{ openingHour.end }}</span>
+                    <span class="col-6 text-left day-of-the-week">{{ weekDays[openingHour.dayOfWeek] }}</span>
+                    <span class="col-6 text-right time-span" *ngIf="openingHour.isAvailable" >{{ openingHour.start }} - {{ openingHour.end }}</span>
+                    <span class="col-6 text-right time-span" *ngIf="!openingHour.isAvailable">Zamknięte</span>
                 </div>
             </div>
         </div>

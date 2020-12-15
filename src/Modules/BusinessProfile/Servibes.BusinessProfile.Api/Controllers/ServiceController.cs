@@ -8,6 +8,7 @@ using Servibes.BusinessProfile.Api.Commands.Services;
 using Servibes.BusinessProfile.Api.Commands.Services.CreateService;
 using Servibes.BusinessProfile.Api.Commands.Services.DeleteService;
 using Servibes.BusinessProfile.Api.Commands.Services.UpdateService;
+using Servibes.BusinessProfile.Api.Queries.Services.GetServiceEmployees;
 
 namespace Servibes.BusinessProfile.Api.Controllers
 {
@@ -42,6 +43,17 @@ namespace Servibes.BusinessProfile.Api.Controllers
             var result = await this._mediator.Send(new GetCompanyServicesQuery()
             {
                 CompanyId = companyId
+            });
+
+            return Ok(result);
+        }
+
+        [HttpGet("{companyId}/services/{serviceId}/employees")]
+        public async Task<ActionResult> GetServiceEmployees(Guid companyId, Guid serviceId)
+        {
+            var result = await this._mediator.Send(new GetServiceEmployeesQuery()
+            {
+                ServiceId = serviceId
             });
 
             return Ok(result);
