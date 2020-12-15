@@ -81,60 +81,60 @@ export class MockDataService {
    ];
 
    private _appointments: IAppointment[] = [
-     { 
+     {
         employeeId: "1",
         serviceId: "2",
-        client: { firstName: 'Anna', lastName: 'Nowak' },
+        client: { id: "1", firstName: 'Anna', lastName: 'Nowak', email: 'sfsd@fsdfsd.pl' },
         startDate: new Date(2020, 9, 21, 18, 10),
         endDate: new Date(2020, 9, 21, 19, 10)
     },
-    { 
+    {
         employeeId: "1",
         serviceId: "3",
-        client: { firstName: 'Anna', lastName: 'Nowak' },
+        client: { id: "1", firstName: 'Anna', lastName: 'Nowak', email: 'sfsd@fsdfsd.pl' },
         startDate: new Date(2020, 9, 21, 19, 10),
         endDate: new Date(2020, 9, 21, 20, 10)
     },
-    { 
+    {
         employeeId: "1",
         serviceId: "2",
-        client: { firstName: 'Anna', lastName: 'Nowak' },
+        client: { id: "1", firstName: 'Anna', lastName: 'Nowak', email: 'sfsd@fsdfsd.pl' },
         startDate: new Date(2020, 9, 21, 20, 10),
         endDate: new Date(2020, 9, 21, 21, 10)
     },
 
-    { 
+    {
       employeeId: "2",
       serviceId: "1",
-      client: { firstName: 'Anna', lastName: 'Nowak' },
+      client: { id: "1", firstName: 'Anna', lastName: 'Nowak', email: 'sfsd@fsdfsd.pl' },
       startDate: new Date(2020, 9, 21, 21, 10),
       endDate: new Date(2020, 9, 21, 22, 10)
     },
     {
       employeeId: "3",
       serviceId: "3",
-      client: { firstName: 'Ziomek', lastName: 'Ziomkowski' },
+      client: { id: "1", firstName: 'Anna', lastName: 'Nowak', email: 'sfsd@fsdfsd.pl' },
       startDate: new Date(2020, 9, 21, 10, 30),
       endDate: new Date(2020, 9, 21, 13, 30)
     },
     {
       employeeId: "2",
       serviceId: "3",
-      client: { firstName: 'Kajetan', lastName: 'Kajetanowicz' },
+      client: { id: "1", firstName: 'Anna', lastName: 'Nowak', email: 'sfsd@fsdfsd.pl' },
       startDate: new Date(2020, 9, 21, 11, 30),
       endDate: new Date(2020, 9, 21, 15, 0)
     },
     {
       employeeId: "1",
       serviceId: "1",
-      client: { firstName: 'Geralt', lastName: 'of Rivia' },
+      client: { id: "1", firstName: 'Anna', lastName: 'Nowak', email: 'sfsd@fsdfsd.pl' },
       startDate: new Date(2020, 9, 21, 9, 0),
       endDate: new Date(2020, 9, 21, 13, 30)
     },
     {
       employeeId: "1",
       serviceId: "2",
-      client: { firstName: 'Anna', lastName: 'Kowalska' },
+      client: { id: "1", firstName: 'Anna', lastName: 'Nowak', email: 'sfsd@fsdfsd.pl' },
       startDate: new Date(2020, 9, 21, 13, 40),
       endDate: new Date(2020, 9, 21, 17, 0)
     }
@@ -168,6 +168,6 @@ export class MockDataService {
   }
 
   public getCompanyEmployeees(id: string): Observable<IEmployee[]> {
-    return of(this._companies.filter(c => c.companyId == id)[0].employees); 
+    return of(this._companies.filter(c => c.companyId == id)[0].employees);
   }
 }

@@ -22,6 +22,7 @@ import { EmployeeDataService } from '../data-service/employee-data.service';
 import { AppointmentDataService } from '../data-service/appointment-data.service';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { ClientDataService } from '../data-service/client-data.service';
 
 let jQuery = window['$'];
 
@@ -75,6 +76,7 @@ const routes: Routes = [
         ServicesDataService,
         EmployeeDataService,
         AppointmentDataService,
+        ClientDataService,
         { provide: JQUERY_TOKEN, useValue: jQuery }
       ]
 })

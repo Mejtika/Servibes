@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { formatDate } from '@angular/common';
 
-import { ICompany, IEmployee, IService, IServiceHours } from '../../../shared/interfaces/company';
+import { IClient, ICompany, IEmployee, IService, IServiceHours } from '../../../shared/interfaces/company';
 
 import { ServicesDataService } from '../../../data-service/services-data.service';
 import { EmployeeDataService } from '../../../data-service/employee-data.service';
@@ -9,6 +9,8 @@ import { EmployeeDataService } from '../../../data-service/employee-data.service
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AppointmentDataService } from '../../../data-service/appointment-data.service';
 import { ToastrService } from 'ngx-toastr';
+import { ClientDataService } from '../../..//data-service/client-data.service';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'client-reservation',
@@ -36,6 +38,7 @@ export class ClientReservationComponent {
     private servicesDataService: ServicesDataService,
     private employeeDataService: EmployeeDataService,
     private appointmentDataService: AppointmentDataService,
+    private clientDataService: ClientDataService,
     private toastr: ToastrService) {
   }
 
@@ -95,28 +98,22 @@ export class ClientReservationComponent {
   }
 
   public createReservation() {
-    const appointmentObject = {
-      employeeName: this.selectedEmployee.firstName + " " + this.selectedEmployee.lastName,
-      serviceName: this.service.serviceName,
-      servicePrice: this.service.price,
-      serviceDuration: this.service.duration,
-      start: formatDate(this.selectedDate, 'yyy-MM-dd', "en_US") + "T" + this.selectedHour.time
-    };
+    this.clientDataService.getClientData().subscribe(result => {
 
-    console.log('appointment object', appointmentObject);
+      console.log('me', result);
 
-    this.appointmentDataService.postAppointment(this.company.companyId, this.selectedEmployee.employeeId, appointmentObject).subscribe(result  => {
-      console.log('created appointment with data', appointmentObject);
-      this.closeModal();
-      this.toastr.success("Reservation created successfuly!");
-    },
-    (error) => {
-      console.log(error);
-    },
-    () => {
-      console.log('reservation completed');
-    },
-    );
+      const appointmentObject = {
+        reserveeId: result.id,
+        serviceId: this.service.serviceId,
+        start: formatDate(this.selectedDate, 'yyy-MM-dd', "en_US") + "T" + this.selectedHour.time
+      };
+
+      this.appointmentDataService.postAppointment(this.company.companyId, this.selectedEmployee.employeeId, appointmentObject).subscribe(result => {
+        console.log('created appointment with data', appointmentObject);
+        this.closeModal();
+        this.toastr.success("Reservation created successfuly!");
+      })
+    });
   }
 
   public closeModal() {
