@@ -18,6 +18,7 @@ namespace Servibes.Appointments.Application.Events.External.ReservationAdded
         private readonly ICompanyRepository _companyRepository;
         private readonly IAppointmentUnitOfWork _unitOfWork;
         private readonly IDateTimeServer _dateTime;
+        private readonly IEventProcessor _eventProcessor;
         private readonly IMessageBroker _messageBroker;
 
         public ReservationAddedEventHandler(
@@ -26,6 +27,7 @@ namespace Servibes.Appointments.Application.Events.External.ReservationAdded
             ICompanyRepository companyRepository,
             IAppointmentUnitOfWork unitOfWork,
             IDateTimeServer dateTime,
+            IEventProcessor eventProcessor,
             IMessageBroker messageBroker)
         {
             _appointmentRepository = appointmentRepository;
@@ -33,6 +35,7 @@ namespace Servibes.Appointments.Application.Events.External.ReservationAdded
             _companyRepository = companyRepository;
             _unitOfWork = unitOfWork;
             _dateTime = dateTime;
+            _eventProcessor = eventProcessor;
             _messageBroker = messageBroker;
         }
 
@@ -53,6 +56,7 @@ namespace Servibes.Appointments.Application.Events.External.ReservationAdded
 
             await _appointmentRepository.AddAsync(appointment);
             await _unitOfWork.CommitAsync(cancellationToken);
+            await _eventProcessor.ProcessAsync(appointment.DomainEvents);
         }
 
         private async Task CheckReservationCorrectness(ReservationAddedEvent notification)
