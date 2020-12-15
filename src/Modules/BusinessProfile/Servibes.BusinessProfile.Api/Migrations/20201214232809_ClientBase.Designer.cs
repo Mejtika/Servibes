@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Servibes.BusinessProfile.Api;
 
 namespace Servibes.BusinessProfile.Api.Migrations
 {
     [DbContext(typeof(BusinessProfileContext))]
-    partial class BusinessProfileContextModelSnapshot : ModelSnapshot
+    [Migration("20201214232809_ClientBase")]
+    partial class ClientBase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +54,7 @@ namespace Servibes.BusinessProfile.Api.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointment");
                 });
 
             modelBuilder.Entity("Servibes.BusinessProfile.Api.Models.ClientBase.Client", b =>

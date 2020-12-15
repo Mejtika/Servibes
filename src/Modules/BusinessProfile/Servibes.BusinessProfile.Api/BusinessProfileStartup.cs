@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Servibes.BusinessProfile.Api.Events.External.AppointmentCreated;
+using Servibes.BusinessProfile.Api.Events.External.NewClientRegistered;
+using Servibes.Shared;
 
 namespace Servibes.BusinessProfile.Api
 {
@@ -31,6 +34,10 @@ namespace Servibes.BusinessProfile.Api
 
         public static IApplicationBuilder UseBusinessProfileModule(this IApplicationBuilder app)
         {
+            app.UseModuleRequests()
+                .Subscribe<AppointmentCreatedEvent>()
+                .Subscribe<NewClientRegisteredEvent>();
+
             using var serviceScope = app.ApplicationServices.CreateScope();
             var dbContext = serviceScope.ServiceProvider.GetService<BusinessProfileContext>();
             dbContext.SeedData();

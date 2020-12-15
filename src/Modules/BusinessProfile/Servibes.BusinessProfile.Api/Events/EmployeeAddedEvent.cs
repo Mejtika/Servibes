@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using MediatR;
 
-namespace Servibes.BusinessProfile.Api.Commands
+namespace Servibes.BusinessProfile.Api.Events
 {
     public class EmployeeAddedEvent : INotification
     {
