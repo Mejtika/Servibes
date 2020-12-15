@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Servibes.Availability.Api
+namespace Servibes.Availability.Api.DTO
 {
     public class HoursRangeDto
     {

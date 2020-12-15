@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Servibes.Availability.Core.Employees.Events;
 using Servibes.Availability.Core.Employees.Exceptions;
@@ -45,24 +44,19 @@ namespace Servibes.Availability.Core.Employees
             return resource;
         }
 
-        public void AddReservation(Reservation reservation)
-        { 
-            if (_timeOffs.Any(HasCollidingReservation) ||
-                !reservation.IsInWeekWorkingRange(_workingHours) ||
-                _reservations.Any(IsColliding))
-            {
-                AddDomainEvent(new EmployeeReservationCanceledDomainEvent(this, reservation));
-                return;
-            }
+        public Reservation GetReservationByDate(DateTime start)
+        {
+            return _reservations.SingleOrDefault(x => x.Start == start);
+        }
 
+        public void AddReservation(Reservation reservation, ReservationSnapshot snapshot)
+        {
+            CheckForCollision(reservation);
+             
             if (_reservations.Add(reservation))
             {
-                AddDomainEvent(new EmployeeReservationAddedDomainEvent(this, reservation));
+                AddDomainEvent(new EmployeeReservationAddedDomainEvent(EmployeeId, _companyId, reservation, snapshot));
             }
-
-            bool IsColliding(Reservation r) => r.IsCollidingWith(reservation);
-
-            bool HasCollidingReservation(TimeOff t) => t.IsCollidingWith(reservation);
         }
 
         public void ReleaseReservation(Reservation reservation)
@@ -75,11 +69,16 @@ namespace Servibes.Availability.Core.Employees
             AddDomainEvent(new EmployeeReservationReleasedDomainEvent(this, reservation));
         }
 
+        public TimeOff GetTimeOffByDate(DateTime start)
+        {
+            return _timeOffs.SingleOrDefault(x => x.Start == start);
+        }
+
         public void GiveTimeOff(TimeOff timeOff)
         {
             if (_timeOffs.Any(IsColliding))
             {
-                throw new TimeOffCollidingDatesException(this, timeOff);
+                throw new TimeOffCollidingDatesException(timeOff);
             }
 
             if (_timeOffs.Add(timeOff))
@@ -102,9 +101,9 @@ namespace Servibes.Availability.Core.Employees
 
         public void Delete()
         {
-            foreach (var reservation in _reservations)
+            foreach (var reservation in _reservations)  
             {
-                AddDomainEvent(new EmployeeReservationCanceledDomainEvent(this, reservation));
+                AddDomainEvent(new EmployeeReservationReleasedDomainEvent(this, reservation));
             }
 
             AddDomainEvent(new EmployeeAvailabilityDeletedDomainEvent(this));
@@ -131,6 +130,23 @@ namespace Servibes.Availability.Core.Employees
             CheckForDaysCorrectness(companyOpeningHours);
             _workingHours = companyOpeningHours;
             AddDomainEvent(new EmployeeWorkingHoursChangedDomainEvent(this));
+        }
+
+        public bool CheckCompanyCorrectness(Guid companyId)
+            => _companyId == companyId;
+        
+        private void CheckForCollision(Reservation reservation)
+        {
+            if (_timeOffs.Any(HasCollidingReservation) ||
+                !reservation.IsInWeekWorkingRange(_workingHours) ||
+                _reservations.Any(IsColliding))
+            {
+                throw new IncorrectReservationDateException(reservation);
+            }
+
+            bool IsColliding(Reservation r) => r.IsCollidingWith(reservation);
+
+            bool HasCollidingReservation(TimeOff t) => t.IsCollidingWith(reservation);
         }
 
         private bool CanChangeWorkingHours(List<HoursRange> companyOpeningHours, List<HoursRange> newWorkingHours)

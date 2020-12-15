@@ -5,13 +5,24 @@ namespace Servibes.Availability.Core.Employees.Events
 {
     public class EmployeeReservationAddedDomainEvent : IDomainEvent
     {
-        public Employee Employee { get; }
+        public Guid EmployeeId { get; }
+
+        public Guid CompanyId { get; }
+
         public Reservation Reservation { get; }
 
-        public EmployeeReservationAddedDomainEvent(Employee employee, Reservation reservation)
+        public ReservationSnapshot ReservationSnapshot { get; }
+
+        public EmployeeReservationAddedDomainEvent(
+            Guid employeeId,
+            Guid companyId,
+            Reservation reservation,
+            ReservationSnapshot snapshot)
         {
-            Employee = employee;
+            EmployeeId = employeeId;
+            CompanyId = companyId;
             Reservation = reservation;
+            ReservationSnapshot = snapshot;
         }
     }
 }
