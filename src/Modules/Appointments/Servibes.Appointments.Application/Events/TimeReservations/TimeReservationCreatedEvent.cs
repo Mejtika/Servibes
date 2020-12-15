@@ -7,9 +7,18 @@ namespace Servibes.Appointments.Application.Events.TimeReservations
     {
         public Guid TimeReservationId { get; }
 
-        public TimeReservationCreatedEvent(Guid timeReservationId)
+        public Guid CompanyId { get; }
+
+        public Guid EmployeeId { get; }
+
+        public TimeReservationCreatedEvent(
+            Guid timeReservationId,
+            Guid companyId,
+            Guid employeeId)
         {
             TimeReservationId = timeReservationId;
+            CompanyId = companyId;
+            EmployeeId = employeeId;
         }
     }
 }
