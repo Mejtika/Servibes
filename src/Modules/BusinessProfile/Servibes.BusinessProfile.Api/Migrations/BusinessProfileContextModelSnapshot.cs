@@ -34,6 +34,47 @@ namespace Servibes.BusinessProfile.Api.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Servibes.BusinessProfile.Api.Models.ClientBase.Appointment", b =>
+                {
+                    b.Property<Guid>("AppointmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AppointmentId");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("Servibes.BusinessProfile.Api.Models.ClientBase.Client", b =>
+                {
+                    b.Property<Guid>("ClientId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ClientId");
+
+                    b.ToTable("Clients");
+                });
+
             modelBuilder.Entity("Servibes.BusinessProfile.Api.Models.Company", b =>
                 {
                     b.Property<Guid>("CompanyId")
@@ -51,6 +92,9 @@ namespace Servibes.BusinessProfile.Api.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("WalkInClientId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CompanyId");
 
@@ -105,6 +149,21 @@ namespace Servibes.BusinessProfile.Api.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("Servibes.BusinessProfile.Api.Models.ClientBase.Appointment", b =>
+                {
+                    b.HasOne("Servibes.BusinessProfile.Api.Models.ClientBase.Client", null)
+                        .WithMany("Appointments")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Servibes.BusinessProfile.Api.Models.Company", null)
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Servibes.BusinessProfile.Api.Models.Company", b =>

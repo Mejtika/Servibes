@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Servibes.Appointments.Application.Appointments.MakeAppointment;
 
 namespace Servibes.Appointments.Api
 {
@@ -17,21 +12,6 @@ namespace Servibes.Appointments.Api
         public AppointmentsController(IMediator mediator)
         {
             _mediator = mediator;
-        }
-
-        [HttpPost("{companyId}/employees/{employeeId}/appointments")]
-        public async Task<IActionResult> MakeAppointment(Guid companyId, Guid employeeId, [FromBody] MakeAppointmentRequest request)
-        {
-            await _mediator.Send(new MakeAppointmentCommand(
-                companyId, 
-                employeeId,
-                request.EmployeeName,
-                request.ServiceName,
-                request.ServicePrive,
-                request.ServiceDuration,
-                request.Start));
-
-            return NoContent();
         }
     }
 }

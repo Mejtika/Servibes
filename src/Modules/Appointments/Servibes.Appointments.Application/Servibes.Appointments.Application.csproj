@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Servibes.Appointments.Core\Servibes.Appointments.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Appointments\" />
+  </ItemGroup>
+
 </Project>

@@ -5,8 +5,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Servibes.Appointments.Application;
+using Servibes.Appointments.Application.Events.External.NewClientRegistered;
+using Servibes.Appointments.Application.Events.External.RegistrationCompleted;
 using Servibes.Appointments.Application.Events.External.ReservationAdded;
 using Servibes.Appointments.Core.Appointments;
+using Servibes.Appointments.Core.Reservees;
+using Servibes.Appointments.Core.TimeReservations;
+using Servibes.Appointments.Infrastructure.Domain.Appointments;
+using Servibes.Appointments.Infrastructure.Domain.Reservees;
+using Servibes.Appointments.Infrastructure.Domain.TimeReservations;
 using Servibes.Shared;
 using Servibes.Shared.Communication.Events;
 
@@ -29,7 +36,10 @@ namespace Servibes.Appointments.Infrastructure
 
             services.AddSingleton<IEventMapper, EventMapper>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            services.AddScoped<ITimeReservationRepository, TimeReservationRepository>();
             services.AddScoped<IAppointmentUnitOfWork, AppointmentsUnitOfWork>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
 
             return services;
         }
@@ -37,7 +47,9 @@ namespace Servibes.Appointments.Infrastructure
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
             app.UseModuleRequests()
-                .Subscribe<ReservationAddedEvent>();
+                .Subscribe<ReservationAddedEvent>()
+                .Subscribe<NewClientRegisteredEvent>()
+                .Subscribe<RegistrationCompletedEvent>();
 
             return app;
         }

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Servibes.Bootstrapper.Models;
+using Servibes.Shared.Communication.Brokers;
 
 namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account
 {
@@ -25,19 +26,22 @@ namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMessageBroker _messageBroker;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IMessageBroker messageBroker)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            _messageBroker = messageBroker;
         }
 
         [BindProperty]
@@ -55,6 +59,14 @@ namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Required]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -88,7 +100,13 @@ namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser
+                {
+                    FirstName = Input.FirstName, 
+                    LastName = Input.LastName, 
+                    UserName = Input.Email,
+                    Email = Input.Email
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -106,6 +124,12 @@ namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    if (Input.AccountType == AccountType.Client)
+                    {
+                        var @event = new NewClientRegisteredEvent(user.Id, user.FirstName, user.LastName, user.Email);
+                        await _messageBroker.PublishAsync(@event);
+                    }
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

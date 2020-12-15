@@ -6,6 +6,7 @@ using Dapper;
 using MediatR;
 using Servibes.Availability.Application.Shared;
 using Servibes.Shared;
+using Servibes.Shared.Database;
 
 namespace Servibes.Availability.Application.Employees.GetEmployeeWorkingHours
 {

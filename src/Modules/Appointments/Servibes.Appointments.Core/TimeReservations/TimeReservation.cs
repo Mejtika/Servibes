@@ -1,5 +1,4 @@
 ﻿using System;
-using Servibes.Appointments.Core.Appointments.Exceptions;
 using Servibes.Appointments.Core.Shared;
 using Servibes.Appointments.Core.TimeReservations.Exceptions;
 using Servibes.Shared.BuildingBlocks;
@@ -35,7 +34,7 @@ namespace Servibes.Appointments.Core.TimeReservations
         public static TimeReservation Create(Guid timeReservationId, Guid companyId, Guid employeeId, ReservationDate reservedDate)
         {
             var timeReservation = new TimeReservation(timeReservationId, companyId, employeeId, reservedDate, TimeReservationStatus.Created);
-            timeReservation.AddDomainEvent(new TimeReservationStateChanged(timeReservationId, timeReservation._status));
+            timeReservation.AddDomainEvent(new TimeReservationStateChanged(timeReservationId, companyId, employeeId, reservedDate, timeReservation._status));
             return timeReservation;
         }
 
@@ -51,7 +50,7 @@ namespace Servibes.Appointments.Core.TimeReservations
                 throw new CannotChangeTimeReservationStateException(TimeReservationId, _status, TimeReservationStatus.Canceled);
             }
             _status = TimeReservationStatus.Canceled;
-            AddDomainEvent(new TimeReservationStateChanged(TimeReservationId, _status));
+            AddDomainEvent(new TimeReservationStateChanged(TimeReservationId, _companyId, _employeeId, _reservedDate, _status));
         }
 
         public void Finish(DateTime now)
@@ -67,7 +66,7 @@ namespace Servibes.Appointments.Core.TimeReservations
             }
 
             _status = TimeReservationStatus.Finished;
-            AddDomainEvent(new TimeReservationStateChanged(TimeReservationId, _status));
+            AddDomainEvent(new TimeReservationStateChanged(TimeReservationId, _companyId, _employeeId, _reservedDate, _status));
         }
     }
 }

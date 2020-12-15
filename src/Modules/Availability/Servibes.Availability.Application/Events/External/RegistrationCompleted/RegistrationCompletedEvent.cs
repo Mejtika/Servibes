@@ -9,11 +9,17 @@ namespace Servibes.Availability.Application.Events.External.RegistrationComplete
     {
         public Guid CompanyId { get; }
 
+        public Guid WalkInClientId { get; }
+
         public List<HoursRangeDto> OpeningHoursDto { get; }
 
-        public RegistrationCompletedEvent(Guid companyId, List<HoursRangeDto> openingHoursDto)
+        public RegistrationCompletedEvent(
+            Guid companyId,
+            Guid walkInClientId,
+            List<HoursRangeDto> openingHoursDto)
         {
             CompanyId = companyId;
+            WalkInClientId = walkInClientId;
             OpeningHoursDto = openingHoursDto;
         }
     }
