@@ -11,13 +11,7 @@ namespace Servibes.Availability.Application.Employees.MakeReservation
 
         public Guid ReserveeId { get; }
 
-        public string EmployeeName { get; }
-
-        public string ServiceName { get; }
-
-        public decimal ServicePrice { get; }
-
-        public int ServiceDuration { get; }
+        public Guid ServiceId { get; }
 
         public DateTime Start { get; }
 
@@ -25,19 +19,13 @@ namespace Servibes.Availability.Application.Employees.MakeReservation
             Guid companyId,
             Guid employeeId,
             Guid reserveeId,
-            string employeeName,
-            string serviceName,
-            decimal servicePrice,
-            int serviceDuration,
+            Guid serviceId,
             DateTime start)
         {
             CompanyId = companyId;
             EmployeeId = employeeId;
             ReserveeId = reserveeId;
-            EmployeeName = employeeName;
-            ServiceName = serviceName;
-            ServicePrice = servicePrice;
-            ServiceDuration = serviceDuration;
+            ServiceId = serviceId;
             Start = start;
         }
     }

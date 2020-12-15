@@ -14,17 +14,20 @@ namespace Servibes.Availability.Application.Employees.MakeReservation
         private readonly IAvailabilityUnitOfWork _unitOfWork;
         private readonly IEventProcessor _eventProcessor;
         private readonly IDateTimeServer _dateTime;
+        private readonly IReservationApiClient _reservationApiClient;
 
         public MakeReservationCommandHandler(
             IEmployeeRepository employeeRepository,
             IAvailabilityUnitOfWork unitOfWork,
             IEventProcessor eventProcessor,
-            IDateTimeServer dateTime)
+            IDateTimeServer dateTime,
+            IReservationApiClient reservationApiClient)
         {
             _employeeRepository = employeeRepository;
             _unitOfWork = unitOfWork;
             _eventProcessor = eventProcessor;
             _dateTime = dateTime;
+            _reservationApiClient = reservationApiClient;
         }
 
         public async Task<Unit> Handle(MakeReservationCommand request, CancellationToken cancellationToken)
@@ -41,11 +44,14 @@ namespace Servibes.Availability.Application.Employees.MakeReservation
                 throw new Exception($"Employee doesn't work in company {request.CompanyId}");
             }
 
+            var reservationDataDto = await _reservationApiClient.GetReservationData(request.EmployeeId, request.ServiceId);
+
+            var reservationSnapshot = CreateReservationSnapshot(request, reservationDataDto);
+
             var reservation = Reservation.Create(
                 request.Start, 
-                request.Start.AddMinutes(request.ServiceDuration),
+                request.Start.AddMinutes(reservationDataDto.ServiceDuration),
                 _dateTime.Now);
-            var reservationSnapshot = CreateReservationSnapshot(request);
 
             employee.AddReservation(reservation, reservationSnapshot);
 
@@ -54,17 +60,19 @@ namespace Servibes.Availability.Application.Employees.MakeReservation
             return Unit.Value;
         }
 
-        private static ReservationSnapshot CreateReservationSnapshot(MakeReservationCommand request)
+        private ReservationSnapshot CreateReservationSnapshot(
+            MakeReservationCommand request, 
+            ReservationDataDto reservationDataDto)
         {
             return new ReservationSnapshot(
                 request.CompanyId,
                 request.EmployeeId,
                 request.ReserveeId,
-                request.EmployeeName,
-                request.ServiceName,
-                request.ServicePrice,
+                reservationDataDto.EmployeeName,
+                reservationDataDto.ServiceName,
+                reservationDataDto.ServicePrice,
                 request.Start,
-                request.Start.AddMinutes(request.ServiceDuration));
+                request.Start.AddMinutes(reservationDataDto.ServiceDuration));
         }
     }
 }
