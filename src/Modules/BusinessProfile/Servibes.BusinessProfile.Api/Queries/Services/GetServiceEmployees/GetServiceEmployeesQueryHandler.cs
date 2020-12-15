@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Servibes.BusinessProfile.Api.Queries.Employees;
+using Servibes.Shared.Database;
 
 namespace Servibes.BusinessProfile.Api.Queries.Services.GetServiceEmployees
 {
