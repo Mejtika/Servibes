@@ -2,15 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Servibes.Appointments.Application.Events.Appointments;
 using Servibes.Availability.Application;
-using Servibes.Availability.Application.Events.External.AppointmentCreated;
+using Servibes.Availability.Application.Events.External.Appointments.AppointmentRejected;
 using Servibes.Availability.Application.Events.External.EmployeeAdded;
 using Servibes.Availability.Application.Events.External.RegistrationCompleted;
+using Servibes.Availability.Application.Events.External.TimeReservations;
+using Servibes.Availability.Application.Events.External.TimeReservations.TimeReservationCanceled;
+using Servibes.Availability.Application.Events.External.TimeReservations.TimeReservationFinished;
 using Servibes.Availability.Core.Companies;
 using Servibes.Availability.Core.Employees;
 using Servibes.Availability.Infrastructure.Domain.Companies;
 using Servibes.Availability.Infrastructure.Domain.Employees;
 using Servibes.Shared;
+using Servibes.Shared.Communication.Events;
 
 namespace Servibes.Availability.Infrastructure
 {
@@ -30,6 +35,7 @@ namespace Servibes.Availability.Infrastructure
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IAvailabilityUnitOfWork, AvailabilityUnitOfWork>();
+            services.AddSingleton<IEventMapper, EventMapper>();
 
             return services;
         }
@@ -39,7 +45,11 @@ namespace Servibes.Availability.Infrastructure
             app.UseModuleRequests()
                 .Subscribe<EmployeeAddedEvent>()
                 .Subscribe<RegistrationCompletedEvent>()
-                .Subscribe<AppointmentCreatedEvent>();
+                .Subscribe<AppointmentRejectedEvent>()
+                .Subscribe<AppointmentCanceledEvent>()
+                .Subscribe<AppointmentFinishedEvent>()
+                .Subscribe<TimeReservationCanceledEvent>()
+                .Subscribe<TimeReservationFinishedEvent>();
 
             return app;
         }

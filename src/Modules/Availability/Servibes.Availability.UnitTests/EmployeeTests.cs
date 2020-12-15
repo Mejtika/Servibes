@@ -262,7 +262,7 @@ namespace Servibes.Availability.UnitTests
             var newReservation = Reservation.Create(start, end, now);
             var employee = CreateEmployeeWithNoReservationsAndTimeOffs();
 
-            employee.AddReservation(newReservation);
+            employee.AddReservation(newReservation, null);
 
             employee.DomainEvents.Should().ContainSingle();
             employee.DomainEvents.Should().AllBeOfType<EmployeeReservationAddedDomainEvent>();
@@ -276,7 +276,7 @@ namespace Servibes.Availability.UnitTests
             var newReservation = Reservation.Create(start, end, now);
             var employee = CreateEmployeeWithReservations();
 
-            employee.AddReservation(newReservation);
+            employee.AddReservation(newReservation, null);
 
             employee.DomainEvents.Should().ContainSingle();
             employee.DomainEvents.Should().AllBeOfType<EmployeeReservationAddedDomainEvent>();
@@ -289,9 +289,9 @@ namespace Servibes.Availability.UnitTests
             var now = new DateTime(2020, 12, 5, 12, 30, 0);
             var newReservation = Reservation.Create(start, end, now);
             var employee = CreateEmployeeWithReservations();
-            employee.AddReservation(newReservation);
-            employee.DomainEvents.Should().ContainSingle();
-            employee.DomainEvents.Should().AllBeOfType<EmployeeReservationCanceledDomainEvent>();
+            employee.Invoking(employee => employee.AddReservation(newReservation, null))
+                .Should().Throw<IncorrectReservationDateException>()
+                .WithMessage($"Reservation for chosen date {newReservation.Start} - {newReservation.End} cannot be made.");
         }
 
         [Theory]
@@ -301,9 +301,9 @@ namespace Servibes.Availability.UnitTests
             var now = new DateTime(2020, 12, 5, 12, 30, 0);
             var newReservation = Reservation.Create(start, end, now);
             var employee = CreateEmployeeWithReservations();
-            employee.AddReservation(newReservation);
-            employee.DomainEvents.Should().ContainSingle();
-            employee.DomainEvents.Should().AllBeOfType<EmployeeReservationCanceledDomainEvent>();
+            employee.Invoking(employee => employee.AddReservation(newReservation, null))
+                .Should().Throw<IncorrectReservationDateException>()
+                .WithMessage($"Reservation for chosen date {newReservation.Start} - {newReservation.End} cannot be made.");
         }
 
         [Theory]
@@ -354,9 +354,9 @@ namespace Servibes.Availability.UnitTests
             var now = new DateTime(2020, 12, 5, 12, 30, 0);
             var newReservation = Reservation.Create(start, end, now);
             var employee = CreateEmployeeWithReservationsAndTimeOffs();
-            employee.AddReservation(newReservation);
-            employee.DomainEvents.Should().ContainSingle();
-            employee.DomainEvents.Should().AllBeOfType<EmployeeReservationCanceledDomainEvent>();
+            employee.Invoking(employee => employee.AddReservation(newReservation, null))
+                .Should().Throw<IncorrectReservationDateException>()
+                .WithMessage($"Reservation for chosen date {newReservation.Start} - {newReservation.End} cannot be made.");
         }
 
         [Fact]
@@ -382,7 +382,7 @@ namespace Servibes.Availability.UnitTests
                     new DateTime(2020, 12, 11, 17, 15, 0),
                     new DateTime(2020, 12, 5, 14, 0, 0))
             };
-            reservations.ForEach(reservation => employee.AddReservation(reservation));
+            reservations.ForEach(reservation => employee.AddReservation(reservation, null));
             employee.ClearDomainEvents();
 
             reservations.ForEach(reservation => employee.ReleaseReservation(reservation));
@@ -423,7 +423,7 @@ namespace Servibes.Availability.UnitTests
                     new DateTime(2020, 12, 11, 17, 15, 0),
                     new DateTime(2020, 12, 5, 14, 0, 0))
             };
-            reservations.ForEach(reservation => employee.AddReservation(reservation));
+            reservations.ForEach(reservation => employee.AddReservation(reservation, null));
             employee.ClearDomainEvents();
             return employee;
         }

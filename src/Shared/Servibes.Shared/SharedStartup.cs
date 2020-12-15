@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Servibes.Shared.Communication;
 using Servibes.Shared.Communication.Brokers;
 using Servibes.Shared.Communication.Events;
+using Servibes.Shared.Database;
+using Servibes.Shared.Services;
 
 namespace Servibes.Shared
 {
@@ -17,6 +19,7 @@ namespace Servibes.Shared
             services.AddTransient<IMessageBroker, MessageBroker>();
             services.AddTransient<IEventMapperCompositionRoot, EventMapperCompositionRoot>();
             services.AddTransient<IEventProcessor, EventProcessor>();
+            services.AddTransient<IDateTimeServer, DateTimeServer>();
             services.AddScoped<ISqlConnectionFactory>(x =>
                     new SqlConnectionFactory(configuration.GetConnectionString("DefaultConnection")));
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Servibes.Appointments.Core.Appointments;
+using Servibes.Appointments.Core.Reservees;
 using Servibes.Appointments.Core.TimeReservations;
 
 namespace Servibes.Appointments.Infrastructure
@@ -9,6 +10,10 @@ namespace Servibes.Appointments.Infrastructure
         public DbSet<Appointment> Appointments { get; set; }
 
         public DbSet<TimeReservation> TimeReservations { get; set; }
+
+        public DbSet<Company> Companies { get; set; }
+
+        public DbSet<Client> Clients { get; set; }
 
         public AppointmentsContext(DbContextOptions<AppointmentsContext> options) : base(options)
         {

@@ -44,6 +44,31 @@ namespace Servibes.Appointments.Infrastructure.Migrations
                     b.ToTable("Appointments");
                 });
 
+            modelBuilder.Entity("Servibes.Appointments.Core.Reservees.Client", b =>
+                {
+                    b.Property<Guid>("ClientId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ClientId");
+
+                    b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("Servibes.Appointments.Core.Reservees.Company", b =>
+                {
+                    b.Property<Guid>("CompanyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WalkInId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CompanyId");
+
+                    b.ToTable("Companies");
+                });
+
             modelBuilder.Entity("Servibes.Appointments.Core.TimeReservations.TimeReservation", b =>
                 {
                     b.Property<Guid>("TimeReservationId")
@@ -58,9 +83,10 @@ namespace Servibes.Appointments.Infrastructure.Migrations
                         .HasColumnName("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("_isCanceled")
-                        .HasColumnName("IsCanceled")
-                        .HasColumnType("bit");
+                    b.Property<string>("_status")
+                        .IsRequired()
+                        .HasColumnName("Status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TimeReservationId");
 

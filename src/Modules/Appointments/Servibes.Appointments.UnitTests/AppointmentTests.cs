@@ -26,31 +26,32 @@ namespace Servibes.Appointments.UnitTests
             appointment.DomainEvents.Should().AllBeOfType<AppointmentStateChanged>();
         }
 
+        //[Fact]
+        //public void NotConfirmedAppointmentCanBeChangedToConfirmed()
+        //{
+        //    var appointment = CreateAppointment();
+
+        //    appointment.Confirm();
+
+        //    appointment.DomainEvents.Should().ContainSingle();
+        //    appointment.DomainEvents.Should().AllBeOfType<AppointmentStateChanged>();
+        //}
+
         [Fact]
-        public void NotConfirmedAppointmentCanBeChangedToConfirmed()
-        {
-            var appointment = CreateAppointment();
-
-            appointment.Confirm();
-
-            appointment.DomainEvents.Should().ContainSingle();
-            appointment.DomainEvents.Should().AllBeOfType<AppointmentStateChanged>();
-        }
-
-        [Fact]
-        public void CanceledAppointmentCannotBeConfirmed()
+        public void CanceledAppointmentCannotBeFinised()
         {
             var appointment = CreateCanceledAppointment();
+            var now = DateTime.Today.AddHours(11);
 
-            appointment.Invoking(appointment => appointment.Confirm())
+            appointment.Invoking(appointment => appointment.Finish(now))
                 .Should().Throw<CannotChangeAppointmentStateException>()
-                .WithMessage($"Cannot change state for appointment {appointment.AppointmentId} from {AppointmentStatus.Canceled} to {AppointmentStatus.Confirmed}");
+                .WithMessage($"Cannot change state for appointment {appointment.AppointmentId} from {AppointmentStatus.Canceled} to {AppointmentStatus.Finished}");
         }
 
         [Fact]
         public void AppointmentWithPassedDateCannotBeCanceled()
         {
-            var appointment = CreateConfirmedAppointment();
+            var appointment = CreateAppointment();
 
             var now = DateTime.Today.AddHours(14).AddMinutes(1);
             appointment.Invoking(appointment => appointment.Cancel(now, "canceled"))
@@ -60,7 +61,7 @@ namespace Servibes.Appointments.UnitTests
         [Fact]
         public void ConfirmedAppointmentCanBeCanceled()
         {
-            var appointment = CreateConfirmedAppointment();
+            var appointment = CreateAppointment();
 
             var now = DateTime.Today.AddHours(11);
             appointment.Cancel(now, "canceled");
@@ -70,20 +71,20 @@ namespace Servibes.Appointments.UnitTests
         }
 
         [Fact]
-        public void NotConfirmedAppointmentCannotBeCanceled()
+        public void CanceledAppointmentCannotBeCanceledOnceMore()
         {
-            var appointment = CreateAppointment();
+            var appointment = CreateCanceledAppointment();
 
             var now = DateTime.Today.AddHours(14).AddMinutes(1);
             appointment.Invoking(appointment => appointment.Cancel(now, "canceled"))
                 .Should().Throw<CannotChangeAppointmentStateException>()
-                .WithMessage($"Cannot change state for appointment {appointment.AppointmentId} from {AppointmentStatus.NotConfirmed} to {AppointmentStatus.Canceled}");
+                .WithMessage($"Cannot change state for appointment {appointment.AppointmentId} from {AppointmentStatus.Canceled} to {AppointmentStatus.Canceled}");
         }
-        
+
         [Fact]
         public void AlreadyStartedAppointmentCannotBeCanceled()
         {
-            var appointment = CreateConfirmedAppointment();
+            var appointment = CreateAppointment();
 
             var now = DateTime.Today.AddHours(13);
             appointment.Invoking(appointment => appointment.Cancel(now, "canceled"))
@@ -94,7 +95,7 @@ namespace Servibes.Appointments.UnitTests
         [Fact]
         public void ConfirmedAppointmentCanBeMarkAsNoShow()
         {
-            var appointment = CreateConfirmedAppointment();
+            var appointment = CreateAppointment();
 
             var now = DateTime.Today.AddHours(13);
             appointment.MarkAsNoShow(now);
@@ -104,20 +105,9 @@ namespace Servibes.Appointments.UnitTests
         }
 
         [Fact]
-        public void NotConfirmedAppointmentCannotBeMarkAsNoShow()
-        {
-            var appointment = CreateAppointment();
-
-            var now = DateTime.Today.AddHours(13);
-            appointment.Invoking(appointment => appointment.MarkAsNoShow(now))
-                .Should().Throw<CannotChangeAppointmentStateException>()
-                .WithMessage($"Cannot change state for appointment {appointment.AppointmentId} from {AppointmentStatus.NotConfirmed} to {AppointmentStatus.NoShow}");
-        }
-
-        [Fact]
         public void NotStartedAppointmentCannotBeMarkAsNoShow()
         {
-            var appointment = CreateConfirmedAppointment();
+            var appointment = CreateAppointment();
 
             var now = DateTime.Today.AddHours(11);
             appointment.Invoking(appointment => appointment.MarkAsNoShow(now))
@@ -126,20 +116,9 @@ namespace Servibes.Appointments.UnitTests
         }
 
         [Fact]
-        public void NotConfirmedAppointmentCannotBeFinished()
-        {
-            var appointment = CreateAppointment();
-
-            var now = DateTime.Today.AddHours(15);
-            appointment.Invoking(appointment => appointment.Finish(now))
-                .Should().Throw<CannotChangeAppointmentStateException>()
-                .WithMessage($"Cannot change state for appointment {appointment.AppointmentId} from {AppointmentStatus.NotConfirmed} to {AppointmentStatus.Finished}");
-        }
-
-        [Fact]
         public void AppointmentWithNotPassedDateCannotBeFinished()
         {
-            var appointment = CreateConfirmedAppointment();
+            var appointment = CreateAppointment();
 
             var now = DateTime.Today.AddHours(13);
             appointment.Invoking(appointment => appointment.Finish(now))
@@ -150,7 +129,7 @@ namespace Servibes.Appointments.UnitTests
         [Fact]
         public void AppointmentWithPassedDateCanBeFinished()
         {
-            var appointment = CreateConfirmedAppointment();
+            var appointment = CreateAppointment();
 
             var now = DateTime.Today.AddHours(14).AddMinutes(1);
             appointment.Finish(now);
@@ -175,17 +154,8 @@ namespace Servibes.Appointments.UnitTests
         private static Appointment CreateCanceledAppointment()
         {
             var appointment = CreateAppointment();
-            appointment.Confirm();
             var now = DateTime.Today.AddHours(11);
             appointment.Cancel(now, "canceled");
-            appointment.ClearDomainEvents();
-            return appointment;
-        }
-
-        private static Appointment CreateConfirmedAppointment()
-        {
-            var appointment = CreateAppointment();
-            appointment.Confirm();
             appointment.ClearDomainEvents();
             return appointment;
         }

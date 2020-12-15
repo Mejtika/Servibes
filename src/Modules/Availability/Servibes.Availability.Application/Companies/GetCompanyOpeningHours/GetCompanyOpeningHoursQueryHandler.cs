@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Dapper;
 using MediatR;
 using Servibes.Availability.Application.Shared;
-using Servibes.Availability.Core.Companies;
-using Servibes.Shared;
+using Servibes.Shared.Database;
 
 namespace Servibes.Availability.Application.Companies.GetCompanyOpeningHours
 {
