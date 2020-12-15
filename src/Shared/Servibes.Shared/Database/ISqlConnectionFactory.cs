@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace Servibes.Shared
+namespace Servibes.Shared.Database
 {
     public interface ISqlConnectionFactory
     {

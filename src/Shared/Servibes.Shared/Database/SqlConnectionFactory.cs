@@ -2,7 +2,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 
-namespace Servibes.Shared
+namespace Servibes.Shared.Database
 {
     public class SqlConnectionFactory : ISqlConnectionFactory, IDisposable
     {

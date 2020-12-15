@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using MediatR;
-using Servibes.Shared;
+using Servibes.Shared.Database;
 
 namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
 {
@@ -20,14 +20,12 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
         public async Task<List<AvailableHoursDto>> Handle(GetEmployeeAvailableHoursQuery request, CancellationToken cancellationToken)
         {
             var connection = this._sqlConnection.GetOpenConnection();
-
             const string employeeAvailabilitySql = "SELECT" +
                                                    "[EmployeeId], " +
                                                    "[CompanyId] " +
                                                    "FROM [Servibes].[availability].[Employees]" +
                                                    "WHERE [EmployeeId] = @EmployeeId AND [CompanyId] = @CompanyId";
             var employeeAvailability = await connection.QuerySingleOrDefaultAsync<EmployeeAvailabilityDto>(employeeAvailabilitySql, new { request.EmployeeId, request.CompanyId });
-
             if (employeeAvailability == null)   
             {
                 throw new InvalidOperationException("Employee or company doesn't exists");
@@ -41,14 +39,12 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
             var workingHours = await connection.QueryFirstAsync<WorkingHoursDto>(employeeWorkingHoursSql, new { request.EmployeeId, Day = request.Date.DayOfWeek.ToString() });
 
             var nextDay = request.Date.AddDays(1);
-            var reservationsForGivenDateSql =  "SELECT" +
-                                                     "[Start], " +
-                                                     "[End] " +
-                                                     "FROM [Servibes].[availability].[Reservations] " +
-                                                     "WHERE [EmployeeId] = @EmployeeId AND [Start] BETWEEN @DateFrom AND @DateTo";
-
+            var reservationsForGivenDateSql = "SELECT" +
+                                                    "[Start], " +
+                                                    "[End] " +
+                                                    "FROM [Servibes].[availability].[Reservations] " +
+                                                    "WHERE [EmployeeId] = @EmployeeId AND [Start] BETWEEN @DateFrom AND @DateTo";
             var reservations = (await connection.QueryAsync<ReservationDto>(reservationsForGivenDateSql, new { request.EmployeeId, DateFrom = request.Date, DateTo = nextDay })).AsList();
-
             var availableHours = GetHoursAvailableForReservation(request.Duration, workingHours.Start, workingHours.End, reservations);
 
             return availableHours.Select(x => new AvailableHoursDto {Time = x.ToString()}).ToList();
@@ -68,17 +64,17 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
         {
             var timePeriodsBetween = GetTimePeriodsBetween(start, end);
 
-            foreach (var r in reservations)
+            foreach (var reservation in reservations)
             {
-                var startIndex = timePeriodsBetween.IndexOf(r.Start.TimeOfDay.Add(TimeSpan.FromMinutes(15)));
-                var endIndex = timePeriodsBetween.IndexOf(r.End.TimeOfDay);
+                var startIndex = timePeriodsBetween.IndexOf(reservation.Start.TimeOfDay.Add(TimeSpan.FromMinutes(15)));
+                var endIndex = timePeriodsBetween.IndexOf(reservation.End.TimeOfDay);
                 timePeriodsBetween.RemoveRange(startIndex, endIndex - startIndex);
             }
 
-            var hoursToBook = timePeriodsBetween.Where(x =>
+            var hoursToBook = timePeriodsBetween.Where(timePeriod =>
             {
-                var checkTime = x.Add(TimeSpan.FromMinutes(serviceTime));
-                var timePeriods = GetTimePeriodsBetween(x, checkTime);
+                var checkTime = timePeriod.Add(TimeSpan.FromMinutes(serviceTime));
+                var timePeriods = GetTimePeriodsBetween(timePeriod, checkTime);
                 return timePeriodsBetween.Contains(checkTime) && ContainsAll(timePeriods);
             }).ToList();
 
@@ -90,10 +86,10 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
         private List<TimeSpan> GetHoursToBookForShortReservation(TimeSpan start, TimeSpan end, List<ReservationDto> reservations)
         {
             var timePeriodsBetween = GetTimePeriodsBetween(start, end.Add(TimeSpan.FromMinutes(-15)));
-            foreach (var r in reservations)
+            foreach (var reservation in reservations)
             {
-                var startIndex = timePeriodsBetween.IndexOf(r.Start.TimeOfDay);
-                var endIndex = timePeriodsBetween.IndexOf(r.End.TimeOfDay);
+                var startIndex = timePeriodsBetween.IndexOf(reservation.Start.TimeOfDay);
+                var endIndex = timePeriodsBetween.IndexOf(reservation.End.TimeOfDay);
                 timePeriodsBetween.RemoveRange(startIndex, endIndex - startIndex);
             }
             return timePeriodsBetween;
