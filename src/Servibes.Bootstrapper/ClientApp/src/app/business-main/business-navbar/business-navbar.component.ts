@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
     styleUrls: ['./business-navbar.component.css']
 })
 export class BusinessNavbarComponent {
-    
 }

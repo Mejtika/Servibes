@@ -6,9 +6,9 @@ import { IAppointment, IClient, ICompany, IEmployee, IService } from 'src/app/sh
 import Query from 'devextreme/data/query';
 
 @Component({
-    selector: 'calendar',
-    templateUrl: './calendar.component.html',
-    styleUrls: ['./calendar.component.css']
+    selector: 'appointments',
+    templateUrl: './appointments.component.html',
+    styleUrls: ['./appointments.component.css']
 })
 export class CalendarComponent {
     @ViewChild(DxSchedulerComponent, { static: false }) scheduler: DxSchedulerComponent;
