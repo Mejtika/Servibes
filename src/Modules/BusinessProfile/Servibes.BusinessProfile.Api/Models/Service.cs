@@ -11,7 +11,7 @@ namespace Servibes.BusinessProfile.Api.Models
 
         public decimal Price { get; set; }
 
-        public double Duration { get; set; }
+        public int Duration { get; set; }
 
         public string Description { get; set; }
 

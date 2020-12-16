@@ -156,5 +156,8 @@
       }
     }
   },
-  "defaultProject": "Servibes.Bootstrapper"
+  "defaultProject": "Servibes.Bootstrapper",
+  "cli": {
+    "analytics": false
+  }
 }

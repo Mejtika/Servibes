@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Servibes.BusinessProfile.Api;
 
 namespace Servibes.BusinessProfile.Api.Migrations
 {
     [DbContext(typeof(BusinessProfileContext))]
-    partial class BusinessProfileContextModelSnapshot : ModelSnapshot
+    [Migration("20201215182524_DurationToInt")]
+    partial class DurationToInt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

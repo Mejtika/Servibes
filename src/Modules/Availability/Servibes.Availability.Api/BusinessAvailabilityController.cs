@@ -66,10 +66,7 @@ namespace Servibes.Availability.Api
                 companyId,
                 employeeId,
                 request.ReserveeId,
-                request.EmployeeName,
-                request.ServiceName,
-                request.ServicePrice,
-                request.ServiceDuration,
+                request.ServiceId,
                 request.Start));
 
             return NoContent();
