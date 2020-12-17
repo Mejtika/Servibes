@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Servibes.BusinessProfile.Api.Events.External.AppointmentCreated;
 using Servibes.BusinessProfile.Api.Events.External.NewClientRegistered;
-using Servibes.BusinessProfile.Api.ModuleRequests;
+using Servibes.BusinessProfile.Api.Services;
 using Servibes.Shared;
 
 namespace Servibes.BusinessProfile.Api
@@ -31,6 +31,7 @@ namespace Servibes.BusinessProfile.Api
             });
 
             services.AddTransient<ReservationService>();
+            services.AddTransient<AuthorizationService>();
 
             return services;
         }
@@ -40,10 +41,15 @@ namespace Servibes.BusinessProfile.Api
             app.UseModuleRequests()
                 .Subscribe<AppointmentCreatedEvent>()
                 .Subscribe<NewClientRegisteredEvent>()
-                .Subscribe<AvailableModuleRequest>("modules/business/details", async (sp, request) =>
+                .Subscribe<GetReservationDataRequest>("modules/business/details", async (sp, request) =>
                 {
                     var service = sp.GetService<ReservationService>();
                     return await service.GetReservationData(request.EmployeeId, request.ServiceId);
+                })
+                .Subscribe<CheckUserOwnershipRequest>("modules/business/auth", async (sp, request) =>
+                {
+                    var service = sp.GetService<AuthorizationService>();
+                    return await service.CheckOwnership(request.UserId, request.CompanyId);
                 });
 
             using var serviceScope = app.ApplicationServices.CreateScope();

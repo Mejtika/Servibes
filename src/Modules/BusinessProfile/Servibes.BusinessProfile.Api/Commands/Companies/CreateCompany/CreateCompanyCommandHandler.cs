@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Servibes.BusinessProfile.Api.Events;
 using Servibes.BusinessProfile.Api.Models;
 using Servibes.BusinessProfile.Api.Models.ClientBase;
@@ -15,11 +17,16 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany
     {
         private readonly BusinessProfileContext _context;
         private readonly IMessageBroker _messageBroker;
+        private readonly IHttpContextAccessor _accessor;
 
-        public CreateCompanyCommandHandler(BusinessProfileContext context, IMessageBroker messageBroker)
+        public CreateCompanyCommandHandler(
+            BusinessProfileContext context, 
+            IMessageBroker messageBroker,
+            IHttpContextAccessor accessor)
         {
             _context = context;
             _messageBroker = messageBroker;
+            _accessor = accessor;
         }
 
         public async Task<Guid> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
@@ -63,9 +70,12 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany
                 });
             });
 
+            var ownerId = Guid.Parse(_accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
             Company company = new Company()
             {
                 CompanyId = companyId,
+                OwnerId = ownerId,
                 WalkInClientId = walkInClientId,
                 CompanyName = request.CompanyDto.CompanyName,
                 PhoneNumber = PhoneNumber.Create(request.CompanyDto.PhoneNumber),
