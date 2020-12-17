@@ -15,6 +15,7 @@ using Servibes.BusinessProfile.Api;
 using Servibes.Shared;
 using Servibes.Availability.Api;
 using Servibes.Appointments.Api;
+using Servibes.Sales.Api;
 
 namespace Servibes.Bootstrapper
 {
@@ -33,6 +34,7 @@ namespace Servibes.Bootstrapper
             services.AddBusinessProfileModule(Configuration);
             services.AddAvailabilityModule(Configuration);
             services.AddAppointmentsModule(Configuration);
+            services.AddSalesModule(Configuration);
 
             services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlServer(
@@ -98,6 +100,7 @@ namespace Servibes.Bootstrapper
             app.UseBusinessProfileModule();
             app.UseAvailabilityModule();
             app.UseAppointmentsModule();
+            app.UseSalesModule();
 
             app.UseAuthentication();
             app.UseIdentityServer();

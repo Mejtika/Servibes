@@ -58,7 +58,8 @@ namespace Servibes.Appointments.Core.Appointments
                     employee, 
                     reservedDate,
                     AppointmentStatus.Confirmed,
-                    string.Empty));
+                    string.Empty,
+                    service.Price));
 
             return appointment;
         }
@@ -127,7 +128,8 @@ namespace Servibes.Appointments.Core.Appointments
                 _employee,
                 _reservedDate,
                 _status,
-                _cancellationReason);
+                _cancellationReason,
+                _service.Price);
         }
     }
 }

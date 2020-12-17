@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace Servibes.Appointments.Application.Events.Appointments
+namespace Servibes.Sales.Api
 {
     public class AppointmentFinishedEvent : INotification
     {

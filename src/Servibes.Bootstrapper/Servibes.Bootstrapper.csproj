@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -41,6 +41,7 @@
     <ProjectReference Include="..\Modules\Appointments\Servibes.Appointments.Api\Servibes.Appointments.Api.csproj" />
     <ProjectReference Include="..\Modules\Availability\Servibes.Availability.Api\Servibes.Availability.Api.csproj" />
     <ProjectReference Include="..\Modules\BusinessProfile\Servibes.BusinessProfile.Api\Servibes.BusinessProfile.Api.csproj" />
+    <ProjectReference Include="..\Modules\Sales\Servibes.Sales.Api\Servibes.Sales.Api.csproj" />
     <ProjectReference Include="..\Shared\Servibes.Shared\Servibes.Shared.csproj" />
   </ItemGroup>
 
