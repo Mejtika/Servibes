@@ -20,7 +20,11 @@ namespace Servibes.Appointments.Core.Appointments
 
         private AppointmentStatus _status;
 
+        public AppointmentStatus AppointmentStatus => _status;
+
         private readonly ReservationDate _reservedDate;
+
+        public ReservationDate ReservationDate => _reservedDate;
 
         private string _cancellationReason;
 
