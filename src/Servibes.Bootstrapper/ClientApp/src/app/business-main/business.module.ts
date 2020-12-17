@@ -8,18 +8,10 @@ import { SharedModule } from '../shared/shared.module';
 
 import { DxSchedulerModule, DxTemplateModule } from 'devextreme-angular';
 import { MockDataService } from '../data-service/mock-data.service';
-import { BusinessFooterComponent } from './business-footer/business-footer.component';
-import { BusinessNavbarComponent } from './business-navbar/business-navbar.component';
-import { BusinessSidenavComponent } from './business-sidenav/business-sidenav.component';
 import { BusinessMainComponent } from './business-main.component';
 import { BusinessRegisterComponent } from './business-register/business-register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TimeArray } from '../shared/others/time-array';
-import { SalesComponent } from './sales/sales.component';
-import { ClientBaseComponent } from './client-base/client-base.component';
-import { PortfolioComponent } from './portfolio/portfolio.component';
-import { ReviewsComponent } from './reviews/reviews.component';
-import { BusinessProfileComponent } from './business-profile/business-profile.component';
 
 const routes: Routes = [
     { 
@@ -35,27 +27,23 @@ const routes: Routes = [
             },
             {
                 path: "appointments",
-                component: CalendarComponent
+                loadChildren: () => import('./business-modules/appointments/appointments-routing.module').then(m => m.AppointmentsRoutingModule),
             },
             {
                 path: "sales",
-                component: SalesComponent
+                loadChildren: () => import('./business-modules/sales/sales-routing.module').then(m => m.SalesRoutingModule),
             },
             {
                 path: "clientbase",
-                component: ClientBaseComponent
-            },
-            {
-                path: "portfolio",
-                component: PortfolioComponent
+                loadChildren: () => import('./business-modules/client-base/client-base-routing.module').then(m => m.ClientBaseRoutingModule),
             },
             {
                 path: "reviews",
-                component: ReviewsComponent
+                loadChildren: () => import('./business-modules/reviews/reviews-routing.module').then(m => m.ReviewsRoutingModule),
             },
             {
-                path: "businessprofile",
-                component: BusinessProfileComponent
+                path: "profile",
+                loadChildren: () => import('./business-modules/profile/profile-routing.module').then(m => m.ProfileRoutingModule),
             }
         ]
     }
@@ -64,16 +52,8 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         BusinessMainComponent,
-        BusinessNavbarComponent,
-        BusinessFooterComponent,
-        BusinessSidenavComponent,
         BusinessRegisterComponent,
-        CalendarComponent,
-        SalesComponent,
-        ClientBaseComponent,
-        PortfolioComponent,
-        ReviewsComponent,
-        BusinessProfileComponent
+        CalendarComponent
     ],
     imports: [
         CommonModule,
