@@ -20,6 +20,8 @@ namespace Servibes.Appointments.Core.Appointments.Events
 
         public string CancellationReason { get; }
 
+        public decimal Price { get; }
+
         public AppointmentStateChanged(
             Guid appointmentId,
             Guid reserveeId,
@@ -27,7 +29,8 @@ namespace Servibes.Appointments.Core.Appointments.Events
             Employee employee,
             ReservationDate reservedDate,
             AppointmentStatus status,
-            string cancellationReason)
+            string cancellationReason, 
+            decimal price)
         {
             AppointmentId = appointmentId;
             ReserveeId = reserveeId;
@@ -36,6 +39,7 @@ namespace Servibes.Appointments.Core.Appointments.Events
             ReservedDate = reservedDate;
             Status = status;
             CancellationReason = cancellationReason;
+            Price = price;
         }
     }
 }
