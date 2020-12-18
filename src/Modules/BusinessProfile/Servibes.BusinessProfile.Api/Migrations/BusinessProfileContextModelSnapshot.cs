@@ -93,6 +93,9 @@ namespace Servibes.BusinessProfile.Api.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("WalkInClientId")
                         .HasColumnType("uniqueidentifier");
 

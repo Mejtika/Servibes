@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Coravel;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,8 @@ namespace Servibes.Appointments.Infrastructure
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
 
+            services.AddScheduler();
+            services.AddScoped<AppointmentFinisher>();
             return services;
         }
 

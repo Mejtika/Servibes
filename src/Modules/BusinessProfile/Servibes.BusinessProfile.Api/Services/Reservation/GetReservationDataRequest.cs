@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Servibes.BusinessProfile.Api.ModuleRequests
+namespace Servibes.BusinessProfile.Api.Services
 {
-    public class AvailableModuleRequest
+    public class GetReservationDataRequest
     {
         public Guid EmployeeId { get; set; }
         public Guid ServiceId { get; set; }

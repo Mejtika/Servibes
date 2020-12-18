@@ -20,7 +20,11 @@ namespace Servibes.Appointments.Core.Appointments
 
         private AppointmentStatus _status;
 
+        public AppointmentStatus AppointmentStatus => _status;
+
         private readonly ReservationDate _reservedDate;
+
+        public ReservationDate ReservationDate => _reservedDate;
 
         private string _cancellationReason;
 
@@ -54,7 +58,8 @@ namespace Servibes.Appointments.Core.Appointments
                     employee, 
                     reservedDate,
                     AppointmentStatus.Confirmed,
-                    string.Empty));
+                    string.Empty,
+                    service.Price));
 
             return appointment;
         }
@@ -123,7 +128,8 @@ namespace Servibes.Appointments.Core.Appointments
                 _employee,
                 _reservedDate,
                 _status,
-                _cancellationReason);
+                _cancellationReason,
+                _service.Price);
         }
     }
 }

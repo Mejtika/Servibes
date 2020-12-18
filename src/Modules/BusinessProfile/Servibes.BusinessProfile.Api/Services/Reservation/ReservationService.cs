@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace Servibes.BusinessProfile.Api.ModuleRequests
+namespace Servibes.BusinessProfile.Api.Services
 {
     public class ReservationService
     {

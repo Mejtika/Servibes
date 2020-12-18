@@ -8,6 +8,8 @@ namespace Servibes.BusinessProfile.Api.Models
 
         public string CompanyName { get; set; }
 
+        public Guid OwnerId { get; set; }
+
         public Guid WalkInClientId { get; set; }
 
         public PhoneNumber PhoneNumber { get; set; }

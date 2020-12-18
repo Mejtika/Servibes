@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Servibes.Availability.Core.Companies;
 using Servibes.Availability.Core.Employees;
+using Servibes.Shared.Exceptions;
 
 namespace Servibes.Availability.Application.Events.External.Appointments.AppointmentRejected
 {
@@ -28,7 +29,7 @@ namespace Servibes.Availability.Application.Events.External.Appointments.Appoint
             var company = await _companyRepository.GetByIdAsync(notification.CompanyId);
             if (company == null)
             {
-                throw new Exception($"Company {notification.CompanyId} doesn't exists.");
+                throw new AppException($"Company with id {notification.CompanyId} not found.");
             }
 
             var employee = await _employeeRepository.GetByIdAsync(notification.EmployeeId);

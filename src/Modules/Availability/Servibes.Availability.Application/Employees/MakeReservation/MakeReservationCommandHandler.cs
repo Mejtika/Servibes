@@ -5,6 +5,7 @@ using MediatR;
 using Servibes.Availability.Application.ModuleClients;
 using Servibes.Availability.Core.Employees;
 using Servibes.Shared.Communication.Events;
+using Servibes.Shared.Exceptions;
 using Servibes.Shared.Services;
 
 namespace Servibes.Availability.Application.Employees.MakeReservation
@@ -37,12 +38,12 @@ namespace Servibes.Availability.Application.Employees.MakeReservation
 
             if (employee == null)
             {
-                throw new Exception($"Employee {request.EmployeeId} not found");
+                throw new AppException($"Employee with id {request.EmployeeId} not found.");
             }
 
             if (!employee.CheckCompanyCorrectness(request.CompanyId))
             {
-                throw new Exception($"Employee doesn't work in company {request.CompanyId}");
+                throw new AppException($"Employee {request.EmployeeId} and company {request.CompanyId} are not match.");
             }
 
             var reservationDataDto = await _reservationClient.GetReservationData(request.EmployeeId, request.ServiceId);

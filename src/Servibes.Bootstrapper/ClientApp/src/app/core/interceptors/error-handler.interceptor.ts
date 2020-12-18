@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
@@ -16,10 +16,17 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
-      catchError((error) => {
-        this.toastr.error(error.message);
+      catchError((errorResponse: HttpErrorResponse) => {
+        console.dir(errorResponse);
+        if (errorResponse.status === 400) {
+          const commandValidationMessage = `${errorResponse.error.detail}: ${errorResponse.error.errors}`;
+          this.toastr.error(commandValidationMessage);
 
-        return throwError(error.message);
+        } else {
+          const businessRuleMessage = `${errorResponse.error.title}: ${errorResponse.error.detail}`;
+          this.toastr.error(businessRuleMessage);
+        }
+        return throwError(errorResponse);
       })
     )
   }
