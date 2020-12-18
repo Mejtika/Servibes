@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Servibes.ClientProfile.Api.Events.External.AppointmentPaid;
+using Servibes.ClientProfile.Api.Events.External.NewClientRegistered;
 using Servibes.Shared;
 
 namespace Servibes.ClientProfile.Api
@@ -24,13 +26,14 @@ namespace Servibes.ClientProfile.Api
                     });
             });
 
-
             return services;
         }
 
         public static IApplicationBuilder UseClientProfileModule(this IApplicationBuilder app)
         {
-            app.UseModuleRequests();
+            app.UseModuleRequests()
+                .Subscribe<AppointmentPaidEvent>()
+                .Subscribe<NewClientRegisteredEvent>();
 
             return app;
         }
