@@ -1,8 +1,9 @@
-<div *ngIf="!profile"><spinner></spinner></div>
+<!--<div *ngIf="!profile"><spinner></spinner></div>-->
 
-<sb-layout-dashboard *ngIf="profile">
+<sb-layout-dashboard>
     <sb-dashboard-head title="Profile" [hideBreadcrumbs]="false"></sb-dashboard-head>
     <div [formGroup]="form" (ngSubmit)="onSubmit()">
+
         <!-- COMPANY NAME -->
         <div class="form-group">
             <label for="companyName">Company name:</label>
@@ -13,7 +14,7 @@
                 class="form-control" />
 
             <div *ngIf="hasError('companyName')" class="invalid-feedback">
-                <div *ngIf="form.get('companyName').errors['required']">
+                <div *ngIf="form.get('companyName').errors?.required">
                     Company name is required.
                 </div>
             </div>
@@ -37,6 +38,128 @@
         </div>
       <!-- PHONE NUMBER -->
 
+      <!-- CATEGORY -->
+      <div class="form-group">
+        <label for="category">Category: </label>
+        <br />
+        <select class="form-control" (change)="changedCategory($event)" formControlName="category" id="category">
+          <option value="" disabled>Choice category</option>
+          <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
+        </select>
+
+        <div *ngIf="hasError('category')"
+             class="invalid-feedback">
+          <div *ngIf="form.get('category').errors?.required">
+            Category is required
+          </div>
+        </div>
+      </div>
+      <!-- CATEGORY -->
+
+      <!-- DESCRIPTION -->
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <br />
+        <textarea type="textarea"
+                  id="description"
+                  formControlName="description"
+                  class="form-control">
+        </textarea>
+
+        <div *ngIf="hasError('description')"
+             class="invalid-feedback">
+          <div *ngIf="form.get('description').errors?.required">
+            Description is required.
+          </div>
+        </div>
+    </div>
+    <!-- DESCRIPTION -->
+
+    <!-- ADDRESS -->
+    <!--<div class="form-group" [formGroup]="address">
+        <label for="location">Address:</label>
+        <br />
+        <input type="text" id="city"
+               formControlName="city" required
+               placeholder="City..."
+               class="form-control" />
+
+        <div *ngIf="hasError('city')"
+             class="invalid-feedback">
+          <div *ngIf="form.get('city').errors?.required">
+            City is required.
+          </div>
+        </div>
+
+        <input type="text" id="zipCode"
+               formControlName="zipCode" required
+               placeholder="Zip code..."
+               class="form-control" />
+
+        <div *ngIf="hasError('zipCode')"
+             class="invalid-feedback">
+          <div *ngIf="form.get('zipCode').errors?.required">
+            Zip code is required.
+          </div>
+        </div>
+
+        <input type="text" id="street"
+               formControlName="street" required
+               placeholder="Street..."
+               class="form-control" />
+
+        <div *ngIf="hasError('street')"
+             class="invalid-feedback">
+          <div *ngIf="form.get('street').errors?.required">
+            Street is required.
+          </div>
+        </div>
+
+        <input type="text" id="streetNumber"
+               formControlName="streetNumber" required
+               placeholder="Street number..."
+               class="form-control" />
+
+        <div *ngIf="hasError('streetNumber')"
+             class="invalid-feedback">
+          <div *ngIf="form.get('streetNumber').errors?.required">
+            Street Number is required.
+          </div>
+        </div>
+
+        <input type="text" id="flatNumber"
+               formControlName="flatNumber" required
+               placeholder="Flat number..."
+               class="form-control" />
+
+        <div *ngIf="hasError('flatNumber')"
+             class="invalid-feedback">
+          <div *ngIf="form.get('flatNumber').errors?.required">
+            Flat Number is required.
+          </div>
+        </div>
+      </div>
+      <!-- ADDRESS -->
+
+      <!-- COVER PHOTO -->
+      <!--<div class="form-group">
+        <label for="coverPhoto">Conver photo:</label>
+        <br />
+        <input type="file" id="coverPhoto"
+               formControlName="coverPhoto" required
+               class="form-control" />
+
+        <div *ngIf="hasError('coverPhoto')"
+             class="invalid-feedback">
+          <div *ngIf="form.get('coverPhoto').errors?.required">
+            Cover photo is required
+          </div>
+        </div>
+      </div>
+      <!-- COVER PHOTO -->
 
     </div>
+
+    <button type="submit" (click)="onSubmit()" class="btn btn-primary" [disabled]="!form.valid">Save</button>
+
 </sb-layout-dashboard>

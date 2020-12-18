@@ -12,10 +12,11 @@ import { BusinessMainComponent } from './business-main.component';
 import { BusinessRegisterComponent } from './business-register/business-register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TimeArray } from '../shared/others/time-array';
+import { BusinessRegisterGuard } from './business-register/business-register.guard';
 
 const routes: Routes = [
     { 
-        path: "", pathMatch: "full", redirectTo: "appointments" 
+        path: "", pathMatch: "full", redirectTo: "register" 
     },
     {
         path: "",
@@ -23,7 +24,8 @@ const routes: Routes = [
         children: [
             {
                 path: "register", 
-                component: BusinessRegisterComponent
+                component: BusinessRegisterComponent,
+                canActivate: [BusinessRegisterGuard]
             },
             {
                 path: "appointments",
@@ -65,7 +67,8 @@ const routes: Routes = [
     ],
     providers: [
         MockDataService,
-        TimeArray
+        TimeArray,
+        BusinessRegisterGuard
     ]
 })
 export class BusinessModule {

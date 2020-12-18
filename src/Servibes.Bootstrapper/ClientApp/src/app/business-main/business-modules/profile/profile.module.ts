@@ -19,6 +19,7 @@ import * as profileGuards from './guards';
 
 /* Services */
 import * as profileServices from './services';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
     imports: [
@@ -28,6 +29,7 @@ import * as profileServices from './services';
         FormsModule,
         AppCommonModule,
         NavigationModule,
+        SharedModule
     ],
     providers: [...profileServices.services, ...profileGuards.guards],
     declarations: [...profileContainers.containers, /*...appointmentsComponents.components*/],

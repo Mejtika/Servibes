@@ -47,7 +47,7 @@ export class ValidationService {
 
     public zipCodeValidator() : ValidatorFn[] {
         return [
-            Validators.pattern("^[0-9]{2}-[0-9]{3}*$"),
+            //Validators.pattern("^[0-9]{2}-[0-9]{3}*$"),
             Validators.required
         ];
     }

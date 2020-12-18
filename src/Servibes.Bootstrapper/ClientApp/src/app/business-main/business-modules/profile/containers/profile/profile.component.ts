@@ -33,26 +33,33 @@ export class ProfileComponent extends BaseForm implements OnInit {
         forkJoin([profile, categories]).subscribe(result => {
             this.profile = result[0];
             this.categories = result[1];
-            
+
+            console.log('categories', this.categories);
+            console.log('profile', this.profile);
+
             this.initForm();
         });
     }
 
     private initForm() {
+        console.log('profile', this.profile);
+
         this.form = this.formBuilder.group({
             companyName: new FormControl(this.profile.companyName, this.validationService.companyNameValidator()),
             phoneNumber: new FormControl(this.profile.phoneNumber, this.validationService.phoneNumberValidator()),
             category: new FormControl(this.profile.category, this.validationService.categoryValidator() ),
             description: new FormControl(this.profile.description, this.validationService.descriptionValidator() ),
             coverPhoto: new FormControl(this.profile.coverPhoto, this.validationService.requiredVaidator() ),
-            address: this.formBuilder.group({
+            /*address: this.formBuilder.group({
                 city: new FormControl(this.profile.address.city, this.validationService.cityValidator() ),
                 zipcode: new FormControl(this.profile.address.zipcode, this.validationService.zipCodeValidator() ),
                 street: new FormControl(this.profile.address.street),
                 flatNumber: new FormControl(this.profile.address.flatNumber),
                 streetNumber: new FormControl(this.profile.address.streetNumber)
-            })
+            })*/
         });
+
+        console.log('form', this.form.getRawValue());
     }
 
     onSubmit() {
