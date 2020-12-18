@@ -6,6 +6,11 @@ namespace Servibes.BusinessProfile.Api.Queries.Services.GetCompanyServices
 {
     public class GetCompanyServicesQuery : IRequest<IEnumerable<CompanyServicesDto>>
     {
-        public Guid CompanyId { get; set; }
+        public GetCompanyServicesQuery(Guid companyId)
+        {
+            CompanyId = companyId;
+        }
+
+        public Guid CompanyId { get; }
     }
 }

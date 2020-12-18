@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Servibes.BusinessProfile.Api.Queries.Employees;
 using Servibes.Shared.Database;
+using Servibes.Shared.Exceptions;
 
 namespace Servibes.BusinessProfile.Api.Queries.Services.GetServiceEmployees
 {
@@ -24,20 +25,20 @@ namespace Servibes.BusinessProfile.Api.Queries.Services.GetServiceEmployees
         {
             var connection = this._sqlConnection.GetOpenConnection();
 
-            const string employeesForServiceSql = @"    SELECT 
-                                                            E.EmployeeId,
-	                                                        E.FirstName,
-	                                                        E.LastName
-                                                        FROM
-                                                            [business].[Performers] P
-                                                            INNER JOIN[business].[Employees] E ON E.EmployeeId = P.PerformerId
-                                                        WHERE
-                                                            P.ServiceId = @ServiceId";
+            const string employeesForServiceSql = @"SELECT 
+                                                        E.EmployeeId,
+	                                                    E.FirstName,
+	                                                    E.LastName
+                                                    FROM
+                                                        [business].[Performers] P
+                                                        INNER JOIN[business].[Employees] E ON E.EmployeeId = P.PerformerId
+                                                    WHERE
+                                                         P.ServiceId = @ServiceId";
             var employeesForService = await connection.QueryAsync<CompanyEmployeeDto>(employeesForServiceSql, new { request.ServiceId });
 
             if (employeesForService == null)
             {
-                throw new InvalidOperationException("Service doesn't exists");
+                throw new AppException($"Service {request.ServiceId} not found");
             }
 
             return employeesForService.AsList();

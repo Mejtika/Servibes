@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Servibes.Shared.Exceptions;
 
 namespace Servibes.BusinessProfile.Api.Queries.Employees.GetCompanyEmployees
 {
@@ -19,14 +21,16 @@ namespace Servibes.BusinessProfile.Api.Queries.Employees.GetCompanyEmployees
             this._mapper = mapper;
         }
 
-        public Task<IEnumerable<CompanyEmployeeDto>> Handle(GetCompanyEmployeesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CompanyEmployeeDto>> Handle(GetCompanyEmployeesQuery request, CancellationToken cancellationToken)
         {
-            var employees = _context.Employees.Where(e => e.CompanyId == request.CompanyId).ToList();
+            var employees = await _context.Employees.Where(e => e.CompanyId == request.CompanyId).ToListAsync(cancellationToken);
 
             if (!employees.Any())
-                throw new ArgumentException($"Company with id {request.CompanyId} doesnt have any employees.");
+            {
+                throw new AppException($"Company with id {request.CompanyId} doesn't have any employees.");
+            }
 
-            return Task.FromResult(_mapper.Map<IEnumerable<CompanyEmployeeDto>>(employees));
+            return _mapper.Map<IEnumerable<CompanyEmployeeDto>>(employees);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Servibes.BusinessProfile.Api.Queries.Companies.GetCompany
 {
@@ -18,14 +19,14 @@ namespace Servibes.BusinessProfile.Api.Queries.Companies.GetCompany
             this._mapper = mapper;
         }
 
-        public Task<CompanyDto> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
+        public async Task<CompanyDto> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
         {
-            var company = _context.Companies.SingleOrDefault(c => c.CompanyId == request.CompanyId);
+            var company = await _context.Companies.SingleOrDefaultAsync(c => c.CompanyId == request.CompanyId, cancellationToken: cancellationToken);
 
             if (company == null)
-                throw new ArgumentException($"Company with id {request.CompanyId} doesnt exist.");
+                throw new ArgumentException($"Company with id {request.CompanyId} doesn't exist.");
 
-            return Task.FromResult(_mapper.Map<CompanyDto>(company));
+            return _mapper.Map<CompanyDto>(company);
         }
     }
 }

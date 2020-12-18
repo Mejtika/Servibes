@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using static System.String;
 
 namespace Servibes.BusinessProfile.Api.Queries.Companies.GetAllCompanies
 {
@@ -19,14 +20,14 @@ namespace Servibes.BusinessProfile.Api.Queries.Companies.GetAllCompanies
             this._mapper = mapper;
         }
 
-        public Task<IEnumerable<CompanyDto>> Handle(GetAllCompaniesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CompanyDto>> Handle(GetAllCompaniesQuery request, CancellationToken cancellationToken)
         {
             var companies = _context.Companies.AsQueryable();
 
-            if (!String.IsNullOrEmpty(request.Category))
+            if (!IsNullOrEmpty(request.Category))
                 companies = companies.Where(c => c.Category == request.Category);
 
-            return Task.FromResult(_mapper.Map<IEnumerable<CompanyDto>>(companies.ToList()));
+            return _mapper.Map<IEnumerable<CompanyDto>>(companies.ToList());
         }
     }
 }
