@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Servibes.ClientProfile.Api.Models;
 
@@ -21,6 +22,12 @@ namespace Servibes.ClientProfile.Api
             modelBuilder.Entity<Review>(builder =>
             {
                 builder.Property(x => x.Status).HasConversion(new EnumToStringConverter<ReviewStatus>());
+            });
+
+            modelBuilder.Entity<Favorite>(builder =>
+            {
+                builder.Property<Guid>("FavoriteId");
+                builder.HasKey("FavoriteId");
             });
         }
     }
