@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Servibes.BusinessProfile.Api.Models;
+using Servibes.Shared.Exceptions;
 
 namespace Servibes.BusinessProfile.Api.Commands.Services.UpdateService
 {
@@ -16,17 +18,21 @@ namespace Servibes.BusinessProfile.Api.Commands.Services.UpdateService
             this._context = context;
         }
 
-        public Task<Unit> Handle(UpdateServiceCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateServiceCommand request, CancellationToken cancellationToken)
         {
             var service = _context.Services.SingleOrDefault(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId);
 
             if (service == null)
-                throw new ArgumentException($"Service with id {request.ServiceId} and company id {request.CompanyId} doesnt exist.");
+            {
+                throw new AppException($"Service {request.ServiceId} or company {request.CompanyId} not found.");
+            }
 
-            var companyEmployees = _context.Employees.Where(e => e.CompanyId == service.CompanyId).ToList();
+            var companyEmployees = await _context.Employees.Where(e => e.CompanyId == service.CompanyId).ToListAsync(cancellationToken);
 
             if (!companyEmployees.Any())
-                throw new ArgumentException($"Company with id {service.CompanyId} doesnt have any employees.");
+            {
+                throw new AppException($"Company with id {service.CompanyId} doesn't have any employees.");
+            }
 
             service.ServiceName = request.ServiceDto.ServiceName;
             service.Price = request.ServiceDto.Price;
@@ -42,9 +48,9 @@ namespace Servibes.BusinessProfile.Api.Commands.Services.UpdateService
                 });
             });
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(cancellationToken);
 
-            return Unit.Task;
+            return Unit.Value;
         }
     }
 }

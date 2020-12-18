@@ -8,6 +8,11 @@ namespace Servibes.BusinessProfile.Api.Queries.Services.GetServiceEmployees
 {
     public class GetServiceEmployeesQuery : IRequest<IEnumerable<CompanyEmployeeDto>>
     {
-        public Guid ServiceId { get; set; }
+        public Guid ServiceId { get; }
+
+        public GetServiceEmployeesQuery(Guid serviceId)
+        {
+            ServiceId = serviceId;
+        }
     }
 }

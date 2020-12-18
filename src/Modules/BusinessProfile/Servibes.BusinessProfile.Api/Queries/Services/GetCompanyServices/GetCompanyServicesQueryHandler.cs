@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Servibes.BusinessProfile.Api.Queries.Services.GetCompanyServices
 {
@@ -19,14 +20,16 @@ namespace Servibes.BusinessProfile.Api.Queries.Services.GetCompanyServices
             this._mapper = mapper;
         }
 
-        public Task<IEnumerable<CompanyServicesDto>> Handle(GetCompanyServicesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CompanyServicesDto>> Handle(GetCompanyServicesQuery request, CancellationToken cancellationToken)
         {
-            var services = _context.Services.Where(s => s.CompanyId == request.CompanyId).ToList();
+            var services = await _context.Services.Where(s => s.CompanyId == request.CompanyId).ToListAsync();
 
             if (!services.Any())
+            {
                 throw new ArgumentException($"Company with id {request.CompanyId} doesnt have any services.");
+            }
 
-            return Task.FromResult(_mapper.Map<IEnumerable<CompanyServicesDto>>(services));
+            return _mapper.Map<IEnumerable<CompanyServicesDto>>(services);
         }
     }
 }

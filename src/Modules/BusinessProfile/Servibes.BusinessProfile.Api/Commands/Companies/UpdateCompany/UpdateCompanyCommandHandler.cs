@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Servibes.BusinessProfile.Api.Models;
+using Servibes.Shared.Exceptions;
 
 namespace Servibes.BusinessProfile.Api.Commands.Companies.UpdateCompany
 {
@@ -16,12 +18,14 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.UpdateCompany
             this._context = context;
         }
 
-        public Task<Unit> Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
         {
-            var company = _context.Companies.SingleOrDefault(c => c.CompanyId == request.CompanyId);
+            var company = await _context.Companies.SingleOrDefaultAsync(c => c.CompanyId == request.CompanyId, cancellationToken);
 
             if (company == null)
-                throw new ArgumentException($"Company with id {request.CompanyId} doesnt exist.");
+            {
+                throw new AppException($"Company with id {request.CompanyId} not found.");
+            }
 
             company.CompanyName = request.UpdateCompanyDto.CompanyName;
             company.PhoneNumber = PhoneNumber.Create(request.UpdateCompanyDto.PhoneNumber);
@@ -35,9 +39,8 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.UpdateCompany
                 request.UpdateCompanyDto.Address.StreetNumber,
                 request.UpdateCompanyDto.Address.FlatNumber);
 
-            _context.SaveChanges();
-
-            return Unit.Task;
+            await _context.SaveChangesAsync(cancellationToken);
+            return Unit.Value;
         }
     }
 }

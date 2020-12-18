@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Servibes.Shared.Exceptions;
 
 namespace Servibes.BusinessProfile.Api.Queries.Services.GetServiceById
 {
@@ -18,14 +20,16 @@ namespace Servibes.BusinessProfile.Api.Queries.Services.GetServiceById
             this._mapper = mapper;
         }
 
-        public Task<CompanyServicesDto> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
+        public async Task<CompanyServicesDto> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
         {
-            var service = _context.Services.SingleOrDefault(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId);
+            var service = await _context.Services.SingleOrDefaultAsync(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId, cancellationToken);
 
             if (service == null)
-                throw new ArgumentException($"Service with id {request.ServiceId} and company id {request.CompanyId} doesnt exist.");
+            {
+                throw new AppException($"Service with id {request.ServiceId} or company {request.CompanyId} not found.");
+            }
 
-            return Task.FromResult(_mapper.Map<CompanyServicesDto>(service));
+            return _mapper.Map<CompanyServicesDto>(service);
         }
     }
 }

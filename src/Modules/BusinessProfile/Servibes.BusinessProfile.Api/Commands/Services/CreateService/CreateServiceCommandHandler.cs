@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Servibes.BusinessProfile.Api.Models;
+using Servibes.Shared.Exceptions;
 
 namespace Servibes.BusinessProfile.Api.Commands.Services.CreateService
 {
@@ -16,14 +18,16 @@ namespace Servibes.BusinessProfile.Api.Commands.Services.CreateService
             this._context = context;
         }
 
-        public Task<Guid> Handle(CreateServiceCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateServiceCommand request, CancellationToken cancellationToken)
         {
-            var companyEmployees = _context.Employees.Where(e => e.CompanyId == request.CompanyId).ToList();
+            var companyEmployees = await _context.Employees.Where(e => e.CompanyId == request.CompanyId).ToListAsync(cancellationToken);
 
             if (!companyEmployees.Any())
-                throw new ArgumentException($"Company with id {request.CompanyId} doesnt have any employees.");
+            {
+                throw new AppException($"Company with id {request.CompanyId} doesn't have any employees.");
+            }
 
-            Service service = new Service()
+            var service = new Service()
             {
                 ServiceId = Guid.NewGuid(),
                 CompanyId = request.CompanyId,
@@ -42,10 +46,10 @@ namespace Servibes.BusinessProfile.Api.Commands.Services.CreateService
                 });
             });
 
-            _context.Services.Add(service);
-            _context.SaveChanges();
+            await _context.Services.AddAsync(service, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
 
-            return Task.FromResult(service.ServiceId);
+            return service.ServiceId;
         }
     }
 }
