@@ -1,6 +1,42 @@
-<sb-layout-dashboard>
+<div *ngIf="!profile"><spinner></spinner></div>
+
+<sb-layout-dashboard *ngIf="profile">
     <sb-dashboard-head title="Profile" [hideBreadcrumbs]="false"></sb-dashboard-head>
-    <div class="row">
-        <h1>PROFILE</h1>
+    <div [formGroup]="form" (ngSubmit)="onSubmit()">
+        <!-- COMPANY NAME -->
+        <div class="form-group">
+            <label for="companyName">Company name:</label>
+            <br />
+            <input type="text" id="companyName"
+                formControlName="companyName" required
+                placeholder="Company name..."
+                class="form-control" />
+
+            <div *ngIf="hasError('companyName')" class="invalid-feedback">
+                <div *ngIf="form.get('companyName').errors['required']">
+                    Company name is required.
+                </div>
+            </div>
+        </div>
+        <!-- COMPANY NAME -->
+
+        <!-- PHONE NUMBER -->
+        <div class="form-group">
+            <label for="phoneNumber">Phone number:</label>
+            <br />
+            <input type="tel" id="phoneNumber"
+                formControlName="phoneNumber" required
+                placeholder="Phone number..."
+                class="form-control" />
+
+            <div *ngIf="hasError('phoneNumber')" class="invalid-feedback">
+                <div *ngIf="form.get('phoneNumber').errors?.required">
+                    Phone number is required.
+                </div>
+            </div>
+        </div>
+      <!-- PHONE NUMBER -->
+
+
     </div>
 </sb-layout-dashboard>
