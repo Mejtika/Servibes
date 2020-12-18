@@ -45,7 +45,11 @@ const routes: Routes = [
       {
         path: "companies/:id",
         component: CompanyPageComponent
-      }
+      },
+      {
+        path: "appointments",
+        loadChildren: () => import('./client-modules/appointments/appointments-routing.module').then(m => m.AppointmentsRoutingModule),
+    },
     ]
   }
 ];
