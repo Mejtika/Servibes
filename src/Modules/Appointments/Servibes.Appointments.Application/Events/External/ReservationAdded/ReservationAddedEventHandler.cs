@@ -7,6 +7,7 @@ using Servibes.Appointments.Core.Reservees;
 using Servibes.Appointments.Core.Shared;
 using Servibes.Shared.Communication.Brokers;
 using Servibes.Shared.Communication.Events;
+using Servibes.Shared.Exceptions;
 using Servibes.Shared.Services;
 
 namespace Servibes.Appointments.Application.Events.External.ReservationAdded
@@ -70,7 +71,7 @@ namespace Servibes.Appointments.Application.Events.External.ReservationAdded
 
             var @event = new AppointmentRejectedEvent(notification.CompanyId, notification.EmployeeId, notification.Start);
             await _messageBroker.PublishAsync(@event);
-            throw new Exception("Client not found.");
+            throw new AppException($"Client with id {notification.ReserveeId} not found.");
         }
     }
 }
