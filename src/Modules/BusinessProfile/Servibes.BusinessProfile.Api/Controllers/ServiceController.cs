@@ -28,71 +28,42 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpGet("{companyId}/services/{serviceId}")]
         public async Task<ActionResult> GetServiceById(Guid companyId, Guid serviceId)
         {
-            var result = await _mediator.Send(new GetServiceByIdQuery()
-            {
-                CompanyId = companyId,
-                ServiceId = serviceId
-            });
-
+            var result = await _mediator.Send(new GetServiceByIdQuery(companyId, serviceId));
             return Ok(result);
         }
 
         [HttpGet("{companyId}/services")]
         public async Task<ActionResult> GetAllCompanyServices(Guid companyId)
         {
-            var result = await this._mediator.Send(new GetCompanyServicesQuery()
-            {
-                CompanyId = companyId
-            });
-
+            var result = await _mediator.Send(new GetCompanyServicesQuery(companyId));
             return Ok(result);
         }
 
         [HttpGet("{companyId}/services/{serviceId}/employees")]
         public async Task<ActionResult> GetServiceEmployees(Guid companyId, Guid serviceId)
         {
-            var result = await this._mediator.Send(new GetServiceEmployeesQuery()
-            {
-                ServiceId = serviceId
-            });
-
+            var result = await _mediator.Send(new GetServiceEmployeesQuery(serviceId));
             return Ok(result);
         }
 
         [HttpPost("{companyId}/services")]
-        public async Task<ActionResult> CreateService([FromBody]ServiceDto serviceDto, Guid companyId)
+        public async Task<ActionResult> CreateService(Guid companyId, [FromBody] ServiceDto serviceDto)
         {
-            var result = await _mediator.Send(new CreateServiceCommand()
-            {
-                CompanyId = companyId,
-                ServicDto = serviceDto
-            });
-
+            var result = await _mediator.Send(new CreateServiceCommand(companyId, serviceDto));
             return CreatedAtAction(nameof(GetServiceById), new { result });
         }
         
         [HttpPut("{companyId}/services/{serviceId}")]
-        public async Task<ActionResult> UpdateService([FromBody] ServiceDto serviceDto, Guid companyId, Guid serviceId)
+        public async Task<ActionResult> UpdateService(Guid companyId, Guid serviceId, [FromBody] ServiceDto serviceDto)
         {
-            await _mediator.Send(new UpdateServiceCommand()
-            {
-                CompanyId = companyId,
-                ServiceId = serviceId,
-                ServiceDto = serviceDto
-            });
-
+            await _mediator.Send(new UpdateServiceCommand(companyId, serviceId, serviceDto));
             return NoContent();
         }
 
         [HttpDelete("{companyId}/services/{serviceId}")]
         public async Task<ActionResult> DeleteService(Guid companyId, Guid serviceId)
         {
-            await _mediator.Send(new DeleteServiceCommand()
-            {
-                CompanyId = companyId,
-                ServiceId = serviceId
-            });
-
+            await _mediator.Send(new DeleteServiceCommand(companyId, serviceId));
             return NoContent();
         }
     }

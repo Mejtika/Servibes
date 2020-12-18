@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Servibes.BusinessProfile.Api.Models;
+using Servibes.Shared.Exceptions;
 
 namespace Servibes.BusinessProfile.Api.Commands.Employees.CreateEmployee
 {
@@ -16,14 +18,17 @@ namespace Servibes.BusinessProfile.Api.Commands.Employees.CreateEmployee
             this._context = context;
         }
 
-        public Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var company = _context.Companies.SingleOrDefault(c => c.CompanyId == request.CompanyId);
+            var company = await _context.Companies
+                .SingleOrDefaultAsync(c => c.CompanyId == request.CompanyId, cancellationToken);
 
             if (company == null)
-                throw new ArgumentException($"Company with id {request.CompanyId} doesnt exist.");
+            {
+                throw new AppException($"Company with id {request.CompanyId} not found.");
+            }
 
-            Employee employee = new Employee()
+            var employee = new Employee()
             {
                 EmployeeId = Guid.NewGuid(),
                 CompanyId = request.CompanyId,
@@ -31,10 +36,10 @@ namespace Servibes.BusinessProfile.Api.Commands.Employees.CreateEmployee
                 LastName = request.EmployeeDto.LastName,
             };
 
-            _context.Employees.Add(employee);
-            _context.SaveChanges();
+            await _context.Employees.AddAsync(employee, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
 
-            return Task.FromResult(employee.EmployeeId);
+            return employee.EmployeeId;
         }
     }
 }

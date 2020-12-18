@@ -25,60 +25,35 @@ namespace Servibes.BusinessProfile.Api.Controllers
         [HttpGet("{companyId}/employees/{employeeId}")]
         public async Task<ActionResult> GetEmployeeById(Guid companyId, Guid employeeId)
         {
-            var result = await _mediator.Send(new GetEmployeeByIdQuery()
-            {
-                CompanyId = companyId,
-                EmployeeId = employeeId
-            });
-
+            var result = await _mediator.Send(new GetEmployeeByIdQuery(companyId, employeeId));
             return Ok(result);
         }
 
         [HttpGet("{companyId}/employees")]
         public async Task<ActionResult> GetAllCompanyEmployees(Guid companyId)
         {
-            var result = await _mediator.Send(new GetCompanyEmployeesQuery()
-            {
-                CompanyId = companyId
-            });
-
+            var result = await _mediator.Send(new GetCompanyEmployeesQuery(companyId));
             return Ok(result);
         }
 
         [HttpPost("{companyId}/employees")]
-        public async Task<ActionResult> CreateEmployee([FromBody]EmployeeDto employeeDto, Guid companyId)
+        public async Task<ActionResult> CreateEmployee(Guid companyId, [FromBody]EmployeeDto employeeDto)
         {
-            var result = await _mediator.Send(new CreateEmployeeCommand()
-            {
-                CompanyId = companyId,
-                EmployeeDto = employeeDto
-            });
-
+            var result = await _mediator.Send(new CreateEmployeeCommand(companyId, employeeDto));
             return CreatedAtAction(nameof(GetEmployeeById), new { result });
         }
 
         [HttpPut("{companyId}/employees/{employeeId}")]
-        public async Task<ActionResult> UpdateEmployee([FromBody] EmployeeForUpdateDto employeeDto, Guid companyId, Guid employeeId)
+        public async Task<ActionResult> UpdateEmployee(Guid companyId, Guid employeeId,[FromBody] EmployeeForUpdateDto employeeDto)
         {
-            await _mediator.Send(new UpdateEmployeeCommand()
-            {
-                CompanyId = companyId,
-                EmployeeId = employeeId,
-                EmployeeForUpdateDto = employeeDto
-            });
-
+            await _mediator.Send(new UpdateEmployeeCommand(companyId, employeeId, employeeDto));
             return NoContent();
         }
 
         [HttpDelete("{companyId}/employees/{employeeId}")]
         public async Task<ActionResult> DeleteEmployee(Guid companyId, Guid employeeId)
         {
-            await _mediator.Send(new DeleteEmployeeCommand()
-            {
-                CompanyId = companyId,
-                EmployeeId = employeeId
-            });
-
+            await _mediator.Send(new DeleteEmployeeCommand(companyId, employeeId));
             return NoContent();
         }
     }

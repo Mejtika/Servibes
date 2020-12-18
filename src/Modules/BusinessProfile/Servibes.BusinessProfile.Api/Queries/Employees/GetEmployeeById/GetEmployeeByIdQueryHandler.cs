@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Servibes.BusinessProfile.Api.Queries.Employees.GetEmployeeById
 {
@@ -18,14 +19,17 @@ namespace Servibes.BusinessProfile.Api.Queries.Employees.GetEmployeeById
             this._mapper = mapper;
         }
 
-        public Task<CompanyEmployeeDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
+        public async Task<CompanyEmployeeDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
         {
-            var employee = _context.Employees.SingleOrDefault(e => e.EmployeeId == request.EmployeeId && e.CompanyId == request.CompanyId);
+            var employee = await _context.Employees
+                .SingleOrDefaultAsync(e => e.EmployeeId == request.EmployeeId && e.CompanyId == request.CompanyId, cancellationToken: cancellationToken);
 
             if (employee == null)
-                throw new ArgumentException($"Employee with id {request.EmployeeId} and company id {request.CompanyId} doesnt exist.");
+            {
+                throw new ArgumentException($"Employee {request.EmployeeId} or company {request.CompanyId} not found.");
+            }
 
-            return Task.FromResult(_mapper.Map<CompanyEmployeeDto>(employee));
+            return _mapper.Map<CompanyEmployeeDto>(employee);
         }
     }
 }
