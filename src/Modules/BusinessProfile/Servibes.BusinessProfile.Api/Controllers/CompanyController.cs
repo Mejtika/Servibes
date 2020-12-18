@@ -8,6 +8,7 @@ using Servibes.BusinessProfile.Api.Commands.Companies.DeleteCompany;
 using Servibes.BusinessProfile.Api.Commands.Companies.UpdateCompany;
 using Servibes.BusinessProfile.Api.Queries.Companies.GetAllCompanies;
 using Servibes.BusinessProfile.Api.Queries.Companies.GetCompany;
+using Servibes.BusinessProfile.Api.Queries.Companies.GetAllCategories;
 
 namespace Servibes.BusinessProfile.Api.Controllers
 {
@@ -76,6 +77,14 @@ namespace Servibes.BusinessProfile.Api.Controllers
             });
 
             return NoContent();
+        }
+
+        [HttpGet("categories")]
+        public async Task<ActionResult> GetAllCategories()
+        {
+            var result = await _mediator.Send(new GetAllCategoriesQuery());
+
+            return Ok(result);
         }
     }
 }

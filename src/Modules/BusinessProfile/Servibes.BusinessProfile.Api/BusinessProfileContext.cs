@@ -61,6 +61,29 @@ namespace Servibes.BusinessProfile.Api
                 builder.ToTable("Appointments");
                 builder.HasOne<Company>().WithMany().HasForeignKey(x => x.CompanyId).IsRequired();
             });
+
+            modelBuilder.Entity<Category>().HasData(
+                new Category()
+                {
+                    CategoryId = Guid.NewGuid(),
+                    Name = "Hairdresser"
+                },
+                new Category()
+                {
+                    CategoryId = Guid.NewGuid(),
+                    Name = "Barber"
+                },
+                new Category()
+                {
+                    CategoryId = Guid.NewGuid(),
+                    Name = "Massage"
+                },
+                new Category()
+                {
+                    CategoryId = Guid.NewGuid(),
+                    Name = "Makeup"
+                }
+            );
         }
     }
 }
