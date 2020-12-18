@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +21,14 @@ namespace Servibes.BusinessProfile.Api.Queries.Companies.GetAllCategories
             this._mapper = mapper;
         }
 
-        public Task<IEnumerable<CategoryDto>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CategoryDto>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
-            var categories = _context.Categories.ToList();
+            var categories = await _context.Categories.ToListAsync();
 
             if (categories.Count() == 0)
                 throw new ArgumentException($"There are no categories defined in the database.");
 
-            return Task.FromResult(_mapper.Map<IEnumerable<CategoryDto>>(categories));
+            return _mapper.Map<IEnumerable<CategoryDto>>(categories);
         }
     }
 }
