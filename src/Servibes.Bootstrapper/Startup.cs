@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -64,6 +65,8 @@ namespace Servibes.Bootstrapper
             services.AddAuthentication()
                 .AddIdentityServerJwt();
             services.AddControllersWithViews();
+
+
             services.AddRazorPages();
             services.AddSpaStaticFiles(configuration =>
             {
@@ -76,16 +79,17 @@ namespace Servibes.Bootstrapper
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
-            }
+            app.UseProblemDetails();
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //    app.UseDatabaseErrorPage();
+            //}
+            //else
+            //{
+            //    app.UseExceptionHandler("/Error");
+            //    app.UseHsts();
+            //}
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

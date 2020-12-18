@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Hellang.Middleware.ProblemDetails;
+using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Servibes.Shared.Communication;
 using Servibes.Shared.Communication.Brokers;
 using Servibes.Shared.Communication.Events;
 using Servibes.Shared.Database;
+using Servibes.Shared.Exceptions;
 using Servibes.Shared.Services;
 
 namespace Servibes.Shared
@@ -22,6 +25,15 @@ namespace Servibes.Shared
             services.AddTransient<IDateTimeServer, DateTimeServer>();
             services.AddScoped<ISqlConnectionFactory>(x =>
                     new SqlConnectionFactory(configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddProblemDetails(x =>
+            {
+                x.Map<DomainException>(ex => new DomainExceptionProblemDetails(ex));
+                x.Map<AppException>(ex => new ApplicationExceptionProblemDetails(ex));
+                x.IncludeExceptionDetails = (context, exception) => false;
+            });
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidationBehavior<,>));
 
             return services;
         }

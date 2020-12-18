@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Dapper;
 using MediatR;
 using Servibes.Availability.Application.Shared;
-using Servibes.Shared;
 using Servibes.Shared.Database;
+using Servibes.Shared.Exceptions;
 
 namespace Servibes.Availability.Application.Employees.GetEmployeeWorkingHours
 {
@@ -32,7 +32,7 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeWorkingHours
 
             if (employeeAvailability == null)
             {
-                throw new InvalidOperationException("Employee or company doesn't exists");
+                throw new AppException("Employee or company with specified id doesn't exists.");
             }
 
 
