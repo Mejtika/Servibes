@@ -6,5 +6,6 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
     {
         public TimeSpan Start { get; set; }
         public TimeSpan End { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }
