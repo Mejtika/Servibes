@@ -70,7 +70,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany
                 });
             });
 
-            var ownerId = Guid.Parse(_accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var ownerId = Guid.Parse(_accessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
 
             Company company = new Company()
             {
