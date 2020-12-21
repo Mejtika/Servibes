@@ -1,6 +1,5 @@
 @import '../../../../styles/variables.scss';
 
-
 label {
     font-weight: bolder;
 }
@@ -12,15 +11,25 @@ label {
     background-color: rgb(100, 100, 100);
 }
 
+textarea.ng-valid,
+select.ng-valid,
 input.ng-valid {
     border-left: 5px solid green;
 }
 
+textarea.ng-invalid.ng-dirty,
+textarea.ng-invalid.ng-dirty,
+select.ng-invalid.ng-dirty,
+select.ng-invalid.ng-dirty,
 input.ng-invalid.ng-dirty,
 input.ng-invalid.ng-touched {
     border-left: 5px solid red;
 }
 
+textarea.ng-valid ~ .valid-feedback,
+textarea.ng-invalid ~ .invalid-feedback,
+select.ng-valid ~ .valid-feedback,
+select.ng-invalid ~ .invalid-feedback,
 input.ng-valid ~ .valid-feedback,
 input.ng-invalid ~ .invalid-feedback {
     display: block;

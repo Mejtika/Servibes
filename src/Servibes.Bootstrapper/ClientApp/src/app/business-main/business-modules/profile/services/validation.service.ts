@@ -13,7 +13,7 @@ export class ValidationService {
 
     public companyNameValidator() : ValidatorFn[] {
         return [
-            Validators.pattern("^[.@&]?[a-zA-Z0-9 ]+[ !.@&()]?[ a-zA-Z0-9!()]+/"), 
+            //Validators.pattern("^[.@&]?[a-zA-Z0-9 ]+[ !.@&()]?[ a-zA-Z0-9!()]+/"), 
             Validators.required
         ];
     }
@@ -40,7 +40,7 @@ export class ValidationService {
 
     public cityValidator() : ValidatorFn[] {
         return [
-            Validators.pattern("^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$"),
+            //Validators.pattern("^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$"),
             Validators.required
         ];
     }

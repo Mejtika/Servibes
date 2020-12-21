@@ -15,6 +15,6 @@ export class ProfileService extends ApiService<IProfile> {
     }
 
     public updateProfile(updatedProfile: IProfile) : Observable<IProfile> {
-        return this.put(`compsnies/owner`, updatedProfile);
+        return this.put(`companies/${updatedProfile.companyId}`, updatedProfile);
     }
 }

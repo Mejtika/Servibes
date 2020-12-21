@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { BaseForm } from 'src/app/shared/others/BaseForm';
 import { ICategory } from '../../models';
@@ -15,18 +16,23 @@ import { ValidationService } from '../../services/validation.service';
     styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent extends BaseForm implements OnInit {
-    profile: IProfile;
-    categories: ICategory[];
+    profile: IProfile = null;
+    categories: ICategory[] = null;
+    get address() { return this.form.controls.address };
 
     constructor(private profileService: ProfileService,
                 private categoriesService: CategoriesService,
                 private validationService: ValidationService,
-                private formBuilder: FormBuilder) 
+                private formBuilder: FormBuilder,
+                private cd: ChangeDetectorRef,
+                private toastr: ToastrService)
     {
         super();
     }
 
     ngOnInit() {
+        this.initForm();
+
         let profile = this.profileService.getProfile();
         let categories = this.categoriesService.getCategories();
 
@@ -34,41 +40,42 @@ export class ProfileComponent extends BaseForm implements OnInit {
             this.profile = result[0];
             this.categories = result[1];
 
-            console.log('categories', this.categories);
-            console.log('profile', this.profile);
-
-            this.initForm();
+            this.form.patchValue(result[0]);
+            this.cd.markForCheck();
         });
     }
 
     private initForm() {
-        console.log('profile', this.profile);
-
         this.form = this.formBuilder.group({
-            companyName: new FormControl(this.profile.companyName, this.validationService.companyNameValidator()),
-            phoneNumber: new FormControl(this.profile.phoneNumber, this.validationService.phoneNumberValidator()),
-            category: new FormControl(this.profile.category, this.validationService.categoryValidator() ),
-            description: new FormControl(this.profile.description, this.validationService.descriptionValidator() ),
-            coverPhoto: new FormControl(this.profile.coverPhoto, this.validationService.requiredVaidator() ),
-            /*address: this.formBuilder.group({
-                city: new FormControl(this.profile.address.city, this.validationService.cityValidator() ),
-                zipcode: new FormControl(this.profile.address.zipcode, this.validationService.zipCodeValidator() ),
-                street: new FormControl(this.profile.address.street),
-                flatNumber: new FormControl(this.profile.address.flatNumber),
-                streetNumber: new FormControl(this.profile.address.streetNumber)
-            })*/
+            companyName: new FormControl('', this.validationService.companyNameValidator()),
+            phoneNumber: new FormControl('', this.validationService.phoneNumberValidator()),
+            category: new FormControl('', this.validationService.categoryValidator() ),
+            description: new FormControl('', this.validationService.descriptionValidator() ),
+            /*coverPhoto: new FormControl(this.profile.coverPhoto, this.validationService.requiredVaidator() ),*/
+            address: this.formBuilder.group({
+                city: new FormControl('', this.validationService.cityValidator() ),
+                zipCode: new FormControl('', this.validationService.zipCodeValidator() ),
+                street: new FormControl(''),
+                flatNumber: new FormControl(''),
+                streetNumber: new FormControl('')
+            })
         });
+    }
 
-        console.log('form', this.form.getRawValue());
+    changedCategory(e) {
+        this.getControl('category').setValue(e.target.value);
     }
 
     onSubmit() {
         console.log(this.form.getRawValue());
-  
+
         const formValue: IProfile = Object.assign(this.form.value);
-  
+        formValue.companyId = this.profile.companyId;
+
         this.profileService.updateProfile(formValue).subscribe(profile => {
             console.log('Updated profile: ', profile);
+
+            this.toastr.success("Changes saved successfully!");
         });
     }
 }
