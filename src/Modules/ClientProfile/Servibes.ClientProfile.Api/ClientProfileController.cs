@@ -36,7 +36,7 @@ namespace Servibes.ClientProfile.Api
                 throw new AppException($"Review with id {request.ReviewId} not found");
             }
 
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
             if (review.ClientId != userId)
             {
                 throw new AppException($"Leaving review require authorized user.");
@@ -59,7 +59,7 @@ namespace Servibes.ClientProfile.Api
         [HttpGet("account/reviews")]
         public async Task<IActionResult> GetAllUserReviews()
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
             var client = await _context.Clients.Include(x => x.Reviews).SingleOrDefaultAsync(x => x.ClientId == userId);
             return Ok(client.Reviews);
         }
@@ -67,7 +67,7 @@ namespace Servibes.ClientProfile.Api
         [HttpGet("account/reviews/{reviewId}")]
         public async Task<IActionResult> GetUserReview(Guid reviewId)
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = Guid.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
             var client = await _context.Clients.Include(x => x.Reviews).SingleOrDefaultAsync(x => x.ClientId == userId);
             var review = client.Reviews.SingleOrDefault(x => x.ReviewId == reviewId);
             if (review == null)
@@ -81,7 +81,7 @@ namespace Servibes.ClientProfile.Api
         [HttpPost("account/favorites")]
         public async Task<IActionResult> AddToFavorites(AddToFavoritesRequest request)
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
             var client = await _context.Clients.Include(x => x.Favorites).SingleOrDefaultAsync(x => x.ClientId == userId);
             client.Favorites.Add(new Favorite { CompanyId = request.CompanyId });
             return Ok();

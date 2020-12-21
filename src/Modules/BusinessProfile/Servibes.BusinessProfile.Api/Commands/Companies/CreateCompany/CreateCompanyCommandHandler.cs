@@ -70,7 +70,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany
                 });
             });
 
-            var ownerId = Guid.Parse(_accessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "sub").Value);
+            var ownerId = Guid.Parse(_accessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
 
             Company company = new Company()
             {
@@ -86,8 +86,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany
                     request.CompanyDto.Address.FlatNumber),
                 Category = request.CompanyDto.Category,
                 Description = request.CompanyDto.Description,
-                CoverPhoto = "assets/recommended/1.jpeg"
-                //CoverPhoto = request.CompanyDto.CoverPhoto,
+                CoverPhoto = request.CompanyDto.CoverPhoto,
             };
 
             var walkInClient = new Client

@@ -34,10 +34,15 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
 
             const string employeeWorkingHoursSql = "SELECT " +
                                                    "[Start], " +
-                                                   "[End] " +
+                                                   "[End], " +
+                                                   "[IsAvailable] " +
                                                    "FROM [Servibes].[availability].[WorkingHours]" +
                                                    "WHERE[EmployeeId] = @EmployeeId AND DayOfWeek = @Day";
             var workingHours = await connection.QueryFirstAsync<WorkingHoursDto>(employeeWorkingHoursSql, new { request.EmployeeId, Day = request.Date.DayOfWeek.ToString() });
+            if (!workingHours.IsAvailable)
+            {
+                return new List<AvailableHoursDto>();
+            }
 
             var nextDay = request.Date.AddDays(1);
             var reservationsForGivenDateSql = "SELECT" +
@@ -91,6 +96,11 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
             {
                 var startIndex = timePeriodsBetween.IndexOf(reservation.Start.TimeOfDay);
                 var endIndex = timePeriodsBetween.IndexOf(reservation.End.TimeOfDay);
+                if (endIndex == -1)
+                {
+                    timePeriodsBetween.RemoveAt(timePeriodsBetween.Count - 1);
+                    continue;
+                }
                 timePeriodsBetween.RemoveRange(startIndex, endIndex - startIndex);
             }
             return timePeriodsBetween;
