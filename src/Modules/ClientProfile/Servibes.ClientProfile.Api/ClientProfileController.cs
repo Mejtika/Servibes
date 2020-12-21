@@ -67,7 +67,7 @@ namespace Servibes.ClientProfile.Api
         [HttpGet("account/reviews/{reviewId}")]
         public async Task<IActionResult> GetUserReview(Guid reviewId)
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = Guid.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
             var client = await _context.Clients.Include(x => x.Reviews).SingleOrDefaultAsync(x => x.ClientId == userId);
             var review = client.Reviews.SingleOrDefault(x => x.ReviewId == reviewId);
             if (review == null)

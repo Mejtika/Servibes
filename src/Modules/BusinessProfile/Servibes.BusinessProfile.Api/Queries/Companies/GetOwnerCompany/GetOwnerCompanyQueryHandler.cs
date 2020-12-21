@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace Servibes.BusinessProfile.Api.Queries.Companies.GetOwnerCompany
 
         public async Task<CompanyDto> Handle(GetOwnerCompanyQuery request, CancellationToken cancellationToken)
         {
-            var ownerId = Guid.Parse(_accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var ownerId = Guid.Parse(_accessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
             var company = await _context.Companies.SingleOrDefaultAsync(c => c.OwnerId == ownerId, cancellationToken);
             return _mapper.Map<CompanyDto>(company);
         }
