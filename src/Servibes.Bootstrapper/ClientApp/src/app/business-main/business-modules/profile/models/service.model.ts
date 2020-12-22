@@ -1,7 +1,7 @@
 export interface IService {
     serviceId: string;
-    servicename: string;
+    serviceName: string;
     price: number;
     duration: number;
-    description: number;
+    description: string;
 }

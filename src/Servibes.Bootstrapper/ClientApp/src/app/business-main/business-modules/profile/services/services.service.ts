@@ -29,4 +29,8 @@ export class ServicesService extends ApiService<IService> {
     public removeService(companyId: string, serviceId: string) : Observable<IService> {
         return this.delete(`companies/${companyId}/services/${serviceId}`);
     }
+
+    public getServiceEmployees(companyId: string, serviceId: string): Observable<IEmployee[]> {
+        return this.get(`companies/${companyId}/services/${serviceId}/employees`);
+    }
 }
