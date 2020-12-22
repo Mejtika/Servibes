@@ -1,6 +1,41 @@
 <sb-layout-dashboard>
     <sb-dashboard-head title="Services" [hideBreadcrumbs]="false"></sb-dashboard-head>
-    <div class="row">
-        <h1>SERVICES</h1>
-    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Services</div>
+        
+        <table class="table">
+            <thead>
+                <th scope="col">#</th>
+                <th scope="col">Service</th>
+                <th scope="col">Price</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Options</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let service of services; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ service.serviceName }}</td>
+                    <td>{{ service.price }}</td>
+                    <td>{{ service.duration }}</td>
+                    <td>
+                        <button class="btn btn-link" [routerLink]="['/business/profile/services/', service.serviceId]">
+                            <span class="col text-left"><i class="fas fa-edit"></i></span>
+                        </button>
+                        <button class="btn btn-link" (click)="deleteEmployee(service.serviceId)" *ngIf="i != 0">
+                            <span class="col text-right"><i class="fas fa-trash-alt"></i></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button 
+          class="btn btn-primary" 
+          [routerLink]="['/business/profile/services/', '']">
+            Add new service
+          </button>
+
+  </div>
+    
 </sb-layout-dashboard>
