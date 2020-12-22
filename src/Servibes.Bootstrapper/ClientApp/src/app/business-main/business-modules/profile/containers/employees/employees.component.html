@@ -1,6 +1,39 @@
 <sb-layout-dashboard>
     <sb-dashboard-head title="Employees" [hideBreadcrumbs]="false"></sb-dashboard-head>
-    <div class="row">
-        <h1>EMPLOYEES</h1>
-    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Employees</div>
+        
+        <table class="table">
+            <thead>
+                <th scope="col">#</th>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Options</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let employee of employees; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ employee.firstName }}</td>
+                    <td>{{ employee.lastName }}</td>
+                    <td>
+                        <button class="btn btn-link" [routerLink]="['/business/profile/employees/', employee.employeeId]">
+                            <span class="col text-left"><i class="fas fa-edit"></i></span>
+                        </button>
+                        <button class="btn btn-link" (click)="deleteEmployee(employee.employeeId)" *ngIf="i != 0">
+                            <span class="col text-right"><i class="fas fa-user-slash"></i></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button 
+          class="btn btn-primary" 
+          [routerLink]="['/business/profile/employees/', '']">
+            Add new employee
+          </button>
+
+  </div>
+    
 </sb-layout-dashboard>

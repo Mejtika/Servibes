@@ -52,6 +52,28 @@ export const ROUTES: Routes = [
         } as SBRouteData
     },
     {
+        path: 'employees/:employeeId',
+        canActivate: [],
+        component: profileContainers.EmployeeFormComponent,
+        data: {
+            title: 'Employee form',
+            breadcrumbs: [
+                {
+                    text: "Profile",
+                    link: '/business/profile'
+                },
+                {
+                    text: 'Employees',
+                    link: '/business/profile/employees'
+                },
+                {
+                    text: 'Add/Edit employee',
+                    active: true
+                }
+            ]
+        } as SBRouteData
+    },
+    {
         path: 'services',
         canActivate: [],
         component: profileContainers.ServicesComponent,
@@ -67,6 +89,28 @@ export const ROUTES: Routes = [
                     active: true
                 },
             ],
+        } as SBRouteData
+    },
+    {
+        path: 'services/:serviceId',
+        canActivate: [],
+        component: profileContainers.ServiceFormComponent,
+        data: {
+            title: 'Service form',
+            breadcrumbs: [
+                {
+                    text: "Profile",
+                    link: '/business/profile'
+                },
+                {
+                    text: 'Services',
+                    link: '/business/profile/services'
+                },
+                {
+                    text: 'Add/Edit service',
+                    active: true
+                }
+            ]
         } as SBRouteData
     }
 ];
