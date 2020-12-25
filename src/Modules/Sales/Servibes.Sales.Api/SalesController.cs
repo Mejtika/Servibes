@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Servibes.Sales.Api.Events;
 using Servibes.Sales.Api.Models;
+using Servibes.Sales.Api.ModuleClients;
 using Servibes.Shared.Communication.Brokers;
 using Servibes.Shared.Exceptions;
 

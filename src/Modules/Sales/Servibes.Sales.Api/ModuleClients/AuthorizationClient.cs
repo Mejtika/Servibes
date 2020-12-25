@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Servibes.Shared.Communication;
 
-namespace Servibes.Sales.Api
+namespace Servibes.Sales.Api.ModuleClients
 {
     public class AuthorizationClient
     {
