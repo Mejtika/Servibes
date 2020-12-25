@@ -13,7 +13,7 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
             RuleFor(x => x.EmployeeId).NotNull().NotEmpty()
                 .WithMessage("EmployeeId must not be empty.");
 
-            RuleFor(x => x.Date).Must(x => x > DateTime.Now)
+            RuleFor(x => x.Date).Must(x => x.Date >= DateTime.Today.Date)
                 .WithMessage("Date must be in the feature.");
 
             RuleFor(x => x.Duration).Must(x => x % 15 == 0)
