@@ -37,7 +37,6 @@ export class ClientPaymentsService {
           company: appointment.company,
           employeeName: appointment.employeeName,
           serviceName: appointment.serviceName,
-          servicePrice: appointment.servicePrice,
           start: appointment.start,
           end: appointment.end
         }

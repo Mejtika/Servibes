@@ -5,13 +5,11 @@ import { ClientPaymentsService } from "../client-payments.service";
 import { ClientPaymentComponent } from '../client-payment/client-payment.component';
 
 export interface PaidAppointmentDetails {
-  ordinalNumber?: number;
   appointmentId: string;
   price: number;
   company?: CompanyDetails;
   employeeName: string;
   serviceName: string;
-  servicePrice: number;
   start: string;
   end: string;
 }
@@ -43,7 +41,6 @@ export class ClientPaymentsComponent {
 
   refreshAppointments() {
     this.pagedPaidAppointments = this.paidAppointments
-      .map((appointment, i) => ({ ordinalNumber: i + 1, ...appointment }))
       .slice(
         (this.page - 1) * this.pageSize,
         (this.page - 1) * this.pageSize + this.pageSize
