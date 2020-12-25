@@ -12,6 +12,8 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ClientAppointmentService } from "./client-appointment.service";
 import { ModalModule } from "ngx-bootstrap/modal";
 import { ClientReviewsService } from "./client-reviews.service";
+import { ClientPaymentsService } from "./client-payments.service";
+import { ClientPaymentComponent } from "./client-payment/client-payment.component";
 
 const routes: Routes = [
   {
@@ -35,6 +37,7 @@ const routes: Routes = [
     ClientFavoritesComponent,
     ClientReviewsComponent,
     ClientPaymentsComponent,
+    ClientPaymentComponent,
     ClientAccountComponent
   ],
   imports: [
@@ -47,7 +50,8 @@ const routes: Routes = [
   ],
   providers: [
     ClientAppointmentService,
-    ClientReviewsService
+    ClientReviewsService,
+    ClientPaymentsService
   ],
 })
 export class ClientAccountModule {}

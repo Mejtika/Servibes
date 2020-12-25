@@ -1,0 +1,54 @@
+<div class="container modal-content">
+  <div class="modal-header">
+    <h2>Payment details</h2>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div>
+      <div>
+        <span>
+          <strong>Company:</strong> {{ appointment.company.companyName }}</span
+        >
+      </div>
+      <div>
+        <span>
+          <strong>Address:</strong> {{ appointment.company.address.street }}
+          {{ appointment.company.address.streetNumber }}/{{
+            appointment.company.address.flatNumber
+          }}
+          {{ appointment.company.address.zipCode }}
+          {{ appointment.company.address.city }}
+        </span>
+      </div>
+      <div>
+        <span>
+          <strong>Service:</strong> {{ appointment.serviceName }}
+          
+        </span>
+      </div>
+      <div>
+        <span>
+          <strong>Paid:</strong> {{ appointment.servicePrice }}zł
+          by <i>CASH</i>
+        </span>
+      </div>
+      <div>
+        <span> <strong>Employee:</strong> {{ appointment.employeeName }}</span>
+      </div>
+      <div>
+        <span>
+          <strong>Date:</strong> {{ appointment.start | date: "short" }} -
+          {{ appointment.end | date: "shortTime" }}</span
+        >
+      </div>
+    </div>
+  </div>
+</div>
