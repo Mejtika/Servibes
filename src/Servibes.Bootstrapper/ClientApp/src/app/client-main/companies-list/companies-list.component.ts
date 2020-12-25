@@ -6,7 +6,7 @@ import { forkJoin } from "rxjs";
 import { Category, ICompany } from '../../shared/interfaces/company';
 import { MockDataService } from '../../data-service/mock-data.service';
 import { ActivatedRoute } from '@angular/router';
-import { CompanyDataService } from 'src/app/data-service/company-data.servce';
+import { CompanyDataService } from 'src/app/data-service/company-data.service';
 import { ServicesDataService } from 'src/app/data-service/services-data.service';
 
 @Component({

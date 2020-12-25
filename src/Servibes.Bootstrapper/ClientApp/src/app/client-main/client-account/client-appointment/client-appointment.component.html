@@ -1,0 +1,91 @@
+<div class="container modal-content">
+  <div class="modal-header">
+    <h2>Appointment details</h2>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div>
+      <div>
+        <span>
+          <strong>Company:</strong> {{ appointment.company.companyName }}</span
+        >
+      </div>
+      <div>
+        <span>
+          <strong>Address:</strong> {{ appointment.company.address.street }}
+          {{ appointment.company.address.streetNumber }}/{{
+            appointment.company.address.flatNumber
+          }}
+          {{ appointment.company.address.zipCode }}
+          {{ appointment.company.address.city }}
+        </span>
+      </div>
+      <div>
+        <span>
+          <strong>Service:</strong> {{ appointment.serviceName }}
+          {{ appointment.servicePrice }} PLN
+        </span>
+      </div>
+      <div>
+        <span> <strong>Status:</strong> {{ appointment.status }}</span>
+      </div>
+      <div>
+        <span> <strong>Employee:</strong> {{ appointment.employeeName }}</span>
+      </div>
+      <div>
+        <span>
+          <strong>Date:</strong> {{ appointment.start | date: "short" }} -
+          {{ appointment.end | date: "shortTime" }}</span
+        >
+      </div>
+      <div *ngIf="canBeCanceled()">
+        <p>
+          <button
+            type="button"
+            class="btn btn-outline-danger"
+            (click)="collapse.toggle()"
+            [attr.aria-expanded]="!isCollapsed"
+            aria-controls="collapseExample"
+          >
+            Cancel
+          </button>
+        </p>
+        <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+          <div class="card">
+            <div class="card-body">
+              <form class="row" 
+              #cancellationForm="ngForm" 
+              (ngSubmit)="cancel(cancellationForm)">
+                <div class="col-8">
+                  <input
+                    id="cancellationReasonId"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]= cancellationReason
+                    name="cancellationReason"
+                    placeholder="Cancellation reason"
+                  />
+                </div>
+                <div class="col-4">
+                  <button
+                    type="submit"
+                    class="btn btn-danger">
+                    Cancel ❌
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

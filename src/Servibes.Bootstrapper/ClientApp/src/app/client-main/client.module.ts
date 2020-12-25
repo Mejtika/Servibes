@@ -16,7 +16,7 @@ import { CompanyPageComponent } from './company-page/company-page.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { LoginMenuComponent } from "../../api-authorization/login-menu/login-menu.component";
-import { CompanyDataService } from '../data-service/company-data.servce';
+import { CompanyDataService } from '../data-service/company-data.service';
 import { ServicesDataService } from '../data-service/services-data.service';
 import { EmployeeDataService } from '../data-service/employee-data.service';
 import { AppointmentDataService } from '../data-service/appointment-data.service';
@@ -45,6 +45,11 @@ const routes: Routes = [
       {
         path: "companies/:id",
         component: CompanyPageComponent
+      },
+      {
+        path: 'account',
+        data: { preload: true },
+        loadChildren: () => import('./client-account/client-account.module').then(m => m.ClientAccountModule)
       }
     ]
   }
@@ -64,10 +69,8 @@ const routes: Routes = [
         CommonModule,
         SharedModule,
         RouterModule.forChild(routes),
-
         FormsModule,
         ReactiveFormsModule,
-
         ModalModule.forRoot()
     ],
     providers: [

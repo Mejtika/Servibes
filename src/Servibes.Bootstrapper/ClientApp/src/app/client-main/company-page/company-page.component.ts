@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BsModalService } from "ngx-bootstrap/modal";
 
-import { CompanyDataService } from 'src/app/data-service/company-data.servce';
+import { CompanyDataService } from 'src/app/data-service/company-data.service';
 import { EmployeeDataService } from 'src/app/data-service/employee-data.service';
 import { ServicesDataService } from 'src/app/data-service/services-data.service';
 
