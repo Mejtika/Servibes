@@ -23,6 +23,10 @@ import { AppointmentDataService } from '../data-service/appointment-data.service
 
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClientDataService } from '../data-service/client-data.service';
+import { ClientFavoritesService } from './client-account/client-favorites.service';
+import { CompanyRatingsComponent } from './company-page/company-ratings/company-ratings.component';
+import { ClientReviewsService } from './client-account/client-reviews.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 let jQuery = window['$'];
 
@@ -63,7 +67,8 @@ const routes: Routes = [
         ModalComponent,
         ModalTriggerDirective,
         CompanyPageComponent,
-        ClientReservationComponent
+        ClientReservationComponent,
+        CompanyRatingsComponent
     ],
     imports: [
         CommonModule,
@@ -71,6 +76,7 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         FormsModule,
         ReactiveFormsModule,
+        NgbModule,
         ModalModule.forRoot()
     ],
     providers: [
@@ -80,6 +86,8 @@ const routes: Routes = [
         EmployeeDataService,
         AppointmentDataService,
         ClientDataService,
+        ClientFavoritesService,
+        ClientReviewsService,
         { provide: JQUERY_TOKEN, useValue: jQuery }
       ]
 })

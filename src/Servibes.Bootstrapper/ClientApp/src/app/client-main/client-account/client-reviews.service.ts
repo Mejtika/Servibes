@@ -12,6 +12,24 @@ export interface LeaveReviewRequest {
   starsCount: number;
 }
 
+export interface CompanyReviewDto {
+  description: string;
+  starsCount: number | null;
+  name: string;
+}
+
+export interface ReviewSummaryDto {
+  rating: number;
+  count: number;
+  percentOfTotal: number;
+}
+
+export interface ReviewsSummaryDto {
+  reviews: ReviewSummaryDto[];
+  average: number;
+  count: number;
+}
+
 @Injectable()
 export class ClientReviewsService {
   private newReviewAddedSubject = new BehaviorSubject<boolean>(false);
@@ -22,7 +40,7 @@ export class ClientReviewsService {
     private companyService: CompanyDataService
   ) {}
 
-  reviews$ = this.httpClient.get<ReviewDetails[]>(
+  private reviews$ = this.httpClient.get<ReviewDetails[]>(
     `${environment.backendEndpoint}account/reviews`
   );
 
@@ -40,6 +58,15 @@ export class ClientReviewsService {
       );
     })
   );
+
+  getCompanyReview(companyId: string){
+    return this.httpClient.get<ReviewDetails[]>(`${environment.backendEndpoint}companies/${companyId}/reviews`)
+  }
+
+  getReviewsSummary(companyId: string){
+    return this.httpClient
+    .get<ReviewSummaryDto>(`${environment.backendEndpoint}companies/${companyId}/reviews/summary`);
+  }
 
   leaveReview(request: LeaveReviewRequest) {
     return this.httpClient

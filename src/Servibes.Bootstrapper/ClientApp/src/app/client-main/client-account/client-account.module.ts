@@ -14,6 +14,7 @@ import { ModalModule } from "ngx-bootstrap/modal";
 import { ClientReviewsService } from "./client-reviews.service";
 import { ClientPaymentsService } from "./client-payments.service";
 import { ClientPaymentComponent } from "./client-payment/client-payment.component";
+import { ClientFavoritesService } from './client-favorites.service';
 
 const routes: Routes = [
   {
@@ -51,7 +52,8 @@ const routes: Routes = [
   providers: [
     ClientAppointmentService,
     ClientReviewsService,
-    ClientPaymentsService
+    ClientPaymentsService,
+    ClientFavoritesService
   ],
 })
 export class ClientAccountModule {}
