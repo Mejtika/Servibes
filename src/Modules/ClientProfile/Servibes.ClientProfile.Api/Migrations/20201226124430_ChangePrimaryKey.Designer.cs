@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Servibes.ClientProfile.Api;
 
 namespace Servibes.ClientProfile.Api.Migrations
 {
     [DbContext(typeof(ClientProfileContext))]
-    partial class ClientProfileContextModelSnapshot : ModelSnapshot
+    [Migration("20201226124430_ChangePrimaryKey")]
+    partial class ChangePrimaryKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +55,7 @@ namespace Servibes.ClientProfile.Api.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Favorites");
+                    b.ToTable("Favorite");
                 });
 
             modelBuilder.Entity("Servibes.ClientProfile.Api.Models.Review", b =>
