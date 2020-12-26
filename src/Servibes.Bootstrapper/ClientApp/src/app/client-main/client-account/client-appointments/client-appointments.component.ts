@@ -5,6 +5,7 @@ import { ClientAppointmentService } from "../client-appointment.service";
 import { ClientAppointmentComponent } from "../client-appointment/client-appointment.component";
 
 export interface CompanyDetails {
+  companyId: string;
   companyName: string;
   phoneNumber: string;
   address: IAddress;
