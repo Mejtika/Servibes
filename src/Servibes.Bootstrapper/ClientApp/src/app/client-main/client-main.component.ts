@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MockDataService } from '../data-service/mock-data.service';
-import { Category, ICompany } from '../shared/interfaces/company';
+import { Category, Company } from '../shared/interfaces/company';
 
 @Component({
     selector: 'client-main',

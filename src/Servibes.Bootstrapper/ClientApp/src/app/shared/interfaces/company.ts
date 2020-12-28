@@ -1,15 +1,15 @@
-export interface ICompany {
+export interface Company {
   companyId: string;
   companyName: string;
   phoneNumber: string;
-  address: IAddress;
+  address: Address;
   category: string;
   description: string;
   coverPhoto: string;
 
-  openingHours: IOpeningHours[];
-  employees: IEmployee[];
-  services: IService[];
+  openingHours: OpeningHours[];
+  employees: Employee[];
+  services: Service[];
 }
 
 export enum Category {
@@ -38,18 +38,18 @@ export enum DayOfWeek {
   Sunday = "Sunday"
 }
 
-export interface IOpeningHours {
+export interface OpeningHours {
   dayOfWeek: DayOfWeek;
   isAvailable: boolean;
   start: string;
   end: string;
 }
 
-export interface IServiceHours {
+export interface ServiceHours {
   time: string;
 }
 
-export interface IAddress {
+export interface Address {
   city: string;
   zipCode: string;
   street: string;
@@ -58,7 +58,7 @@ export interface IAddress {
 }
 
 
-export interface IService {
+export interface Service {
   serviceId: string;
   serviceName: string;
   price: number;
@@ -69,12 +69,12 @@ export interface IService {
 }
 
 
-export interface IPagedResults<T> {
+export interface PagedResults<T> {
   totalRecords: number;
   results: T;
 }
 
-export interface IEmployee {
+export interface Employee {
   employeeId: string;
   firstName: string;
   lastName: string;
@@ -82,17 +82,17 @@ export interface IEmployee {
   color: string;
 }
 
-export interface IClient {
+export interface Client {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
 }
 
-export interface IAppointment {
+export interface Appointment {
   employeeId: string;
   serviceId: string;
-  client: IClient;
+  client: Client;
   startDate: Date;
   endDate: Date;
 }

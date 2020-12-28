@@ -3,16 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiService } from '../core/services/api.service';
 
-import { IClient } from '../shared/interfaces/company';
+import { Client } from '../shared/interfaces/company';
 
 @Injectable()
-export class ClientDataService extends ApiService<IClient> {
+export class ClientDataService extends ApiService<Client> {
 
   constructor(http: HttpClient) {
     super(http)
   }
 
-  public getClientData(): Observable<IClient> {
+  public getClientData(): Observable<Client> {
     return this.get(`identity/me`);
   }
 }

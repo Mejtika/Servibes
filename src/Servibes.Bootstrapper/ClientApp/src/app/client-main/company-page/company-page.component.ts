@@ -5,10 +5,10 @@ import { CompanyDataService } from "src/app/data-service/company-data.service";
 import { EmployeeDataService } from "src/app/data-service/employee-data.service";
 import { ServicesDataService } from "src/app/data-service/services-data.service";
 import {
-  ICompany,
-  IService,
-  IEmployee,
-  IServiceHours,
+  Company,
+  Service,
+  Employee,
+  ServiceHours,
 } from "src/app/shared/interfaces/company";
 import { forkJoin } from "rxjs";
 import { ClientReservationComponent } from "./client-reservation/client-reservation.component";
@@ -26,7 +26,7 @@ import { ReviewDetails } from "../client-account/client-reviews/client-reviews.c
   styleUrls: ["./company-page.component.css"],
 })
 export class CompanyPageComponent {
-  company: ICompany;
+  company: Company;
   public weekDays: string[] = [
     "Sunday",
     "Monday",
@@ -36,11 +36,11 @@ export class CompanyPageComponent {
     "Friday",
     "Saturday",
   ];
-  public selectedService: IService;
+  public selectedService: Service;
   public selectedDate: Date = new Date();
-  public serviceEmployees: IEmployee[];
-  public selectedEmployee: IEmployee;
-  public serviceAvailableHours: IServiceHours[];
+  public serviceEmployees: Employee[];
+  public selectedEmployee: Employee;
+  public serviceAvailableHours: ServiceHours[];
   public isFavoriteCompany: boolean;
   public reviewsSummary: ReviewSummaryDto;
   public reviews: ReviewDetails[];
@@ -115,7 +115,7 @@ export class CompanyPageComponent {
     );
   }
 
-  public selectService(service: IService) {
+  public selectService(service: Service) {
     this.selectedService = service;
     const initialState = {
       service: service,
