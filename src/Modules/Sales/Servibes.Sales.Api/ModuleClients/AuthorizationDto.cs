@@ -1,4 +1,4 @@
-﻿namespace Servibes.Sales.Api
+﻿namespace Servibes.Sales.Api.ModuleClients
 {
     public class AuthorizationDto
     {

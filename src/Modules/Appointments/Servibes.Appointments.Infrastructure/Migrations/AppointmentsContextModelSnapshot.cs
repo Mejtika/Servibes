@@ -26,6 +26,10 @@ namespace Servibes.Appointments.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("_cancellationReason")
+                        .HasColumnName("CancellationReason")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("_companyId")
                         .HasColumnName("CompanyId")
                         .HasColumnType("uniqueidentifier");

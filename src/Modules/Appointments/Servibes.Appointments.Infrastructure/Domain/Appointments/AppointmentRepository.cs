@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Servibes.Appointments.Core.Appointments;
 
 namespace Servibes.Appointments.Infrastructure.Domain.Appointments
@@ -14,7 +16,12 @@ namespace Servibes.Appointments.Infrastructure.Domain.Appointments
 
         public async Task AddAsync(Appointment appointment)
         {
-            await _appointmentsContext.AddAsync(appointment);
+            await _appointmentsContext.Appointments.AddAsync(appointment);
+        }
+
+        public async Task<Appointment> GetAsync(Guid appointmentId)
+        {
+            return await _appointmentsContext.Appointments.SingleOrDefaultAsync(x => x.AppointmentId == appointmentId);
         }
     }
 }

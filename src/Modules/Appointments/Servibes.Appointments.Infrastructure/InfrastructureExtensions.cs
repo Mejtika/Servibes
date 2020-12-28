@@ -9,12 +9,14 @@ using Servibes.Appointments.Application;
 using Servibes.Appointments.Application.Events.External.NewClientRegistered;
 using Servibes.Appointments.Application.Events.External.RegistrationCompleted;
 using Servibes.Appointments.Application.Events.External.ReservationAdded;
+using Servibes.Appointments.Application.ModuleClients;
 using Servibes.Appointments.Core.Appointments;
 using Servibes.Appointments.Core.Reservees;
 using Servibes.Appointments.Core.TimeReservations;
 using Servibes.Appointments.Infrastructure.Domain.Appointments;
 using Servibes.Appointments.Infrastructure.Domain.Reservees;
 using Servibes.Appointments.Infrastructure.Domain.TimeReservations;
+using Servibes.Appointments.Infrastructure.ModuleClients;
 using Servibes.Shared;
 using Servibes.Shared.Communication.Events;
 
@@ -41,6 +43,7 @@ namespace Servibes.Appointments.Infrastructure
             services.AddScoped<IAppointmentUnitOfWork, AppointmentsUnitOfWork>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddTransient<IAuthorizationClient, AuthorizationClient>();
 
             services.AddScheduler();
             services.AddScoped<AppointmentFinisher>();

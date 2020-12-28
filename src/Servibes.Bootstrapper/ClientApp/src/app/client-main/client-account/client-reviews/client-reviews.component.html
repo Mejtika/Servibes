@@ -1,0 +1,106 @@
+<div class="area_title mb-30">
+  <h3 class="mt-lx-3 mb-3">Reviews</h3>
+</div>
+<hr />
+<div *ngFor="let review of pagedReviews">
+  <ng-container *ngIf="isNew(review); else elseTemplate">
+    <div class="card my-2">
+      <div class="card-header">
+        <h5>New review</h5>
+        <button
+          type="button"
+          class="btn-sm btn-outline-dark"
+          (click)="newReview.toggle()"
+          [attr.aria-expanded]="!addReviewCollapse"
+          aria-controls="collapseExample"
+        >
+          Add
+        </button>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ review.company.companyName }}</h5>
+        <div class="card-text">
+          {{ review.company.address.street }}
+          {{ review.company.address.streetNumber }}/{{
+            review.company.address.flatNumber
+          }},
+          {{ review.company.address.zipCode }}
+          {{ review.company.address.city }}
+        </div>
+        <div #newReview="ngbCollapse" [(ngbCollapse)]="addReviewCollapse">
+          <hr />
+          <form
+            [formGroup]="newReviewForm"
+            (ngSubmit)="leaveReview(review.reviewId)"
+          >
+            <ngb-rating
+              class="form-control"
+              formControlName="rating"
+            ></ngb-rating>
+            <div class="form-text small">
+              <div
+                *ngIf="newReviewForm.get('rating').valid"
+                class="text-success"
+              >
+                Thanks!
+              </div>
+              <div
+                *ngIf="newReviewForm.get('rating').invalid"
+                class="text-danger"
+              >
+                Please rate us
+              </div>
+            </div>
+            <textarea
+              class="form-control mt-2"
+              formControlName="description"
+              placeholder="Leave your review.."
+              rows="2"
+            ></textarea>
+            <button
+              class="btn btn-outline-dark mt-2"
+              type="submit"
+              [disabled]="!newReviewForm.valid"
+            >
+              Add
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <div class="card my-2">
+      <div class="card-header">
+        <h5>Review</h5>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ review.company.companyName }}</h5>
+        <div class="card-text">
+          {{ review.company.address.street }}
+          {{ review.company.address.streetNumber }}/{{
+            review.company.address.flatNumber
+          }},
+          {{ review.company.address.zipCode }}
+          {{ review.company.address.city }}
+          <hr />
+          <ngb-rating
+            [(rate)]="review.starsCount"
+            [readonly]="true"
+          ></ngb-rating>
+          <p>{{ review.description }}</p>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<div class="d-flex justify-content-between p-2">
+  <ngb-pagination
+    [collectionSize]="collectionSize"
+    [(page)]="page"
+    [pageSize]="pageSize"
+    (pageChange)="refreshReviews()"
+  >
+  </ngb-pagination>
+</div>

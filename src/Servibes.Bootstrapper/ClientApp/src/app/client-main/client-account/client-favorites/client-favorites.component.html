@@ -1,0 +1,22 @@
+<div class="area_title mb-30">
+    <h3 class="mt-lx-3 mb-3">Favorites</h3>
+  </div>
+  <hr />
+  <div class="list-group list-group-flush">
+    <a *ngFor="let company of pagedCompanies"
+      class="list-group-item list-group-item-action"
+      [routerLink]="['/client', 'companies', company.companyId]">
+      🏢 {{ company.companyName }} 
+      🗺 {{company.address.street}} {{ company.address.streetNumber }}/{{company.address.flatNumber}},
+         {{ company.address.zipCode }} {{ company.address.city }} 
+    </a>
+  </div>
+  <div class="d-flex justify-content-between p-2">
+    <ngb-pagination
+      [collectionSize]="collectionSize"
+      [(page)]="page"
+      [pageSize]="pageSize"
+      (pageChange)="refreshCompanies()">
+    </ngb-pagination>
+  </div>
+  

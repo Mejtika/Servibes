@@ -15,6 +15,7 @@ namespace Servibes.Appointments.Infrastructure.Domain.Appointments
 
             builder.Property<Guid>("_reserveeId").HasColumnName("ReserveeId");
             builder.Property<Guid>("_companyId").HasColumnName("CompanyId");
+            builder.Property<string>("_cancellationReason").HasColumnName("CancellationReason");
             builder.Property<AppointmentStatus>("_status").HasColumnName("Status")
                 .HasConversion(new EnumToStringConverter<AppointmentStatus>());
 

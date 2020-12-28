@@ -21,7 +21,7 @@ export class ClientNavbarComponent implements OnInit {
       searchWhat: "",
       searchWhere: "",
       searchWhen: new Date()
-    })
+    });
   }
 
   selectWhat(category: Category): void{

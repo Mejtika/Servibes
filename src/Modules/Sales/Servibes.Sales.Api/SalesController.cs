@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Servibes.Sales.Api.Events;
 using Servibes.Sales.Api.Models;
+using Servibes.Sales.Api.ModuleClients;
 using Servibes.Shared.Communication.Brokers;
 using Servibes.Shared.Exceptions;
 
 namespace Servibes.Sales.Api
 {
     [ApiController] 
-    [Route("api/sales/appointments")]
+    [Route("api")]
     public class SalesController : ControllerBase
     {
         private readonly SalesContext _context;
@@ -29,7 +30,24 @@ namespace Servibes.Sales.Api
             _messageBroker = messageBroker;
         }
 
-        [HttpPost("{appointmentId}/checkout")]
+        [HttpGet("account/sales/appointments")]
+        public async Task<IActionResult> GetAccountSalesInfo()
+        {
+            var ownerId = Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
+            var paidAppointments = await _context.Appointments
+                .Where(x => x.Status == AppointmentStatus.Paid && x.ReserveeId == ownerId)
+                .ToListAsync();
+            var paidAppointmentsDto = paidAppointments.Select(x =>
+                new PaidAppointmentsDto
+                {
+                    AppointmentId = x.AppointmentId,
+                    Price = x.Price
+                }).ToList();
+
+            return Ok(paidAppointmentsDto);
+        }
+        
+        [HttpPost("sales/appointments{appointmentId}/checkout")]
         public async Task<IActionResult> Checkout(Guid appointmentId)
         {
             var appointment = await _context.Appointments.SingleOrDefaultAsync(x => x.AppointmentId == appointmentId);

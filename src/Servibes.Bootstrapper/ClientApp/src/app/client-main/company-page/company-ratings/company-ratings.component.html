@@ -1,0 +1,49 @@
+<h4>Ratings and Reviews</h4>
+<div class="d-flex">
+  <div class="text-center">
+    <span class="display-4 font-weight-bolder">{{
+      reviewsSummary.average
+    }}</span
+    ><br />
+    <span class="text-black-50">out of {{ reviewsSummary.count }}</span>
+  </div>
+  <div class="flex-grow-1">
+    <div *ngFor="let summary of reviewsSummary.reviews">
+      <div class="row align-items-center">
+        <div class="col-4 text-right">{{ summary.rating }}⭐</div>
+        <div class="col-8">
+          <div class="progress">
+            <div
+              class="progress-bar"
+              role="progressbar"
+              [style.width.%]="summary.percentOfTotal"
+              [attr.aria-valuenow]="summary.percentOfTotal"
+              [attr.aria-valuemin]="0"
+              [attr.aria-valuemax]="100"
+            >
+              {{ summary.percentOfTotal }}%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngFor="let review of pagedReviews">
+  <div class="card my-2">
+    <div class="card-body">
+      <h5 class="card-title">{{review.name}}</h5>
+      <hr>
+      <ngb-rating [(rate)]="review.starsCount" [readonly]="true"></ngb-rating>
+      <p>{{ review.description }}</p>
+    </div>
+  </div>
+</div>
+<div class="d-flex justify-content-between p-2">
+  <ngb-pagination
+    [collectionSize]="collectionSize"
+    [(page)]="page"
+    [pageSize]="pageSize"
+    (pageChange)="refreshReviews()">
+  </ngb-pagination>
+</div>

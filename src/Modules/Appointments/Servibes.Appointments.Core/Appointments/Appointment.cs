@@ -12,7 +12,11 @@ namespace Servibes.Appointments.Core.Appointments
 
         private readonly Guid _reserveeId;
 
+        public Guid ReserveeId => _reserveeId;
+
         private readonly Guid _companyId;
+
+        public Guid CompanyId => _companyId;
 
         private readonly Employee _employee;
 

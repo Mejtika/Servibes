@@ -16,13 +16,17 @@ import { CompanyPageComponent } from './company-page/company-page.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { LoginMenuComponent } from "../../api-authorization/login-menu/login-menu.component";
-import { CompanyDataService } from '../data-service/company-data.servce';
+import { CompanyDataService } from '../data-service/company-data.service';
 import { ServicesDataService } from '../data-service/services-data.service';
 import { EmployeeDataService } from '../data-service/employee-data.service';
 import { AppointmentDataService } from '../data-service/appointment-data.service';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClientDataService } from '../data-service/client-data.service';
+import { ClientFavoritesService } from './client-account/client-favorites.service';
+import { CompanyRatingsComponent } from './company-page/company-ratings/company-ratings.component';
+import { ClientReviewsService } from './client-account/client-reviews.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 let jQuery = window['$'];
 
@@ -45,6 +49,11 @@ const routes: Routes = [
       {
         path: "companies/:id",
         component: CompanyPageComponent
+      },
+      {
+        path: 'account',
+        data: { preload: true },
+        loadChildren: () => import('./client-account/client-account.module').then(m => m.ClientAccountModule)
       }
     ]
   }
@@ -58,16 +67,16 @@ const routes: Routes = [
         ModalComponent,
         ModalTriggerDirective,
         CompanyPageComponent,
-        ClientReservationComponent
+        ClientReservationComponent,
+        CompanyRatingsComponent
     ],
     imports: [
         CommonModule,
         SharedModule,
         RouterModule.forChild(routes),
-
         FormsModule,
         ReactiveFormsModule,
-
+        NgbModule,
         ModalModule.forRoot()
     ],
     providers: [
@@ -77,6 +86,8 @@ const routes: Routes = [
         EmployeeDataService,
         AppointmentDataService,
         ClientDataService,
+        ClientFavoritesService,
+        ClientReviewsService,
         { provide: JQUERY_TOKEN, useValue: jQuery }
       ]
 })
