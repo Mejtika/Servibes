@@ -1,7 +1,8 @@
-﻿using System.Threading;
+﻿    using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Servibes.ClientProfile.Api.Models;
+    using Microsoft.EntityFrameworkCore;
+    using Servibes.ClientProfile.Api.Models;
 
 namespace Servibes.ClientProfile.Api.Events.External.AppointmentPaid
 {
@@ -16,6 +17,13 @@ namespace Servibes.ClientProfile.Api.Events.External.AppointmentPaid
 
         public async Task Handle(AppointmentPaidEvent notification, CancellationToken cancellationToken)
         {
+            var reviewExists = await _context.Reviews.SingleOrDefaultAsync(x =>
+                x.CompanyId == notification.CompanyId && x.ClientId == notification.ReserveeId, cancellationToken) != null;
+            if (reviewExists)
+            {
+                return;
+            }
+
             var review = new Review
             {
                 CompanyId = notification.CompanyId,

@@ -11,6 +11,8 @@ namespace Servibes.ClientProfile.Api
 
         public DbSet<Review> Reviews { get; set; }
 
+        public DbSet<Favorite> Favorites { get; set; }
+
         public ClientProfileContext(DbContextOptions<ClientProfileContext> options) : base(options)
         {
         }
@@ -26,8 +28,7 @@ namespace Servibes.ClientProfile.Api
 
             modelBuilder.Entity<Favorite>(builder =>
             {
-                builder.Property<Guid>("FavoriteId");
-                builder.HasKey("FavoriteId");
+                builder.HasKey(x => x.CompanyId);
             });
         }
     }

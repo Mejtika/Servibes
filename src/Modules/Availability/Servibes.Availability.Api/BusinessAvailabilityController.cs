@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Servibes.Appointments.Api;
-using Servibes.Availability.Api.DTO;
 using Servibes.Availability.Api.Requests;
 using Servibes.Availability.Application.Companies.GetCompanyOpeningHours;
 using Servibes.Availability.Application.Employees.GetEmployeeAvailableHours;
@@ -25,14 +23,14 @@ namespace Servibes.Availability.Api
         }
 
         [HttpPost("{companyId}/employees/{employeeId}/workingHours")]
-        public IActionResult ChangeWorkingHours([FromBody] EmployeeWorkingHoursDto employeeWorkingHoursDto, Guid companyId, Guid employeeId)
+        public IActionResult ChangeWorkingHours(Guid companyId, Guid employeeId, [FromBody] ChangeWorkingHoursRequest changeWorkingHoursRequest)
         {
 
             return Ok();
         }
 
         [HttpPost("{companyId}/openingHours")]
-        public IActionResult ChangeOpeningHours([FromBody] CompanyOpeningHoursDto companyOpeningHours, Guid companyId)
+        public IActionResult ChangeOpeningHours(Guid companyId, [FromBody] ChangeOpeningHoursRequest changeOpeningHours)
         {
 
             return Ok();

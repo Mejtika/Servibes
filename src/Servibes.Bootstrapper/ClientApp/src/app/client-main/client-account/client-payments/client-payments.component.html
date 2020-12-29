@@ -1,0 +1,23 @@
+<div class="area_title mb-30">
+  <h3 class="mt-lx-3 mb-3">Payments</h3>
+</div>
+<hr />
+<div class="list-group list-group-flush">
+  <button
+    *ngFor="let appointment of pagedPaidAppointments"
+    type="button"
+    (click)="showAppointmentsDetails(appointment)"
+    class="list-group-item list-group-item-action">
+    🕓{{ appointment.start | date: "shortDate" }} ▪
+    🏢{{ appointment.company.companyName }} ▪
+    💲{{ appointment.price }}zł
+  </button>
+</div>
+<div class="d-flex justify-content-between p-2">
+  <ngb-pagination
+    [collectionSize]="collectionSize"
+    [(page)]="page"
+    [pageSize]="pageSize"
+    (pageChange)="refreshAppointments()">
+  </ngb-pagination>
+</div>

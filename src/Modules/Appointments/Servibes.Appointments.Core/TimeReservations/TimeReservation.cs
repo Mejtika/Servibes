@@ -11,6 +11,8 @@ namespace Servibes.Appointments.Core.TimeReservations
 
         private readonly Guid _companyId;
 
+        public Guid CompanyId => _companyId;
+
         private readonly Guid _employeeId;
 
         private readonly ReservationDate _reservedDate;

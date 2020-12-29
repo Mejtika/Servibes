@@ -42,21 +42,18 @@ namespace Servibes.ClientProfile.Api.Migrations
 
             modelBuilder.Entity("Servibes.ClientProfile.Api.Models.Favorite", b =>
                 {
-                    b.Property<Guid>("FavoriteId")
+                    b.Property<Guid>("CompanyId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("FavoriteId");
+                    b.HasKey("CompanyId");
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Favorite");
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("Servibes.ClientProfile.Api.Models.Review", b =>

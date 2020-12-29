@@ -17,6 +17,7 @@ import { LoginMenuComponent } from "../../api-authorization/login-menu/login-men
     SpinnerComponent
   ],
   exports: [
+    CommonModule,
     SpinnerComponent,
     MaterialModule,
     LoginMenuComponent

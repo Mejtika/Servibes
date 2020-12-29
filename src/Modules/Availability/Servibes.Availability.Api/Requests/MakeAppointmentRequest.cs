@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Servibes.Appointments.Api
+namespace Servibes.Availability.Api.Requests
 {
     public class MakeAppointmentRequest
     {

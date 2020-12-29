@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Servibes.Appointments.Application.Events.Appointments;
 using Servibes.Availability.Core.Employees;
+using Servibes.Shared.Exceptions;
 
 namespace Servibes.Availability.Application.Events.External.Appointments.AppointmentCanceled
 {
@@ -21,6 +22,10 @@ namespace Servibes.Availability.Application.Events.External.Appointments.Appoint
         public async Task Handle(AppointmentCanceledEvent notification, CancellationToken cancellationToken)
         {
             var employee = await _employeeRepository.GetByIdAsync(notification.EmployeeId);
+            if (employee == null)
+            {
+                throw new AppException($"Employee {notification.AppointmentId} not found");
+            }
             var reservation = employee.GetReservationByDate(notification.Start);
             employee.ReleaseReservation(reservation);
             await _unitOfWork.CommitAsync(cancellationToken);

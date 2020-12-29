@@ -12,6 +12,8 @@ export class CompanyDataService extends ApiService<ICompany> {
     super(http)
   }
 
+  companies$ =  this.get<ICompany[]>(`companies`);
+
   public getAllCompanies(category: Category = Category.All) : Observable<ICompany[]> {
     if(category == Category.All)
       return this.get(`companies/`);

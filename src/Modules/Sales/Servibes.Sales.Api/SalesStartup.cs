@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Servibes.Sales.Api.ModuleClients;
 using Servibes.Shared;
 
 namespace Servibes.Sales.Api
