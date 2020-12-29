@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from 'rxjs';
 
-import { ICompany, Category, DayOfWeek, IAppointment, IService, IEmployee } from '../shared/interfaces/company';
+import { Company, Category, DayOfWeek, Appointment, Service, Employee } from '../shared/interfaces/company';
 
 //import 'rxjs/add/observable/of';
 
 @Injectable()
 export class MockDataService {
-   private _companies: ICompany[] = [
+   private _companies: Company[] = [
      {
        companyId: "1",
        phoneNumber: '123456789',
@@ -80,7 +80,7 @@ export class MockDataService {
      },
    ];
 
-   private _appointments: IAppointment[] = [
+   private _appointments: Appointment[] = [
      {
         employeeId: "1",
         serviceId: "2",
@@ -142,13 +142,13 @@ export class MockDataService {
 
   constructor() {}
 
-  getCompany(id: string): Observable<ICompany> {
+  getCompany(id: string): Observable<Company> {
     const company = this._companies.filter(c => c.companyId == id);
 
     return of(company[0]);
   }
 
-  public getCompanies(category: Category = Category.All) : Observable<ICompany[]> {
+  public getCompanies(category: Category = Category.All) : Observable<Company[]> {
     if(category == Category.All)
       return of(this._companies);
 
@@ -159,15 +159,15 @@ export class MockDataService {
     return Object.keys(Category).map((key) => Category[key]);
   }
 
-  public getAppointments(): Observable<IAppointment[]> {
+  public getAppointments(): Observable<Appointment[]> {
     return of(this._appointments);
   }
 
-  public getCompanyServices(id: string): Observable<IService[]> {
+  public getCompanyServices(id: string): Observable<Service[]> {
     return of(this._companies.filter(c => c.companyId == id)[0].services);
   }
 
-  public getCompanyEmployeees(id: string): Observable<IEmployee[]> {
+  public getCompanyEmployeees(id: string): Observable<Employee[]> {
     return of(this._companies.filter(c => c.companyId == id)[0].employees);
   }
 }

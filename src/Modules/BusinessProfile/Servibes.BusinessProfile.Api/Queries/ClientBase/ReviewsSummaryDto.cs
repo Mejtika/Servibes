@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Servibes.ClientProfile.Api.Dtos
+namespace Servibes.BusinessProfile.Api.Queries.ClientBase
 {
     public class ReviewsSummaryDto
     {

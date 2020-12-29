@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { DxSchedulerComponent } from 'devextreme-angular';
 
 import { MockDataService } from 'src/app/data-service/mock-data.service';
-import { IAppointment, IClient, ICompany, IEmployee, IService } from 'src/app/shared/interfaces/company';
+import { Appointment, Client, Company, Employee, Service } from 'src/app/shared/interfaces/company';
 import Query from 'devextreme/data/query';
 
 @Component({
@@ -15,9 +15,9 @@ export class CalendarComponent {
 
     currentDate: Date = new Date(2020, 9, 21);
 
-    appointments: IAppointment[];
-    services: IService[];
-    employees: IEmployee[];
+    appointments: Appointment[];
+    services: Service[];
+    employees: Employee[];
 
     constructor(mockDataService: MockDataService) {
 

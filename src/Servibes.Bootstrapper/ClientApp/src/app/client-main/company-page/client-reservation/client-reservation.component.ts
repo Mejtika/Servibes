@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { formatDate } from '@angular/common';
 
-import { IClient, ICompany, IEmployee, IService, IServiceHours } from '../../../shared/interfaces/company';
+import { Client, Company, Employee, Service, ServiceHours } from '../../../shared/interfaces/company';
 
 import { ServicesDataService } from '../../../data-service/services-data.service';
 import { EmployeeDataService } from '../../../data-service/employee-data.service';
@@ -18,8 +18,8 @@ import { mergeMap } from 'rxjs/operators';
   styleUrls: ['./client-reservation.component.css']
 })
 export class ClientReservationComponent {
-  company: ICompany;
-  service: IService;
+  company: Company;
+  service: Service;
 
   public step: number = 1;
   public maxStep: number = 4;
@@ -27,11 +27,11 @@ export class ClientReservationComponent {
 
   public selectedDate: Date = new Date();
 
-  public serviceEmployees: IEmployee[];
-  public selectedEmployee: IEmployee;
+  public serviceEmployees: Employee[];
+  public selectedEmployee: Employee;
 
-  public serviceAvailableHours: IServiceHours[];
-  public selectedHour: IServiceHours;
+  public serviceAvailableHours: ServiceHours[];
+  public selectedHour: ServiceHours;
 
   constructor(
     public bsModalRef: BsModalRef,
@@ -77,7 +77,7 @@ export class ClientReservationComponent {
     this.canMoveToNextStep = this.checkIfCanMoveToNextStep();
   }
 
-  public selectEmployee(employee: IEmployee) {
+  public selectEmployee(employee: Employee) {
     this.selectedEmployee = employee;
 
     console.log('selectedDate', this.selectedDate);
@@ -91,7 +91,7 @@ export class ClientReservationComponent {
     this.canMoveToNextStep = this.checkIfCanMoveToNextStep();
   }
 
-  public selectHour(hour: IServiceHours) {
+  public selectHour(hour: ServiceHours) {
     this.selectedHour = hour;
 
     this.canMoveToNextStep = this.checkIfCanMoveToNextStep();

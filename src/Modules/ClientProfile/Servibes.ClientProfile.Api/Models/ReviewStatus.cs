@@ -3,6 +3,6 @@
     public enum ReviewStatus
     {
         New,
-        Leaved
+        Added
     }
 }

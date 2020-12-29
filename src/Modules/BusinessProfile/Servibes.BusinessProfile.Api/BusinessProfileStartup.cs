@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Servibes.BusinessProfile.Api.Events.External.AppointmentCreated;
 using Servibes.BusinessProfile.Api.Events.External.NewClientRegistered;
+using Servibes.BusinessProfile.Api.Events.External.ReviewAdded;
 using Servibes.BusinessProfile.Api.Services;
 using Servibes.Shared;
 
@@ -40,6 +41,7 @@ namespace Servibes.BusinessProfile.Api
         {
             app.UseModuleRequests()
                 .Subscribe<AppointmentCreatedEvent>()
+                .Subscribe<ReviewAddedEvent>()
                 .Subscribe<NewClientRegisteredEvent>()
                 .Subscribe<GetReservationDataRequest>("modules/business/details", async (sp, request) =>
                 {

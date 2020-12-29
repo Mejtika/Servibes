@@ -19,6 +19,8 @@ namespace Servibes.BusinessProfile.Api
 
         public DbSet<Appointment> Appointments { get; set; }
 
+        public DbSet<Review> Reviews { get; set; }
+
         public BusinessProfileContext(DbContextOptions<BusinessProfileContext> options) : base(options)
         {
         }
@@ -59,6 +61,12 @@ namespace Servibes.BusinessProfile.Api
             modelBuilder.Entity<Appointment>(builder =>
             {
                 builder.ToTable("Appointments");
+                builder.HasOne<Company>().WithMany().HasForeignKey(x => x.CompanyId).IsRequired();
+            });
+
+            modelBuilder.Entity<Review>(builder =>
+            {
+                builder.ToTable("Reviews");
                 builder.HasOne<Company>().WithMany().HasForeignKey(x => x.CompanyId).IsRequired();
             });
         }
