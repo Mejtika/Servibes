@@ -1,33 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Servibes.ClientProfile.Api.Dtos;
+using Servibes.ClientProfile.Api.Events;
 using Servibes.ClientProfile.Api.Models;
 using Servibes.ClientProfile.Api.Requests;
 using Servibes.Shared.Communication.Brokers;
 using Servibes.Shared.Exceptions;
+using Servibes.Shared.Services;
 
 namespace Servibes.ClientProfile.Api
 {
     [ApiController]
-    [Route("api")]
+    [Route("api/account")]
     public class ClientProfileController : ControllerBase
     {
         private readonly ClientProfileContext _context;
         private readonly IMessageBroker _messageBroker;
+        private readonly IDateTimeServer _dateTimeServer;
 
         public ClientProfileController(
             ClientProfileContext context,
-            IMessageBroker messageBroker)
+            IMessageBroker messageBroker,
+            IDateTimeServer dateTimeServer)
         {
             _context = context;
             _messageBroker = messageBroker;
+            _dateTimeServer = dateTimeServer;
         }
 
-        [HttpPost("account/reviews")]
+        [HttpPost("reviews")]
         public async Task<IActionResult> LeaveReview(LeaveReviewRequest request)
         {
             var review = _context.Reviews.SingleOrDefault(x => x.ReviewId == request.ReviewId);
@@ -49,14 +53,23 @@ namespace Servibes.ClientProfile.Api
 
             review.Description = request.Description;
             review.StarsCount = request.StarsCount;
-            review.Status = ReviewStatus.Leaved;
+            review.Status = ReviewStatus.Added;
+            review.AddedOn = _dateTimeServer.Now;
 
             await _context.SaveChangesAsync();
+            var @event = new ReviewAddedEvent(
+                review.ReviewId,
+                review.ClientId,
+                review.CompanyId,
+                review.Description,
+                review.StarsCount.Value,
+                review.AddedOn.Value);
 
+            await _messageBroker.PublishAsync(new[] {@event});
             return Ok();
         }
 
-        [HttpGet("account/reviews")]
+        [HttpGet("reviews")]
         public async Task<IActionResult> GetAllUserReviews()
         {
             var userId = Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
@@ -64,7 +77,7 @@ namespace Servibes.ClientProfile.Api
             return Ok(reviews);
         }
 
-        [HttpGet("account/reviews/{reviewId}")]
+        [HttpGet("reviews/{reviewId}")]
         public async Task<IActionResult> GetUserReview(Guid reviewId)
         {
             var userId = Guid.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
@@ -77,7 +90,7 @@ namespace Servibes.ClientProfile.Api
             return Ok(review);
         }
 
-        [HttpPost("account/favorites")]
+        [HttpPost("favorites")]
         public async Task<IActionResult> AddToFavorites(AddToFavoritesRequest request)
         {
             var userId = Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
@@ -87,7 +100,7 @@ namespace Servibes.ClientProfile.Api
             return Ok();
         }
 
-        [HttpDelete("account/favorites/{companyId}")]
+        [HttpDelete("favorites/{companyId}")]
         public async Task<IActionResult> DeleteFromFavorites(Guid companyId)
         {
             var userId = Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
@@ -97,7 +110,7 @@ namespace Servibes.ClientProfile.Api
             return Ok();
         }
 
-        [HttpGet("account/favorites")]
+        [HttpGet("favorites")]
         public async Task<IActionResult> GetClientFavorites()
         {
             var userId = Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
@@ -108,58 +121,6 @@ namespace Servibes.ClientProfile.Api
                     CompanyId = x.CompanyId
                 }).ToList();
             return Ok(favoritesCompaniesDto);
-        }
-
-        [HttpGet("companies/{companyId}/reviews")]
-        public async Task<IActionResult> GetAllCompanyReviews(Guid companyId)
-        {
-            var reviews = await _context.Reviews
-                .Where(x => x.CompanyId == companyId).ToListAsync();
-            var leavedReviews = reviews.Where(x => x.Status == ReviewStatus.Leaved).ToList();
-            var companyReviews = new List<CompanyReviewDto>();
-            foreach (var review in leavedReviews)
-            {
-                var client = await _context.Clients.SingleOrDefaultAsync(x => x.ClientId == review.ClientId);
-                companyReviews.Add(new CompanyReviewDto
-                {
-                    Description = review.Description,
-                    StarsCount = review.StarsCount,
-                    Name = client.Name,
-                });
-            }
-            return Ok(companyReviews);
-        }
-
-        [HttpGet("companies/{companyId}/reviews/summary")]
-        public async Task<IActionResult> GetCompanyReviewsSummary(Guid companyId)
-        {
-            var reviews = (await _context.Reviews.Where(x => x.CompanyId == companyId).ToListAsync())
-                .Where(x => x.Status == ReviewStatus.Leaved).ToList();
-            var distributedReviews = reviews
-            .GroupBy(x => x.StarsCount)
-            .Select(x => new ReviewSummaryDto
-            {
-                Rating = x.Key,
-                Count = x.Count(),
-                PercentOfTotal = x.Count() * 100 / reviews.Count
-            }).ToList();
-
-            for (int i = 1; i <= 5; i++)
-            {
-                if (!distributedReviews.Exists(x => x.Rating == i))
-                {
-                    distributedReviews.Add(new ReviewSummaryDto {Rating = i, Count = 0, PercentOfTotal = 0});
-                }
-            }
-
-            var reviewSummary = new ReviewsSummaryDto
-            {
-                Reviews = distributedReviews.OrderBy(x => x.Rating).ToList(),
-                Count = reviews.Count,
-                Average = reviews.Select(x => x.StarsCount).Average()
-            };
-            
-            return Ok(reviewSummary);
         }
     }
 }
