@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { BsModalService } from "ngx-bootstrap/modal";
-import { IAddress } from "src/app/shared/interfaces/company";
+import { Address } from "src/app/shared/interfaces/company";
 import { ClientAppointmentService } from "../client-appointment.service";
 import { ClientAppointmentComponent } from "../client-appointment/client-appointment.component";
 
@@ -8,7 +8,7 @@ export interface CompanyDetails {
   companyId: string;
   companyName: string;
   phoneNumber: string;
-  address: IAddress;
+  address: Address;
 }
 
 export interface AppointmentDetails {

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ICompany } from 'src/app/shared/interfaces/company';
+import { Company } from 'src/app/shared/interfaces/company';
 
 @Component({
     selector: 'single-company',
@@ -7,7 +7,7 @@ import { ICompany } from 'src/app/shared/interfaces/company';
     styleUrls: ['./single-company-component.css']
 })
 export class SingleCompanyComponent {
-    @Input() company: ICompany;
+    @Input() company: Company;
 
     constructor() {
         

@@ -19,6 +19,8 @@ namespace Servibes.BusinessProfile.Api
 
         public DbSet<Appointment> Appointments { get; set; }
 
+        public DbSet<Review> Reviews { get; set; }
+
         public BusinessProfileContext(DbContextOptions<BusinessProfileContext> options) : base(options)
         {
         }
@@ -62,28 +64,11 @@ namespace Servibes.BusinessProfile.Api
                 builder.HasOne<Company>().WithMany().HasForeignKey(x => x.CompanyId).IsRequired();
             });
 
-            modelBuilder.Entity<Category>().HasData(
-                new Category()
-                {
-                    CategoryId = Guid.NewGuid(),
-                    Name = "Hairdresser"
-                },
-                new Category()
-                {
-                    CategoryId = Guid.NewGuid(),
-                    Name = "Barber"
-                },
-                new Category()
-                {
-                    CategoryId = Guid.NewGuid(),
-                    Name = "Massage"
-                },
-                new Category()
-                {
-                    CategoryId = Guid.NewGuid(),
-                    Name = "Makeup"
-                }
-            );
+            modelBuilder.Entity<Review>(builder =>
+            {
+                builder.ToTable("Reviews");
+                builder.HasOne<Company>().WithMany().HasForeignKey(x => x.CompanyId).IsRequired();
+            });
         }
     }
 }

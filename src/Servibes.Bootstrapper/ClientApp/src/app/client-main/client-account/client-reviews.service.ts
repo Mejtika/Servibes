@@ -59,7 +59,7 @@ export class ClientReviewsService {
     })
   );
 
-  getCompanyReview(companyId: string){
+  getCompanyReviews(companyId: string){
     return this.httpClient.get<ReviewDetails[]>(`${environment.backendEndpoint}companies/${companyId}/reviews`)
   }
 

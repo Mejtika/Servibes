@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Servibes.ClientProfile.Api.Models
+namespace Servibes.BusinessProfile.Api.Models.ClientBase
 {
     public class Review
     {
@@ -12,10 +12,8 @@ namespace Servibes.ClientProfile.Api.Models
 
         public string Description { get; set; }
 
-        public int? StarsCount { get; set; }
+        public int StarsCount { get; set; }
 
-        public DateTime? AddedOn { get; set; }
-
-        public ReviewStatus Status { get; set; }
+        public DateTime AddedOn { get; set; }
     }
 }

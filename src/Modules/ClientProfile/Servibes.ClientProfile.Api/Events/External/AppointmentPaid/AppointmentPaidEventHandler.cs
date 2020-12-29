@@ -30,6 +30,7 @@ namespace Servibes.ClientProfile.Api.Events.External.AppointmentPaid
                 ClientId = notification.ReserveeId,
                 Description = null,
                 StarsCount = null,
+                AddedOn = null,
                 Status = ReviewStatus.New
             };
 

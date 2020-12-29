@@ -1,4 +1,4 @@
-﻿namespace Servibes.ClientProfile.Api.Dtos
+﻿namespace Servibes.BusinessProfile.Api.Queries.ClientBase
 {
     public class ReviewSummaryDto
     {

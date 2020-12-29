@@ -16,5 +16,7 @@ namespace Servibes.BusinessProfile.Api.Models.ClientBase
         public string Email { get; set; }
 
         public List<Appointment> Appointments { get; set; } = new List<Appointment>();
+
+        public List<Review> Reviews { get; set; } = new List<Review>();
     }
 }
