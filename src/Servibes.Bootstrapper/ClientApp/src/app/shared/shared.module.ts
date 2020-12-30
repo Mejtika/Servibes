@@ -1,7 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MockDataService } from '../data-service/mock-data.service';
-
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MaterialModule } from './material.module';
 import { ApiAuthorizationModule } from "../../api-authorization/api-authorization.module";
@@ -22,7 +20,7 @@ import { LoginMenuComponent } from "../../api-authorization/login-menu/login-men
     MaterialModule,
     LoginMenuComponent
   ],
-  providers: [MockDataService]
+  providers: []
 })
 export class SharedModule {
 

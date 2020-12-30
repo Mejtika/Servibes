@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Servibes.BusinessProfile.Api.Queries.Services.GetCompanyServices
 {
-    public class GetCompanyServicesQueryHandler : IRequestHandler<GetCompanyServicesQuery, IEnumerable<CompanyServicesDto>>
+    public class GetCompanyServicesQueryHandler : IRequestHandler<GetCompanyServicesQuery, IEnumerable<CompanyServiceDto>>
     {
         private readonly BusinessProfileContext _context;
         private readonly IMapper _mapper;
@@ -20,7 +20,7 @@ namespace Servibes.BusinessProfile.Api.Queries.Services.GetCompanyServices
             this._mapper = mapper;
         }
 
-        public async Task<IEnumerable<CompanyServicesDto>> Handle(GetCompanyServicesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CompanyServiceDto>> Handle(GetCompanyServicesQuery request, CancellationToken cancellationToken)
         {
             var services = await _context.Services.Where(s => s.CompanyId == request.CompanyId).ToListAsync();
 
@@ -29,7 +29,7 @@ namespace Servibes.BusinessProfile.Api.Queries.Services.GetCompanyServices
                 throw new ArgumentException($"Company with id {request.CompanyId} doesnt have any services.");
             }
 
-            return _mapper.Map<IEnumerable<CompanyServicesDto>>(services);
+            return _mapper.Map<IEnumerable<CompanyServiceDto>>(services);
         }
     }
 }

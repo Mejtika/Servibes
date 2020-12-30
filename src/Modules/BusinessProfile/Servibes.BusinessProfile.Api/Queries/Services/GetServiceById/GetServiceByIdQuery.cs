@@ -3,7 +3,7 @@ using System;
 
 namespace Servibes.BusinessProfile.Api.Queries.Services.GetServiceById
 {
-    public class GetServiceByIdQuery : IRequest<CompanyServicesDto>
+    public class GetServiceByIdQuery : IRequest<CompanyServiceDto>
     {
         public Guid CompanyId { get; }
         public Guid ServiceId { get; }

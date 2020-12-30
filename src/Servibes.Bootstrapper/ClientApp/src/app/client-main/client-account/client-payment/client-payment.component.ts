@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { PaidAppointmentDetails } from '../client-payments/client-payments.component';
+import { PaidAppointmentDetails } from 'src/app/shared/interfaces/company';
 
 @Component({
   selector: 'app-client-payment',

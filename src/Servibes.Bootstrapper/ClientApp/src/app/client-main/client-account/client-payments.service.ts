@@ -2,10 +2,9 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
-import { CompanyDataService } from "src/app/data-service/company-data.service";
+import { PaidAppointmentDetails } from "src/app/shared/interfaces/company";
 import { environment } from "src/environments/environment";
 import { ClientAppointmentService } from "./client-appointment.service";
-import { PaidAppointmentDetails } from "./client-payments/client-payments.component";
 
 export interface PaidAppointmentsDto {
   appointmentId: string;

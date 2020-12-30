@@ -1,13 +1,11 @@
 import { Component } from "@angular/core";
-
-import { filter } from "rxjs/operators";
-import { forkJoin } from "rxjs";
-
-import { Category, Company } from "../../shared/interfaces/company";
-import { MockDataService } from "../../data-service/mock-data.service";
+import {
+  Category,
+  SearchedCompanyDto,
+  PagedResult,
+} from "../../shared/interfaces/company";
 import { ActivatedRoute } from "@angular/router";
 import { CompanyDataService } from "src/app/data-service/company-data.service";
-import { ServicesDataService } from "src/app/data-service/services-data.service";
 
 @Component({
   selector: "companies-list",
@@ -15,12 +13,15 @@ import { ServicesDataService } from "src/app/data-service/services-data.service"
   styleUrls: ["./companies-list.component.css"],
 })
 export class CompaniesListComponent {
-  companies: Company[];
+  page: number = 1;
+  pageSize: number = 1;
+  collectionSize: number;
+  companies: SearchedCompanyDto[];
   _category: Category;
 
   set category(category: Category) {
     this._category = category;
-    this.getCompanies(this._category);
+    this.getCompanies();
   }
 
   get category() {
@@ -29,32 +30,22 @@ export class CompaniesListComponent {
 
   constructor(
     private companyDataService: CompanyDataService,
-    private servicesDataService: ServicesDataService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.route.queryParams
-      .pipe(filter((params) => params.category))
-      .subscribe((params) => {
-        this.category = params.category;
-      });
-
-    this.getCompanies(this.category);
+    this.route.queryParams.subscribe((params) => {
+      this.category = params.category;
+    });
   }
 
-  getCompanies(category: Category) {
+  getCompanies() {
     this.companyDataService
-      .getAllCompanies(category)
-      .subscribe((result) => {
-        this.companies = result;
-        this.companies.forEach((c) => {
-          this.servicesDataService
-            .getAllCompanyServices(c.companyId)
-            .subscribe((services) => {
-              c.services = services;
-            });
-        });
+      .getAllCompanies(this.page, this.pageSize, this.category)
+      .subscribe((result: PagedResult<SearchedCompanyDto[]>) => {
+        console.log(result.results, result.totalRecords);
+        this.companies = result.results;
+        this.collectionSize = result.totalRecords;
       });
   }
 }

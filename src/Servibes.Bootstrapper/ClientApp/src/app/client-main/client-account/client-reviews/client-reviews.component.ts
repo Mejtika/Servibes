@@ -3,25 +3,11 @@ import {
   ClientReviewsService,
   LeaveReviewRequest,
 } from "../client-reviews.service";
-import { CompanyDetails } from "../client-appointments/client-appointments.component";
 import { NgbRatingConfig } from "@ng-bootstrap/ng-bootstrap";
 import { FormControl, FormGroup, NgForm, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
-
-export enum ReviewStatus {
-  New,
-  Leaved,
-}
-export interface ReviewDetails {
-  reviewId: string;
-  clientId: string;
-  companyId: string;
-  company?: CompanyDetails;
-  description?: string;
-  starsCount?: number;
-  status: ReviewStatus;
-}
+import { ReviewDetails, ReviewStatus } from "src/app/shared/interfaces/company";
 
 @Component({
   selector: "client-reviews",

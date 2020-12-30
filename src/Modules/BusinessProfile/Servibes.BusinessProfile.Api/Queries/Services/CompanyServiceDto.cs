@@ -2,7 +2,7 @@
 
 namespace Servibes.BusinessProfile.Api.Queries.Services
 {
-    public class CompanyServicesDto
+    public class CompanyServiceDto
     {
         public Guid ServiceId { get; set; }
         public string ServiceName { get; set; }

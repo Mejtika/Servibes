@@ -2,13 +2,14 @@
 using System;
 using MediatR;
 using System.Threading.Tasks;
-using Servibes.BusinessProfile.Api.Commands.Companies;
 using Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany;
 using Servibes.BusinessProfile.Api.Commands.Companies.DeleteCompany;
 using Servibes.BusinessProfile.Api.Commands.Companies.UpdateCompany;
 using Servibes.BusinessProfile.Api.Queries.Companies.GetAllCompanies;
+using Servibes.BusinessProfile.Api.Queries.Companies.GetCompaniesWithSearch;
 using Servibes.BusinessProfile.Api.Queries.Companies.GetCompany;
 using Servibes.BusinessProfile.Api.Queries.Companies.GetOwnerCompany;
+using CompanyDto = Servibes.BusinessProfile.Api.Commands.Companies.CompanyDto;
 
 namespace Servibes.BusinessProfile.Api.Controllers
 {
@@ -38,9 +39,16 @@ namespace Servibes.BusinessProfile.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllCompanies(string category = "")
+        public async Task<ActionResult> GetAllCompanies()
         {
-            var result = await _mediator.Send(new GetAllCompaniesQuery(category));
+            var result = await _mediator.Send(new GetAllCompaniesQuery());
+            return Ok(result);
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult> GetCompaniesWithSearch(int page, int pageSize, string category = "")
+        {
+            var result = await _mediator.Send(new GetCompaniesWithSearchQuery(page, pageSize, category));
             return Ok(result);
         }
 

@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-
-import { MockDataService } from '../data-service/mock-data.service';
-
 import { ModalComponent } from '../shared/components/modal/modal.component';
 import { ModalTriggerDirective } from '../shared/directives/modalTriggerr.directive';
 import { JQUERY_TOKEN } from '../shared/services/jQuery.service';
@@ -15,18 +11,18 @@ import { ClientReservationComponent } from './company-page/client-reservation/cl
 import { CompanyPageComponent } from './company-page/company-page.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
-import { LoginMenuComponent } from "../../api-authorization/login-menu/login-menu.component";
 import { CompanyDataService } from '../data-service/company-data.service';
 import { ServicesDataService } from '../data-service/services-data.service';
 import { EmployeeDataService } from '../data-service/employee-data.service';
 import { AppointmentDataService } from '../data-service/appointment-data.service';
-
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClientDataService } from '../data-service/client-data.service';
 import { ClientFavoritesService } from './client-account/client-favorites.service';
 import { CompanyRatingsComponent } from './company-page/company-ratings/company-ratings.component';
 import { ClientReviewsService } from './client-account/client-reviews.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ClientNavbarSearchComponent } from './client-navbar/client-navbar-search/client-navbar-search.component';
 
 let jQuery = window['$'];
 
@@ -62,8 +58,9 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         ClientMainComponent,
-        ClientNavbarComponent,
         ClientFooterComponent,
+        ClientNavbarSearchComponent,
+        ClientNavbarComponent,
         ModalComponent,
         ModalTriggerDirective,
         CompanyPageComponent,
@@ -76,11 +73,11 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         FormsModule,
         ReactiveFormsModule,
+        NgSelectModule,
         NgbModule,
         ModalModule.forRoot()
     ],
     providers: [
-        MockDataService,
         CompanyDataService,
         ServicesDataService,
         EmployeeDataService,

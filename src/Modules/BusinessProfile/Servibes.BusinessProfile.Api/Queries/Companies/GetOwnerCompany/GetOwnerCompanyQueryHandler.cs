@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Servibes.BusinessProfile.Api.Queries.Companies.GetOwnerCompany
 {
-    public class GetOwnerCompanyQueryHandler : IRequestHandler<GetOwnerCompanyQuery,CompanyDto>
+    public class GetOwnerCompanyQueryHandler : IRequestHandler<GetOwnerCompanyQuery,CompanyDetailsDto>
     {
         private readonly BusinessProfileContext _context;
         private readonly IMapper _mapper;
@@ -26,11 +26,11 @@ namespace Servibes.BusinessProfile.Api.Queries.Companies.GetOwnerCompany
             _accessor = accessor;
         }
 
-        public async Task<CompanyDto> Handle(GetOwnerCompanyQuery request, CancellationToken cancellationToken)
+        public async Task<CompanyDetailsDto> Handle(GetOwnerCompanyQuery request, CancellationToken cancellationToken)
         {
             var ownerId = Guid.Parse(_accessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
             var company = await _context.Companies.SingleOrDefaultAsync(c => c.OwnerId == ownerId, cancellationToken);
-            return _mapper.Map<CompanyDto>(company);
+            return _mapper.Map<CompanyDetailsDto>(company);
         }
     }
 }

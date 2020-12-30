@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewsSummaryDto, CompanyReviewDto } from '../../client-account/client-reviews.service';
-import { ReviewDetails } from '../../client-account/client-reviews/client-reviews.component';
 
 @Component({
   selector: 'company-ratings',

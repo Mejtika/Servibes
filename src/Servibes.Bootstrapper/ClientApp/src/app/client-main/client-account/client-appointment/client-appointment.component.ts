@@ -3,8 +3,8 @@ import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 import { BsModalRef } from "ngx-bootstrap/modal";
 import { ToastrService } from "ngx-toastr";
+import { AppointmentDetails } from "src/app/shared/interfaces/company";
 import { ClientAppointmentService } from "../client-appointment.service";
-import { AppointmentDetails } from "../client-appointments/client-appointments.component";
 
 @Component({
   selector: "client-appointment",
