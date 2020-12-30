@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppModule } from 'src/app/app.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CompaniesListComponent } from './companies-list.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
 @NgModule({
     imports: [
         CommonModule,
+        NgbModule,
         SharedModule,
         RouterModule.forChild(routes)
     ],

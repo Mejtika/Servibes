@@ -1,93 +1,45 @@
-<nav class="sticky-top">
-  <div class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand">UltimateService</a>
-    <button class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <app-login-menu></app-login-menu>
-
-    <div class="collapse navbar-collapse row justify-content-md-center"
-         id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <form id="searchForm"
-              (ngSubmit)="saveForm()"
-              [formGroup]="searchForm"
-              class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2"
-                 modal-trigger="searchWhat"
-                 formControlName="searchWhat"
-                 type="text"
-                 placeholder="Czego szukasz?"
-                 aria-label="Search" />
-          <input class="form-control mr-sm-2"
-                 modal-trigger="searchWhere"
-                 formControlName="searchWhere"
-                 type="text"
-                 placeholder="Gdzie?"
-                 aria-label="Search" />
-          <input class="form-control mr-sm-2"
-                 formControlName="searchWhen"
-                 type="date"
-                 placeholder="Kiedy?"
-                 aria-label="Search" />
-          <button class="btn btn-danger mr-sm-2">Szukaj</button>
-        </form>
-
-        <a [routerLink]="['/client/account']" class="nav-item mr-sm-2 btn btn-success nav-link">Account</a>
-        <a class="nav-item mr-sm-2 btn btn-success nav-link">Business site</a>
+<header class="section-header">
+  <section class="header-main">
+      <div class="container-fluid">
+          <div class="row align-items-center">
+              <div class="col-xl-2 col-lg-4 col-sm-4 col-md-4 col-5"> 
+                <a  [routerLink]="['/client/companies']"
+                  [queryParams]="{ category: 'All' }" class="brand-wrap">
+                  <i class="fa fa-leaf login" aria-hidden="true"></i>
+                  <span class="logo ml-2">Servibes</span> 
+                </a> 
+              </div>
+              <div class="mx-auto col-xl-8 col-lg-5 col-sm-8 col-md-4 col-xl-5 d-none d-lg-block">
+                <app-client-navbar-search></app-client-navbar-search>  
+              </div>
+              <div class="col-xl-2 col-lg-3 col-sm-8 col-md-8 col-7">
+                  <div class="d-flex justify-content-end"> 
+                      <a class="nav-link nav-user-img"  [routerLink]="['/client/account']">
+                        <i class="fa fa-user-circle-o account-icon" aria-hidden="true"></i>
+                        <span class="ml-1 login">Account</span>
+                      </a>
+                      <a class="nav-link nav-user-img" [routerLink]='["/authentication/logout"]' [state]='{ local: true }' title="Logout">
+                        <i class="fa fa-sign-out sign-out-icon" aria-hidden="true"></i>
+                      </a>
+                  </div>
+              </div>
+          </div>
       </div>
-    </div>
-  </div>
-  <div class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav categoriesList">
-        <a
-          *ngFor="let category of categories"
-          class="nav-item nav-link category"
-          [routerLink]="['/client/companies']" 
-          [queryParams]="{ category: category}"
-          >{{ category }}</a
-        >
+  </section>
+  <nav class="navbar navbar-expand-lg navbar-main">
+      <div class="container-fluid">
+          <div class="col-10 mx-auto d-lg-none">
+            <app-client-navbar-search></app-client-navbar-search>  
+          </div>
+          <div class="collapse navbar-collapse">
+            <div class="navbar-nav category-container">
+                <a *ngFor="let category of categories" class="nav-item nav-links category"
+                  [routerLink]="['/client/companies']"
+                  [queryParams]="{ category: category }">
+                    {{ category }}
+                </a>
+            </div>
+          </div>
       </div>
-    </div>
-  </div>
-</nav>
-
-<modal
-  [closeOnBodyClick]="closeOnBodyClick"
-  elementId="searchWhat"
-  title="POPULAR SERVICES"
->
-  <div class="list-group">
-    <div
-      class="list-group-item"
-      *ngFor="let service of categories"
-      (click)="selectWhat(service)"
-    >
-      {{ service }}
-    </div>
-  </div>
-</modal>
-
-<modal
-  [closeOnBodyClick]="closeOnBodyClick"
-  elementId="searchWhere"
-  title="SERVICES LOCALIZATION"
->
-  <div class="list-group">
-    <div
-      class="list-group-item"
-      *ngFor="let city of cities"
-      (click)="selectWhere(city)"
-    >
-      {{ city }}
-    </div>
-  </div>
-</modal>
+  </nav>
+</header>

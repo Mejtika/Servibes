@@ -1,18 +1,8 @@
 import { Component } from "@angular/core";
 import { BsModalService } from "ngx-bootstrap/modal";
-import { CompanyDetails } from "../client-appointments/client-appointments.component";
 import { ClientPaymentsService } from "../client-payments.service";
 import { ClientPaymentComponent } from '../client-payment/client-payment.component';
-
-export interface PaidAppointmentDetails {
-  appointmentId: string;
-  price: number;
-  company?: CompanyDetails;
-  employeeName: string;
-  serviceName: string;
-  start: string;
-  end: string;
-}
+import { PaidAppointmentDetails } from "src/app/shared/interfaces/company";
 
 @Component({
   selector: "client-payments",

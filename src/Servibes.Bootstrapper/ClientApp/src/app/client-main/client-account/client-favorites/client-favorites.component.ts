@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { CompanyDataService } from "src/app/data-service/company-data.service";
-import { CompanyDetails } from "../client-appointments/client-appointments.component";
+import { CompanyDetails } from "src/app/shared/interfaces/company";
 import { ClientFavoritesService } from "../client-favorites.service";
 
 @Component({

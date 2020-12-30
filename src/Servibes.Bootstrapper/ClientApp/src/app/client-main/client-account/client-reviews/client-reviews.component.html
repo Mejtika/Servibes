@@ -1,7 +1,3 @@
-<div class="area_title mb-30">
-  <h3 class="mt-lx-3 mb-3">Reviews</h3>
-</div>
-<hr />
 <div *ngFor="let review of pagedReviews">
   <ng-container *ngIf="isNew(review); else elseTemplate">
     <div class="card my-2">

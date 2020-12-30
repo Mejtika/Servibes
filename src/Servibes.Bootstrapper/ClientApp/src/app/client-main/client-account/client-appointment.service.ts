@@ -4,7 +4,7 @@ import { map, tap } from "rxjs/operators";
 import { combineLatest } from 'rxjs';
 import { CompanyDataService } from "src/app/data-service/company-data.service";
 import { environment } from "src/environments/environment";
-import { AppointmentDetails } from "./client-appointments/client-appointments.component";
+import { AppointmentDetails } from "src/app/shared/interfaces/company";
 
 export interface CancelAppointmentRequest {
   cancellationReason: string;

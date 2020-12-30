@@ -9,7 +9,7 @@ using Servibes.Shared.Exceptions;
 
 namespace Servibes.BusinessProfile.Api.Queries.Services.GetServiceById
 {
-    public class GetServiceByIdQueryHandler : IRequestHandler<GetServiceByIdQuery, CompanyServicesDto>
+    public class GetServiceByIdQueryHandler : IRequestHandler<GetServiceByIdQuery, CompanyServiceDto>
     {
         private readonly BusinessProfileContext _context;
         private readonly IMapper _mapper;
@@ -20,7 +20,7 @@ namespace Servibes.BusinessProfile.Api.Queries.Services.GetServiceById
             this._mapper = mapper;
         }
 
-        public async Task<CompanyServicesDto> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
+        public async Task<CompanyServiceDto> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
         {
             var service = await _context.Services.SingleOrDefaultAsync(s => s.ServiceId == request.ServiceId && s.CompanyId == request.CompanyId, cancellationToken);
 
@@ -29,7 +29,7 @@ namespace Servibes.BusinessProfile.Api.Queries.Services.GetServiceById
                 throw new AppException($"Service with id {request.ServiceId} or company {request.CompanyId} not found.");
             }
 
-            return _mapper.Map<CompanyServicesDto>(service);
+            return _mapper.Map<CompanyServiceDto>(service);
         }
     }
 }

@@ -1,13 +1,7 @@
 import { NgModule } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
-
 import { RouterModule, Routes } from '@angular/router';
-import { CalendarComponent } from './calendar/calendar.component';
 import { SharedModule } from '../shared/shared.module';
-
-import { DxSchedulerModule, DxTemplateModule } from 'devextreme-angular';
-import { MockDataService } from '../data-service/mock-data.service';
 import { BusinessFooterComponent } from './business-footer/business-footer.component';
 import { BusinessNavbarComponent } from './business-navbar/business-navbar.component';
 import { BusinessMainComponent } from './business-main.component';
@@ -24,10 +18,6 @@ const routes: Routes = [
         component: BusinessMainComponent,
         children: [
             {
-                path: "appointments",
-                component: CalendarComponent
-            },
-            {
                 path: "register", 
                 component: BusinessRegisterComponent
             }
@@ -38,7 +28,6 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         BusinessMainComponent,
-        CalendarComponent,
         BusinessNavbarComponent,
         BusinessFooterComponent,
         BusinessRegisterComponent
@@ -47,12 +36,9 @@ const routes: Routes = [
         CommonModule,
         SharedModule,
         RouterModule.forChild(routes),
-        DxSchedulerModule,
-        DxTemplateModule,
         ReactiveFormsModule
     ],
     providers: [
-        MockDataService,
         TimeArray
     ]
 })

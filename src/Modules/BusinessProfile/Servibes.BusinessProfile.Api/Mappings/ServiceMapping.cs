@@ -8,7 +8,7 @@ namespace Servibes.BusinessProfile.Api.Mappings
     {
         public ServiceMapping()
         {
-            this.CreateMap<Service, CompanyServicesDto>();
+            this.CreateMap<Service, CompanyServiceDto>();
         }
     }
 }

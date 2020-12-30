@@ -4,12 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using static System.String;
 
 namespace Servibes.BusinessProfile.Api.Queries.Companies.GetAllCompanies
 {
-    public class GetAllCompaniesQueryHandler : IRequestHandler<GetAllCompaniesQuery, IEnumerable<CompanyDto>>
+    public class GetAllCompaniesQueryHandler: IRequestHandler<GetAllCompaniesQuery, IEnumerable<CompanyDto>>
     {
         private readonly BusinessProfileContext _context;
         private readonly IMapper _mapper;
@@ -22,12 +20,8 @@ namespace Servibes.BusinessProfile.Api.Queries.Companies.GetAllCompanies
 
         public async Task<IEnumerable<CompanyDto>> Handle(GetAllCompaniesQuery request, CancellationToken cancellationToken)
         {
-            var companies = _context.Companies.AsQueryable();
-
-            if (!IsNullOrEmpty(request.Category))
-                companies = companies.Where(c => c.Category == request.Category);
-
-            return _mapper.Map<IEnumerable<CompanyDto>>(companies.ToList());
+            var companies = _context.Companies.ToList();
+            return _mapper.Map<IEnumerable<CompanyDto>>(companies);
         }
     }
 }
