@@ -16,8 +16,10 @@ export interface CompanyDetails {
   companyName: string;
   phoneNumber: string;
   address: Address;
+  category: string;
+  description: string;
+  coverPhoto: string;
 }
-
 export interface SearchedCompanyDto {
   companyId: string;
   companyName: string;
