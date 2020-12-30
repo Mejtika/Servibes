@@ -1,1 +1,1 @@
-export * from './reviews.model';
+export * from './review.model';
