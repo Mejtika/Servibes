@@ -19,6 +19,7 @@ import * as clientBaseGuards from './guards';
 
 /* Services */
 import * as clientBaseServices from './services';
+import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
     imports: [
@@ -28,6 +29,7 @@ import * as clientBaseServices from './services';
         FormsModule,
         AppCommonModule,
         NavigationModule,
+        ModalModule.forRoot()
     ],
     providers: [...clientBaseServices.services, ...clientBaseGuards.guards],
     declarations: [...clientBaseContainers.containers, /*...appointmentsComponents.components*/],

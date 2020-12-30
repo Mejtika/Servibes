@@ -1,6 +1,27 @@
 <sb-layout-dashboard>
     <sb-dashboard-head title="Client base" [hideBreadcrumbs]="false"></sb-dashboard-head>
     <div class="row">
-        <h1>CLIENT BASE</h1>
+        <div class="col-3">
+            <div class="card" style="width: 18rem;" *ngIf="clients?.length > 0">
+                <div class="list-group">
+                  <a class="list-group-item list-group-item-action" 
+                  *ngFor="let client of clients" 
+                  (click)="selectClient(client)">
+                      {{ client.firstName }} {{ client.lastName }}
+                  </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            <div *ngIf="selectedClient">
+                <h3>Client</h3>
+                <h5>{{ selectedClient.firstName }} {{ selectedClient.lastName }}</h5>
+                <h4>Email: {{ selectedClient.email }}</h4>
+
+                <button class="btn btn-primary" (click)="createAppointment(selectedClient)">
+                    Create appointment
+                </button>
+            </div>
+        </div>
     </div>
 </sb-layout-dashboard>

@@ -1,1 +1,1 @@
-export * from './client-base.model';
+export * from './client.model';
