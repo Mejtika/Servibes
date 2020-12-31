@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { CalendarComponent } from './appointments/appointments.component';
 import { SharedModule } from '../shared/shared.module';
 import { BusinessMainComponent } from './business-main.component';
 import { BusinessRegisterComponent } from './business-register/business-register.component';
@@ -50,7 +49,6 @@ const routes: Routes = [
     declarations: [
         BusinessMainComponent,
         BusinessRegisterComponent,
-        CalendarComponent
     ],
     imports: [
         CommonModule,
