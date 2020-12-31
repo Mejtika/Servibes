@@ -1,0 +1,30 @@
+<ng-select 
+[items]="companies$ | async" 
+bindLabel="companyName" 
+bindValue="companyId" 
+(change)="onChange($event)"
+placeholder="Select company..">
+  <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{item.companyName}}</h5>
+        <p class="card-subtitle mb-2 text-muted">
+          <strong>Address:</strong>
+          {{ item.address.street }}
+          {{ item.address.streetNumber }}/{{item.address.flatNumber}},
+          {{ item.address.zipCode }}
+          {{ item.address.city }}
+        </p>
+        <p class="card-subtitle mb-2 text-muted">
+          <strong>Category:</strong>
+          {{item.category}}
+        </p>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+    <div class="ng-option disabled">
+      No data found for "{{searchTerm}}"
+    </div>
+  </ng-template>
+</ng-select>

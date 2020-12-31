@@ -9,6 +9,7 @@ import {
   Service,
   Employee,
   ServiceHours,
+  ReviewDetails,
 } from "src/app/shared/interfaces/company";
 import { forkJoin } from "rxjs";
 import { ClientReservationComponent } from "./client-reservation/client-reservation.component";
@@ -18,7 +19,6 @@ import {
   ClientReviewsService,
   ReviewSummaryDto,
 } from "../client-account/client-reviews.service";
-import { ReviewDetails } from "../client-account/client-reviews/client-reviews.component";
 
 @Component({
   selector: "company-page",

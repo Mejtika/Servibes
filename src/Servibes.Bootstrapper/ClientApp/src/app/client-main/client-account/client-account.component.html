@@ -1,16 +1,17 @@
-<div class="container account mb-30">
+<div class="container account">
   <div class="row">
-      <div class="col-md-3 mb-30">
+      <div class="col-md-3 mb-4 account-navigation">
         <div class="well">
-          <ul class="list-group nav nav-pills nav-stacked">
+          <ul class="list-group nav nav-pills list-group-flush">
             <li routerLinkActive="activated" class="list-group-item"><a [routerLink]="['appointments']">Appointments</a></li>
             <li routerLinkActive="activated" class="list-group-item"><a [routerLink]="['reviews']">Reviews</a></li>
             <li routerLinkActive="activated" class="list-group-item"><a [routerLink]="['favorites']">Favorites</a></li>
             <li routerLinkActive="activated" class="list-group-item"><a [routerLink]="['payments']">Payments</a></li>
+            <li routerLinkActive="activated" class="list-group-item"><a [routerLink]='["/authentication/profile"]'>Settings</a></li>
           </ul>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-9">
           <router-outlet></router-outlet>
       </div>
   </div>

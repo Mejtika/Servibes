@@ -2,10 +2,16 @@
   margin-top: 30px;
 }
 
-.well {
-  background-color: #fafafa;
-  box-shadow: none;
-  border-color: #eee;
+
+.account-navigation{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.account-navigation li{
+  padding: 20px;
+  font-size: 16.5px;
 }
 
 .nav-pills>li>a {
@@ -15,6 +21,7 @@
 }
 
 li.activated{
-  border-left: 2px solid #505050;
+  border-left: 2px solid #007bff;
+  background-color: #D5E9FF;
   font-weight: bolder;
 }

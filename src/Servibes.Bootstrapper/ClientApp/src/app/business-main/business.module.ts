@@ -1,13 +1,8 @@
 import { NgModule } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
-
 import { RouterModule, Routes } from '@angular/router';
 import { CalendarComponent } from './appointments/appointments.component';
 import { SharedModule } from '../shared/shared.module';
-
-import { DxSchedulerModule, DxTemplateModule } from 'devextreme-angular';
-import { MockDataService } from '../data-service/mock-data.service';
 import { BusinessMainComponent } from './business-main.component';
 import { BusinessRegisterComponent } from './business-register/business-register.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -61,12 +56,9 @@ const routes: Routes = [
         CommonModule,
         SharedModule,
         RouterModule.forChild(routes),
-        DxSchedulerModule,
-        DxTemplateModule,
         ReactiveFormsModule
     ],
     providers: [
-        MockDataService,
         TimeArray,
         BusinessRegisterGuard
     ]

@@ -8,6 +8,10 @@ hr {
     margin-bottom: 3px;
 }
 
+.btn-primary{
+    background-color: #007bff !important;
+}
+
 .cover-img {
     margin-top: 8%; 
 }

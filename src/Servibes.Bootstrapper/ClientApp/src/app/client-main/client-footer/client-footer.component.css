@@ -1,0 +1,13 @@
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 1.75rem;
+  background-color: #007bff;
+  text-align: center;
+  border-top: 3px solid #0062CC;
+}
+
+span{
+  color: white;
+}

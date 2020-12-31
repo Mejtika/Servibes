@@ -2,9 +2,9 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, combineLatest } from "rxjs";
 import { environment } from "src/environments/environment";
-import { ReviewDetails } from "./client-reviews/client-reviews.component";
 import { CompanyDataService } from "../../data-service/company-data.service";
 import { map, switchMap, tap } from "rxjs/operators";
+import { ReviewDetails } from "src/app/shared/interfaces/company";
 
 export interface LeaveReviewRequest {
   reviewId: string;
