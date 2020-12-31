@@ -9,6 +9,7 @@ using Servibes.BusinessProfile.Api.Queries.Companies.GetAllCompanies;
 using Servibes.BusinessProfile.Api.Queries.Companies.GetCompaniesWithSearch;
 using Servibes.BusinessProfile.Api.Queries.Companies.GetCompany;
 using Servibes.BusinessProfile.Api.Queries.Companies.GetOwnerCompany;
+using Servibes.BusinessProfile.Api.Queries.Companies.GetAllCategories;
 using CompanyDto = Servibes.BusinessProfile.Api.Commands.Companies.CompanyDto;
 
 namespace Servibes.BusinessProfile.Api.Controllers
@@ -28,6 +29,14 @@ namespace Servibes.BusinessProfile.Api.Controllers
         public async Task<ActionResult> GetOwnerCompany()
         {
             var result = await _mediator.Send(new GetOwnerCompanyQuery());
+            return Ok(result);
+        }
+
+        [HttpGet("owner/exists")]
+        public async Task<ActionResult> IsOwnerCompanyExists()
+        {
+            var result = await _mediator.Send(new GetOwnerCompanyQuery()) == null ? false : true;
+
             return Ok(result);
         }
 
@@ -71,6 +80,14 @@ namespace Servibes.BusinessProfile.Api.Controllers
         {
             await _mediator.Send(new DeleteCompanyCommand(companyId));
             return NoContent();
+        }
+
+        [HttpGet("categories")]
+        public async Task<ActionResult> GetAllCategories()
+        {
+            var result = await _mediator.Send(new GetAllCategoriesQuery());
+
+            return Ok(result);
         }
     }
 }

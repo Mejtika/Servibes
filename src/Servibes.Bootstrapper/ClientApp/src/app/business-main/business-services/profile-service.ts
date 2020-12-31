@@ -12,15 +12,19 @@ export class ProfileService {
   }
 
   getBusinessProfile(id: string): Observable<BusinessProfile> {
-    return this.apiService.get(`api/companies/${id}`);
+    return this.apiService.get(`companies/${id}`);
   }
 
   addBusinessProfile(businessProfile: BusinessProfile): Observable<BusinessProfile> {
-    return this.apiService.post(`api/companies`, businessProfile);
+    return this.apiService.post(`companies`, businessProfile);
   }
 
   updateBusinessProfile(businessProfile: BusinessProfile): Observable<BusinessProfile> {
     //TODO: Think about doing patch instead
-    return this.apiService.post(`api/companies/${businessProfile.id}`, businessProfile);
+    return this.apiService.post(`companies/${businessProfile.id}`, businessProfile);
+  }
+
+  public hasProfile() : Observable<boolean> {
+    return this.apiService.get(`companies/owner/exists`);
   }
 }

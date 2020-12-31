@@ -6,6 +6,7 @@ import { TimeArray } from './../../shared/others/time-array';
 import { ProfileService } from '../business-services/profile-service';
 import { BusinessProfile } from '../models/BusinessProfile';
 import { cwd } from 'process';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'business-register',
@@ -20,7 +21,8 @@ export class BusinessRegisterComponent extends BaseForm {
 
   constructor(private formBuilder: FormBuilder,
     private timeArray: TimeArray,
-    private profileService: ProfileService) {
+    private profileService: ProfileService,
+    private router: Router) {
         super();
     }
 
@@ -141,6 +143,8 @@ export class BusinessRegisterComponent extends BaseForm {
 
       this.profileService.addBusinessProfile(formValue).subscribe(profile => {
         console.log('Posted profile: ', profile);
+
+        this.router.navigateByUrl('business/appointments');
       });
     }
 }

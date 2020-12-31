@@ -4,10 +4,10 @@
       <p class="nav-link text-dark">Hello {{ userName | async }}</p>
       <div *ngIf="userRole | async as role">
         <div *ngIf="role === 'Business'; else clientRole">
-          <a class="nav-link text-dark" [routerLink]='["/business"]' title="Go to business">Business</a>
+          <a class="btn btn-primary btn-xl js-scroll-trigger" [routerLink]='["/business"]' title="Go to business">Business</a>
         </div>
         <ng-template #clientRole>
-          <a class="nav-link text-dark" [routerLink]='["/client/companies"]' title="Go to client">Client</a>
+          <a class="btn btn-primary btn-xl js-scroll-trigger" [routerLink]='["/client/companies"]' title="Go to client">Client</a>
         </ng-template>
       </div>
     </div>
@@ -21,9 +21,9 @@
 </ul>
 <ul class="navbar-nav" *ngIf="!(isAuthenticated | async)">
   <li class="nav-item">
-    <a class="nav-link text-dark" [routerLink]='["/authentication/register"]'>Register</a>
+    <a class="btn btn-primary btn-xl js-scroll-trigger" [routerLink]='["/authentication/register"]'>Register</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link text-dark" [routerLink]='["/authentication/login"]'>Login</a>
+    <a class="btn btn-primary btn-xl js-scroll-trigger" [routerLink]='["/authentication/login"]'>Login</a>
   </li>
 </ul>

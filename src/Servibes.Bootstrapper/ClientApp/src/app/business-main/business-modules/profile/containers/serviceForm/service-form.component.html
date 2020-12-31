@@ -1,0 +1,74 @@
+<div *ngIf="!service && !profile && !employees"><spinner></spinner></div>
+
+<sb-layout-dashboard>
+    <sb-dashboard-head title="Profile" [hideBreadcrumbs]="false"></sb-dashboard-head>
+  <div [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="profile && service && employees">
+
+        <input hidden type="text" formControlName="serviceId"/>
+
+        <!-- SERVICES -->
+      <div class="list-group list-group-flush">
+        <div class="list-group-item">
+          <h5 class="card-title">Service</h5>
+          <div class="form-row">
+            <div class="form-group col-4">
+              <label>Service name</label>
+              <input type="text"
+                     formControlName="serviceName"
+                     class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && form.controls.serviceName.errors }" />
+              <div *ngIf="submitted && form.controls.serviceName.errors.required">Service name is required</div>
+            </div>
+            <div class="form-group col-4">
+              <label>Price [PLN]</label>
+              <input type="number"
+                     formControlName="price"
+                     class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && form.controls.price.errors }" />
+              <div *ngIf="submitted && form.controls.price.errors.required">Price is required</div>
+            </div>
+            <div class="form-group col-4">
+              <label>Duration [minutes]</label>
+              <input type="number"
+                     formControlName="duration"
+                     class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && form.controls.duration.errors }" />
+              <div *ngIf="submitted && form.controls.duration.errors.required">Duration is required</div>
+            </div>
+            <div class="form-group col-6">
+              <label>Description</label>
+              <textarea type="textarea"
+                        formControlName="description"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && form.controls.description.errors }">
+                        </textarea>
+              <div *ngIf="submitted && form.controls.description.errors.required">Description is required</div>
+            </div>
+            <div class="form-group col-6">
+              <label>Performers</label>
+              <div *ngFor="let performer of form.get('performers').controls ">
+                <div [formGroup]="performer" *ngIf="performer">
+                  <input type="checkbox" formControlName="isActive" [value]="performer.controls.isActive.value" />
+                  <input type="text" formControlName="firstName" [value]="performer.controls.firstName.value" hidden />
+                  <input type="text" formControlName="lastName" [value]="performer.controls.lastName.value" hidden />
+                  {{ performer.controls.firstName.value }} {{ performer.controls.lastName.value }}
+                </div>
+              </div>
+
+              <div *ngIf="submitted && form.controls.performer.errors.required">Performer is required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- SERVICES -->
+    </div>
+
+    <div class="row">
+        <div class="col-6 text-left">
+            <button type="submit" (click)="onSubmit()" class="btn btn-primary" [disabled]="!form.valid">Save</button>
+        </div>
+        <div class="col-6 text-right">
+            <button type="submit" (click)="navigateBack()" class="btn btn-danger">Cancel</button>
+        </div>
+    </div>
+</sb-layout-dashboard>

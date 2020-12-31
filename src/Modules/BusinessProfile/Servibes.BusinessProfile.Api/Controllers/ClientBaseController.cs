@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Servibes.BusinessProfile.Api.Queries.ClientBase.GetAllClients;
 using Servibes.BusinessProfile.Api.Queries.ClientBase.GetAllCompanyReviews;
 using Servibes.BusinessProfile.Api.Queries.ClientBase.GetCompanyReviewsSummary;
 
@@ -29,6 +30,13 @@ namespace Servibes.BusinessProfile.Api.Controllers
         public async Task<IActionResult> GetCompanyReviewsSummary(Guid companyId)
         {
             var result = await _mediator.Send(new GetCompanyReviewsSummaryQuery(companyId));
+            return Ok(result);
+        }
+
+        [HttpGet("{companyId}/clients")]
+        public async Task<IActionResult> GetAllClient(Guid companyId)
+        {
+            var result = await _mediator.Send(new GetAllClientsQuery(companyId));
             return Ok(result);
         }
     }
