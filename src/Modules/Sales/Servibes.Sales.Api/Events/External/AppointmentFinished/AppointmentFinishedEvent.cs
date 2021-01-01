@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace Servibes.Sales.Api
+namespace Servibes.Sales.Api.Events.External.AppointmentFinished
 {
     public class AppointmentFinishedEvent : INotification
     {
@@ -17,7 +17,9 @@ namespace Servibes.Sales.Api
 
         public DateTime End { get; }
 
-        public decimal Price { get; }
+        public string ServiceName { get; }
+
+        public decimal ServicePrice { get; }
 
         public AppointmentFinishedEvent(
             Guid appointmentId,
@@ -25,8 +27,9 @@ namespace Servibes.Sales.Api
             Guid companyId,
             Guid employeeId,
             DateTime start,
-            DateTime end, 
-            decimal price)
+            DateTime end,
+            string serviceName,
+            decimal servicePrice)
         {
             AppointmentId = appointmentId;
             ReserveeId = reserveeId;
@@ -34,7 +37,8 @@ namespace Servibes.Sales.Api
             EmployeeId = employeeId;
             Start = start;
             End = end;
-            Price = price;
+            ServiceName = serviceName;
+            ServicePrice = servicePrice;
         }
     }
 }

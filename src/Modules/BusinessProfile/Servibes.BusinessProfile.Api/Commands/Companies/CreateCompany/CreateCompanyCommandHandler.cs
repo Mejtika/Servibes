@@ -111,7 +111,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany
 
             var events = companyEmployees
                 .Select(x => 
-                new EmployeeAddedEvent(x.EmployeeId, x.CompanyId));
+                new EmployeeAddedEvent(x.EmployeeId, x.CompanyId, $"{x.FirstName} {x.LastName}"));
 
             foreach (var employeeAddedEvent in events)
             {

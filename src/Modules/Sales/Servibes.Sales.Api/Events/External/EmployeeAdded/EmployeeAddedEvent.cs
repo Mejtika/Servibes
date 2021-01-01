@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using MediatR;
 
-namespace Servibes.Availability.Application.Events.External.EmployeeAdded
+namespace Servibes.Sales.Api.Events.External.EmployeeAdded
 {
     public class EmployeeAddedEvent : INotification
     {

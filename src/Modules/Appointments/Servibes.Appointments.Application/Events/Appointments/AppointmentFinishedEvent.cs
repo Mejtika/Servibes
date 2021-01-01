@@ -17,7 +17,9 @@ namespace Servibes.Appointments.Application.Events.Appointments
 
         public DateTime End { get; }
 
-        public decimal Price { get; }
+        public string ServiceName { get; }
+
+        public decimal ServicePrice { get; }
 
         public AppointmentFinishedEvent(
             Guid appointmentId,
@@ -26,7 +28,8 @@ namespace Servibes.Appointments.Application.Events.Appointments
             Guid employeeId,
             DateTime start,
             DateTime end, 
-            decimal price)
+            string serviceName,
+            decimal servicePrice)
         {
             AppointmentId = appointmentId;
             ReserveeId = reserveeId;
@@ -34,7 +37,8 @@ namespace Servibes.Appointments.Application.Events.Appointments
             EmployeeId = employeeId;
             Start = start;
             End = end;
-            Price = price;
+            ServiceName = serviceName;
+            ServicePrice = servicePrice;
         }
     }
 }
