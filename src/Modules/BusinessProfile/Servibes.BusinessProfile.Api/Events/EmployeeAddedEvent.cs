@@ -9,10 +9,16 @@ namespace Servibes.BusinessProfile.Api.Events
 
         public Guid CompanyId { get; }
 
-        public EmployeeAddedEvent(Guid employeeId, Guid companyId)
+        public string Name { get; set; }
+
+        public EmployeeAddedEvent(
+            Guid employeeId,
+            Guid companyId, 
+            string name)
         {
             EmployeeId = employeeId;
             CompanyId = companyId;
+            Name = name;
         }
     }
 }

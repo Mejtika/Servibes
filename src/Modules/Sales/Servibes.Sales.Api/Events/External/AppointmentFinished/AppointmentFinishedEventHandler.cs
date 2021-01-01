@@ -22,7 +22,8 @@ namespace Servibes.Sales.Api.Events.External.AppointmentFinished
                 ReserveeId = notification.ReserveeId,
                 CompanyId = notification.CompanyId,
                 EmployeeId = notification.EmployeeId,
-                Price = notification.Price,
+                Price = notification.ServicePrice,
+                ServiceName = notification.ServiceName,
                 Status = AppointmentStatus.Unpaid
             };
 

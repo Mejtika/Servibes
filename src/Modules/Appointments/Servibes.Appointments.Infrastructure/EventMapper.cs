@@ -61,7 +61,8 @@ namespace Servibes.Appointments.Infrastructure
                 @event.Employee.EmployeeId,
                 @event.ReservedDate.Start,
                 @event.ReservedDate.End,
-                @event.Price);
+                @event.Service.Name,
+                @event.Service.Price);
         }
     }
 }

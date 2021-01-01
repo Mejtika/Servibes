@@ -63,7 +63,7 @@ namespace Servibes.Appointments.Core.Appointments
                     reservedDate,
                     AppointmentStatus.Confirmed,
                     string.Empty,
-                    service.Price));
+                    service));
 
             return appointment;
         }
@@ -133,7 +133,7 @@ namespace Servibes.Appointments.Core.Appointments
                 _reservedDate,
                 _status,
                 _cancellationReason,
-                _service.Price);
+                _service);
         }
     }
 }
