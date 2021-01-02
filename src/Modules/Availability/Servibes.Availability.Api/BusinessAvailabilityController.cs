@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Servibes.Availability.Api.Requests;
+using Servibes.Availability.Application.Companies.ChangeOpeningHours;
 using Servibes.Availability.Application.Companies.GetCompanyOpeningHours;
 using Servibes.Availability.Application.Employees.GetEmployeeAvailableHours;
 using Servibes.Availability.Application.Employees.GetEmployeeWorkingHours;
@@ -30,9 +31,9 @@ namespace Servibes.Availability.Api
         }
 
         [HttpPost("{companyId}/openingHours")]
-        public IActionResult ChangeOpeningHours(Guid companyId, [FromBody] ChangeOpeningHoursRequest changeOpeningHours)
+        public async Task<IActionResult> ChangeOpeningHours(Guid companyId, [FromBody] ChangeOpeningHoursRequest changeOpeningHours)
         {
-
+            await _mediator.Send(new ChangeOpeningHoursCommand(companyId, changeOpeningHours.OpeningHours, changeOpeningHours.AdjustEmployeeWorkingHours));
             return Ok();
         }
 
