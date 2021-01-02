@@ -41,6 +41,14 @@
           <!-- LAST NAME -->
     </div>
 
+    <div class="row" id="workingHoursButton">
+      <div class="col-2 text-left">
+        <button type="submit" (click)="gotoWorkingHours()" class="btn btn-warning" [disabled]="!employee.employeeId">
+          Working hours
+        </button>
+      </div> 
+    </div>
+
     <div class="row">
         <div class="col-6 text-left">
             <button type="submit" (click)="onSubmit()" class="btn btn-primary" [disabled]="!form.valid">Save</button>
