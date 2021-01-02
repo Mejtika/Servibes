@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
-import { IEmployee } from '../models';
+import { IEmployee, IHoursRange } from '../models';
 
 @Injectable()
 export class EmployeeService extends ApiService<IEmployee> {
@@ -28,5 +28,13 @@ export class EmployeeService extends ApiService<IEmployee> {
 
     public removeEmployee(companyId: string, employeeId: string) : Observable<IEmployee> {
         return this.delete(`companies/${companyId}/employees/${employeeId}`);
+    }
+
+    public getWorkingHours(companyId: string, employeeId: string) : Observable<IHoursRange[]> {
+        return this.get(`companies/${companyId}/employees/${employeeId}/workingHours`);   
+    }
+
+    public changeWorkingHours(companyId: string, employeeId: string, body: object) {
+        return this.post(`companies/${companyId}/employees/${employeeId}/workingHours`, body);
     }
 }
