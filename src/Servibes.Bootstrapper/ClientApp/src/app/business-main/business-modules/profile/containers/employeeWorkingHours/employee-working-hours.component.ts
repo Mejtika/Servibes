@@ -17,7 +17,7 @@ export class EmployeeWorkingHoursComponent extends BaseForm {
     public workingHours: IHoursRange[];
     private employeeId: string;
     public weekDays: string[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    public times: string[] = this.timeArray.generate(15);
+    public times: string[] = this.timeArray.generateHours(15);
 
     get workingHoursForm() { return this.form.controls.workingHours as FormArray; }
 

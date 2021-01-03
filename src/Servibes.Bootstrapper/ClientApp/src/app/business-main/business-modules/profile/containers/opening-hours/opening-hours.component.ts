@@ -15,7 +15,7 @@ export class OpeningHoursComponent extends BaseForm {
     private profile: IProfile;
     public openingHours: IHoursRange[];
     public weekDays: string[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    public times: string[] = this.timeArray.generate(15);
+    public times: string[] = this.timeArray.generateHours(15);
 
     get openingHoursForm() { return this.form.controls.openingHours as FormArray; }
 

@@ -5,8 +5,9 @@ import { BaseForm } from 'src/app/shared/others/BaseForm';
 import { TimeArray } from './../../shared/others/time-array';
 import { ProfileService } from '../business-services/profile-service';
 import { BusinessProfile } from '../models/BusinessProfile';
-import { cwd } from 'process';
 import { Router } from '@angular/router';
+import { CategoriesService } from '../business-modules/profile/services';
+import { ICategory } from '../business-modules/profile/models';
 
 @Component({
     selector: 'business-register',
@@ -14,15 +15,21 @@ import { Router } from '@angular/router';
     styleUrls: ['./business-register.component.css']
 })
 export class BusinessRegisterComponent extends BaseForm {
-    categories = ["Fryzjer", "Barber", "Masaz", "Makeup"];
+    //categories = ["Fryzjer", "Barber", "Masaz", "Makeup"];
+    categories: ICategory[];
     public weekDays: string[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    public times: string[] = this.timeArray.generate(15);
+    public times: string[] = this.timeArray.generateHours(15);
+    public servicetimes: string[] = this.timeArray.generateMinutes(15, 0, 240);
+
+    public step: number = 1;
+    public maxStep = 4;
 
 
   constructor(private formBuilder: FormBuilder,
     private timeArray: TimeArray,
     private profileService: ProfileService,
-    private router: Router) {
+    private router: Router,
+    private categoriesService: CategoriesService) {
         super();
     }
 
@@ -32,9 +39,13 @@ export class BusinessRegisterComponent extends BaseForm {
     get address() { return this.form.controls.address as FormGroup };
 
     ngOnInit() {
+      this.categoriesService.getCategories().subscribe(categories => {
+        this.categories = categories;
+      });
+
         this.form = this.formBuilder.group({
             companyName: new FormControl('', Validators.required),
-            phoneNumber: new FormControl('', Validators.required),
+            phoneNumber: new FormControl('', [Validators.required, Validators.pattern("^[0-9]+(\.?[0-9]+)?$")]),
             category: new FormControl('', Validators.required),
             description: new FormControl('', Validators.required),
             address: this.formBuilder.group({
@@ -54,6 +65,37 @@ export class BusinessRegisterComponent extends BaseForm {
         this.addEmployeeForm();
         this.addOpeningHoursForm();
         //this.addService();
+
+        this.form.markAllAsTouched();
+    }
+
+    canGoToNextStep(): boolean {
+      if(this.step == 1 && 
+          !this.hasError('companyName') && 
+          !this.hasError('phoneNumber') &&
+          !this.hasError('category') &&
+          !this.hasError('description') &&
+          !this.hasError('city') &&
+          !this.hasError('zipCode') &&
+          !this.hasError('street') &&
+          !this.hasError('streetNumber') &&
+          !this.hasError('flatNumber') &&
+          !this.hasError('coverPhoto'))
+        return true;
+
+      if(this.step == 2 && 
+          !this.hasError('employees'))
+        return true;
+
+      if(this.step == 3 &&
+          !this.hasError('openingHours'))
+        return true;
+
+      if(this.step == 4 &&
+          !this.hasError('services'))
+        return true;
+
+      return false;
     }
 
     addEmployeeForm() {
@@ -91,16 +133,18 @@ export class BusinessRegisterComponent extends BaseForm {
 
     addService() {
       let service = this.formBuilder.group({
-        serviceName: new FormControl(''),
-        price: new FormControl(''),
-        description: new FormControl(''),
-        duration: new FormControl(''),
+        serviceName: new FormControl('', Validators.required),
+        price: new FormControl('', Validators.required),
+        description: new FormControl('', Validators.required),
+        duration: new FormControl('', Validators.required),
         performers: new FormArray([])
       });
 
       let performers = service.get('performers') as FormArray;
 
       this.addEmployeesToServiceForm(performers);
+
+      this.services.markAllAsTouched();
 
       this.services.push(service);
     }
@@ -134,17 +178,33 @@ export class BusinessRegisterComponent extends BaseForm {
         this.openingHours.controls[index].get('end').setValue(e.target.value);
     }
 
+    serviceTimeChanged (e, index: number) {
+      this.services.controls[index].get('duration').setValue(+e.target.value);
+    }
+
     onSubmit() {
       console.log(this.form.getRawValue());
 
-      const formValue: BusinessProfile = Object.assign(
+      const formValue = Object.assign(
         this.form.value
       )
+
+      console.log('after object assign', formValue);
 
       this.profileService.addBusinessProfile(formValue).subscribe(profile => {
         console.log('Posted profile: ', profile);
 
         this.router.navigateByUrl('business/appointments');
       });
+    }
+
+    nextStep() {
+      if(this.canGoToNextStep())
+      {
+        if(this.step == 3)
+          this.addService();
+
+        this.step++;
+      }
     }
 }

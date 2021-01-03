@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class TimeArray {
 
-    generate(minutesInterval:number = 15): string[] {
+    generateHours(minutesInterval:number = 15): string[] {
 
         var times = [];
         var startTime = 0;
@@ -18,6 +18,17 @@ export class TimeArray {
         return times;
     }
 
+    generateMinutes(minutesInterval:number = 15, startTime:number = 0, endTime:number = 60): string[] {
+        var times = [];
+        times[0] = startTime;
+
+        for(var i = 1; startTime < endTime; i++) {
+            startTime += minutesInterval;
+            times[i] = startTime;
+        }
+
+        return times;
+    }
     
 }
 
