@@ -128,8 +128,52 @@ namespace Servibes.Availability.Core.Employees
         public void AdjustWorkingHours(List<HoursRange> companyOpeningHours)
         {
             CheckForDaysCorrectness(companyOpeningHours);
-            _workingHours = companyOpeningHours;
+            var newWorkingHours = Adjust(companyOpeningHours);
+            _workingHours = newWorkingHours;
             AddDomainEvent(new EmployeeWorkingHoursChangedDomainEvent(this));
+        }
+
+        private List<HoursRange> Adjust(List<HoursRange> newOpeningHours)
+        {
+            List<HoursRange> newHoursRanges = new List<HoursRange>();
+            foreach (var newDayHoursRange in newOpeningHours)
+            {
+               var workingHoursRange = _workingHours.SingleOrDefault(x => x.DayOfWeek == newDayHoursRange.DayOfWeek);
+               if (!newDayHoursRange.IsAvailable)
+               {
+                   var unavailableHoursRange = HoursRange.Create(
+                       newDayHoursRange.DayOfWeek,
+                       newDayHoursRange.IsAvailable,
+                       workingHoursRange.Start,
+                       workingHoursRange.End);
+                   newHoursRanges.Add(unavailableHoursRange);
+                   continue;
+               }
+
+               if (newDayHoursRange.IsAvailable && !workingHoursRange.IsAvailable)
+               {
+                   newHoursRanges.Add(workingHoursRange);
+                   continue;
+               }
+
+               var newStart = newDayHoursRange.Start > workingHoursRange.Start
+                   ? newDayHoursRange.Start
+                   : workingHoursRange.Start;
+
+               var newEnd = newDayHoursRange.End < workingHoursRange.End
+                   ? newDayHoursRange.End
+                   : workingHoursRange.End;
+
+               var newHoursRange = HoursRange.Create(
+                   newDayHoursRange.DayOfWeek, 
+                   newDayHoursRange.IsAvailable,
+                   newStart,
+                   newEnd);
+
+               newHoursRanges.Add(newHoursRange);
+            }
+
+            return newHoursRanges;
         }
 
         public bool CheckCompanyCorrectness(Guid companyId)

@@ -13,8 +13,7 @@ namespace Servibes.Availability.Infrastructure.Domain.Employees
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
             builder.HasKey(x => x.EmployeeId);
-            builder.Property<Guid>("_companyId").HasColumnName("CompanyId");
-            builder.HasOne<Company>().WithMany().HasForeignKey("_companyId");
+            builder.HasOne<Company>().WithMany().HasForeignKey(x => x.CompanyId);
             builder.OwnsMany<HoursRange>("_workingHours", b =>
             {
                 b.WithOwner().HasForeignKey("EmployeeId");

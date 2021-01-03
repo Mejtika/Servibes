@@ -28,7 +28,7 @@ namespace Servibes.Availability.Infrastructure.Domain.Companies
 
         public async Task<Company> GetByIdAsync(Guid companyId)
         {
-            return await _availabilityContext.Companies.AsNoTracking().SingleOrDefaultAsync(x => x.CompanyId == companyId);
+            return await _availabilityContext.Companies.SingleOrDefaultAsync(x => x.CompanyId == companyId);
         }
     }
 }

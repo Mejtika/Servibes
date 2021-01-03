@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Servibes.BusinessProfile.Api.Queries.Companies.GetAllCompanies
 {
@@ -20,7 +20,7 @@ namespace Servibes.BusinessProfile.Api.Queries.Companies.GetAllCompanies
 
         public async Task<IEnumerable<CompanyDto>> Handle(GetAllCompaniesQuery request, CancellationToken cancellationToken)
         {
-            var companies = _context.Companies.ToList();
+            var companies = await _context.Companies.ToListAsync(cancellationToken);
             return _mapper.Map<IEnumerable<CompanyDto>>(companies);
         }
     }

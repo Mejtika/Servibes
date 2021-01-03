@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
@@ -35,7 +35,6 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeWorkingHours
                 throw new AppException("Employee or company with specified id doesn't exists.");
             }
 
-
             const string sql = "SELECT " +
                                "[DayOfWeek], " +
                                "[IsAvailable], " +
@@ -44,7 +43,7 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeWorkingHours
                                "FROM [Servibes].[availability].[WorkingHours]" +
                                "WHERE[EmployeeId] = @EmployeeId";
             var workingHours = await connection.QueryAsync<HoursRangeDto>(sql, new { request.EmployeeId });
-            return workingHours.AsList();
+            return workingHours.OrderBy(x => x.DayOfWeek).AsList();
         }
     }
 }

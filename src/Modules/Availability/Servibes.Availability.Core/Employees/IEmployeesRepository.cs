@@ -6,6 +6,6 @@ namespace Servibes.Availability.Core.Employees
 {
     public interface IEmployeesRepository
     {
-        Task<List<Employee>> GetAllByCompanyId(Guid companyId);
+        Task<List<Employee>> GetAllByCompanyIdAsync(Guid companyId);
     }
 }

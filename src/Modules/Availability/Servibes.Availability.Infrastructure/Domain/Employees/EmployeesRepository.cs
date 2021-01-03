@@ -16,7 +16,7 @@ namespace Servibes.Availability.Infrastructure.Domain.Employees
             _availabilityContext = availabilityContext;
         }
 
-        public async Task<List<Employee>> GetAllByCompanyId(Guid companyId)
+        public async Task<List<Employee>> GetAllByCompanyIdAsync(Guid companyId)
         {
             return await _availabilityContext.Employees.Where(x => x.CompanyId == companyId).ToListAsync();
         }
