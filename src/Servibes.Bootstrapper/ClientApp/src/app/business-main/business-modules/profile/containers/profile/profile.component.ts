@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { BaseForm } from 'src/app/shared/others/BaseForm';
 import { ICategory } from '../../models';
-import { IProfile } from '../../models/profile.model';
+import { IImage, IProfile } from '../../models/profile.model';
 import { ProfileService } from '../../services';
 import { CategoriesService } from '../../services/categories.service';
 import { ValidationService } from '../../services/validation.service';
@@ -19,6 +19,8 @@ export class ProfileComponent extends BaseForm implements OnInit {
     profile: IProfile = null;
     categories: ICategory[] = null;
     get address() { return this.form.controls.address };
+    imageSrc: string = null;
+    coverPhoto: File;
 
     constructor(private profileService: ProfileService,
                 private categoriesService: CategoriesService,
@@ -33,6 +35,10 @@ export class ProfileComponent extends BaseForm implements OnInit {
     ngOnInit() {
         this.initForm();
 
+        this.getData();
+    }
+
+    private getData() {
         let profile = this.profileService.getProfile();
         let categories = this.categoriesService.getCategories();
 
@@ -42,6 +48,12 @@ export class ProfileComponent extends BaseForm implements OnInit {
 
             this.form.patchValue(result[0]);
             this.cd.markForCheck();
+
+            this.profileService.getImage(this.profile.coverPhotoId).subscribe(image => {
+                this.imageSrc = "data:" + image.fileType + ";base64," + image.data;
+
+                this.cd.markForCheck();
+            });
         });
     }
 
@@ -51,7 +63,7 @@ export class ProfileComponent extends BaseForm implements OnInit {
             phoneNumber: new FormControl('', this.validationService.phoneNumberValidator()),
             category: new FormControl('', this.validationService.categoryValidator() ),
             description: new FormControl('', this.validationService.descriptionValidator() ),
-            /*coverPhoto: new FormControl(this.profile.coverPhoto, this.validationService.requiredVaidator() ),*/
+            coverPhotoId: new FormControl(''),
             address: this.formBuilder.group({
                 city: new FormControl('', this.validationService.cityValidator() ),
                 zipCode: new FormControl('', this.validationService.zipCodeValidator() ),
@@ -66,6 +78,19 @@ export class ProfileComponent extends BaseForm implements OnInit {
         this.getControl('category').setValue(e.target.value);
     }
 
+    onCoverPhotoChange(e) {
+        this.coverPhoto = <File>e.target.files[0];
+  
+        const formData = new FormData();
+        formData.append('formFile', this.coverPhoto);
+  
+        this.profileService.uploadImage(formData).subscribe(image => {
+          this.form.controls['coverPhotoId'].setValue(image.imageId);
+        });
+  
+        console.log('coverPhoto', this.coverPhoto);
+      }
+
     onSubmit() {
         console.log(this.form.getRawValue());
 
@@ -76,6 +101,8 @@ export class ProfileComponent extends BaseForm implements OnInit {
             console.log('Updated profile: ', profile);
 
             this.toastr.success("Changes saved successfully!");
+
+            this.getData();
         });
     }
 }

@@ -7,7 +7,7 @@ export interface IProfile {
     phoneNumber: string;
     category: string;
     description: string;
-    coverPhoto: string;
+    coverPhotoId: string;
     address: IAddress;
 }
 
@@ -24,4 +24,10 @@ export interface IHoursRange {
     isAvailable: boolean;
     start: string;
     end: string;
+}
+
+export interface IImage {
+    imageId: string;
+    fileType: string;
+    data: File;
 }

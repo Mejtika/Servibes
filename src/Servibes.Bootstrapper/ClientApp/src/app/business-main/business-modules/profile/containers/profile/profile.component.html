@@ -140,6 +140,22 @@
         </div>
       </div>
       <!-- ADDRESS -->
+
+      <!-- CONVER PHOTO -->
+      <div id="coverPhotoSection">
+        <h6>Cover photo</h6>
+
+        <div class="col-4" *ngIf="imageSrc.length > 0" id="coverPhoto">
+          <img class="img-fluid rounded" [src]="imageSrc"/>
+        </div>
+  
+        <input type="file" id="coverPhotoId"
+                  formControlName="coverPhotoId" required
+                  class="form-control"
+                  (change)="onCoverPhotoChange($event)"
+                  accept="image/*" />
+      </div>
+      
     
     </div>
 
