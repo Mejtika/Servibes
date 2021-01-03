@@ -29,11 +29,8 @@ export class EmployeesComponent extends BaseForm implements OnInit{
         }
 
     ngOnInit() {
-        let profile = this.profileService.getProfile();
-
-        profile.subscribe(profile => {
+        this.profileService.getProfile().subscribe(profile => {
             this.companyId = profile.companyId;
-
             this.getEmployeesList();
         });
     }
@@ -41,15 +38,13 @@ export class EmployeesComponent extends BaseForm implements OnInit{
     getEmployeesList() {
         this.employeeService.getAllEmployees(this.companyId).subscribe(employees => {
             this.employees = employees;
-
             this.cd.markForCheck();
         });
     }
 
     deleteEmployee(employeeId: string) {
-        this.employeeService.removeEmployee(this.companyId, employeeId).subscribe(() => {
+        this.employeeService.removeEmployee(this.companyId, employeeId).subscribe(_ => {
             this.toastr.success("Employee removed successfully.");
-
             this.getEmployeesList();
         })
     }

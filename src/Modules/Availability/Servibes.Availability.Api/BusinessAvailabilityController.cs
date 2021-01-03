@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Servibes.Availability.Api.Requests;
 using Servibes.Availability.Application.Companies.ChangeOpeningHours;
 using Servibes.Availability.Application.Companies.GetCompanyOpeningHours;
+using Servibes.Availability.Application.Employees.ChangeWorkingHours;
 using Servibes.Availability.Application.Employees.GetEmployeeAvailableHours;
 using Servibes.Availability.Application.Employees.GetEmployeeWorkingHours;
 using Servibes.Availability.Application.Employees.MakeReservation;
@@ -24,9 +25,9 @@ namespace Servibes.Availability.Api
         }
 
         [HttpPost("{companyId}/employees/{employeeId}/workingHours")]
-        public IActionResult ChangeWorkingHours(Guid companyId, Guid employeeId, [FromBody] ChangeWorkingHoursRequest changeWorkingHoursRequest)
+        public async Task<IActionResult> ChangeWorkingHours(Guid companyId, Guid employeeId, [FromBody] ChangeWorkingHoursRequest changeWorkingHoursRequest)
         {
-
+            await _mediator.Send(new ChangeWorkingHoursCommand(companyId, employeeId, changeWorkingHoursRequest.WorkingHours));
             return Ok();
         }
 
