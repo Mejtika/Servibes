@@ -20,6 +20,6 @@ namespace Servibes.BusinessProfile.Api.Models
 
         public string Description { get; set; }
 
-        public string CoverPhoto { get; set; }
+        public Guid CoverPhotoId { get; set; }
     }
 }
