@@ -7,6 +7,7 @@ import { BusinessRegisterComponent } from './business-register/business-register
 import { ReactiveFormsModule } from '@angular/forms';
 import { TimeArray } from '../shared/others/time-array';
 import { BusinessRegisterGuard } from './business-register/business-register.guard';
+import { CategoriesService } from './business-modules/profile/services';
 
 const routes: Routes = [
     { 
@@ -58,7 +59,8 @@ const routes: Routes = [
     ],
     providers: [
         TimeArray,
-        BusinessRegisterGuard
+        BusinessRegisterGuard,
+        CategoriesService
     ]
 })
 export class BusinessModule {

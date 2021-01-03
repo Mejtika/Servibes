@@ -1,166 +1,170 @@
 <div class="container">
 
-    <h1>Business register component</h1>
+    <h1>Company registration</h1>
 
     <div [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div *ngIf="step == 1">
+        <h3>Basic data</h3>
 
-      <!-- BUSINESS NAME -->
-      <div class="form-group">
-        <label for="companyName">Business name:</label>
-        <br />
-        <input type="text" id="companyName"
-               formControlName="companyName" required
-               placeholder="Business name..."
-               class="form-control" />
-
-        <div *ngIf="hasError('companyName')"
-             class="invalid-feedback">
-          <div *ngIf="form.get('companyName').errors['required']">
-            Company name is required.
-          </div>
-        </div>
-      </div>
-      <!-- BUSINESS NAME -->
-      <!-- PHONE NUMBER -->
-      <div class="form-group">
-        <label for="phoneNumber">Phone number:</label>
-        <br />
-        <input type="tel" id="phoneNumber"
-               formControlName="phoneNumber" required
-               placeholder="Phone number..."
-               class="form-control" />
-
-        <div *ngIf="hasError('phoneNumber')"
-             class="invalid-feedback">
-          <div *ngIf="form.get('phoneNumber').errors?.required">
-            Phone number is required.
-          </div>
-        </div>
-      </div>
-      <!-- PHONE NUMBER -->
-      <!-- CATEGORY -->
-      <div class="form-group">
-        <label for="category">Category: </label>
-        <br />
-        <select class="form-control" (change)="changedCategory($event)" formControlName="category" id="category">
-          <option value="" disabled>Choice category</option>
-          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
-        </select>
-
-        <div *ngIf="hasError('category')"
-             class="invalid-feedback">
-          <div *ngIf="form.get('category').errors?.required">
-            Category is required
-          </div>
-        </div>
-      </div>
-      <!-- CATEGORY -->
-
-      <!-- DESCRIPTION -->
-      <div class="form-group">
-          <label for="description">Description:</label>
+        <!-- COMPANY NAME -->
+        <div class="form-group">
+          <label for="companyName">Company name:</label>
           <br />
-          <textarea type="textarea"
-                    id="description"
-                    formControlName="description"
-                    class="form-control">
-          </textarea>
+          <input type="text" id="companyName"
+                formControlName="companyName" required
+                placeholder="Business name..."
+                class="form-control" />
 
-          <div *ngIf="hasError('description')"
-               class="invalid-feedback">
-            <div *ngIf="form.get('description').errors?.required">
-              Description is required.
+          <div *ngIf="hasError('companyName')"
+              class="invalid-feedback">
+            <div *ngIf="form.get('companyName').errors['required']">
+              Company name is required.
             </div>
           </div>
+        </div>
+        <!-- COMPANY NAME -->
+        <!-- PHONE NUMBER -->
+        <div class="form-group">
+          <label for="phoneNumber">Phone number:</label>
+          <br />
+          <input type="tel" id="phoneNumber"
+                formControlName="phoneNumber" required
+                placeholder="Phone number..."
+                class="form-control" />
+
+          <div *ngIf="hasError('phoneNumber')"
+              class="invalid-feedback">
+            <div *ngIf="form.get('phoneNumber').errors?.required">
+              Phone number is required.
+            </div>
+          </div>
+        </div>
+        <!-- PHONE NUMBER -->
+        <!-- CATEGORY -->
+        <div class="form-group">
+          <label for="category">Category: </label>
+          <br />
+          <select class="form-control" (change)="changedCategory($event)" formControlName="category" id="category">
+            <option value="" disabled>Choice category</option>
+            <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
+          </select>
+
+          <div *ngIf="hasError('category')"
+              class="invalid-feedback">
+            <div *ngIf="form.get('category').errors?.required">
+              Category is required
+            </div>
+          </div>
+        </div>
+        <!-- CATEGORY -->
+
+        <!-- DESCRIPTION -->
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <br />
+            <textarea type="textarea"
+                      id="description"
+                      formControlName="description"
+                      class="form-control"
+                      placeholder="Description">
+            </textarea>
+
+            <div *ngIf="hasError('description')"
+                class="invalid-feedback">
+              <div *ngIf="form.get('description').errors?.required">
+                Description is required.
+              </div>
+            </div>
+        </div>
+        <!-- DESCRIPTION -->
+
+        <!-- ADDRESS -->
+        <div class="form-group" [formGroup]="address">
+          <label for="location">Address:</label>
+          <br />
+          <input type="text" id="city"
+                formControlName="city" required
+                placeholder="City..."
+                class="form-control" />
+
+          <div *ngIf="hasError('city')"
+              class="invalid-feedback">
+            <div *ngIf="form.get('city').errors?.required">
+              City is required.
+            </div>
+          </div>
+
+          <input type="text" id="zipCode"
+                formControlName="zipCode" required
+                placeholder="Zip code..."
+                class="form-control" />
+
+          <div *ngIf="hasError('zipCode')"
+              class="invalid-feedback">
+            <div *ngIf="form.get('zipCode').errors?.required">
+              Zip code is required.
+            </div>
+          </div>
+
+          <input type="text" id="street"
+                formControlName="street" required
+                placeholder="Street..."
+                class="form-control" />
+
+          <div *ngIf="hasError('street')"
+              class="invalid-feedback">
+            <div *ngIf="form.get('street').errors?.required">
+              Street is required.
+            </div>
+          </div>
+
+          <input type="text" id="streetNumber"
+                formControlName="streetNumber" required
+                placeholder="Street number..."
+                class="form-control" />
+
+          <div *ngIf="hasError('streetNumber')"
+              class="invalid-feedback">
+            <div *ngIf="form.get('streetNumber').errors?.required">
+              Street Number is required.
+            </div>
+          </div>
+
+          <input type="text" id="flatNumber"
+                formControlName="flatNumber" required
+                placeholder="Flat number..."
+                class="form-control" />
+
+          <div *ngIf="hasError('flatNumber')"
+              class="invalid-feedback">
+            <div *ngIf="form.get('flatNumber').errors?.required">
+              Flat Number is required.
+            </div>
+          </div>
+        </div>
+        <!-- ADDRESS -->
+        <!-- COVER PHOTO -->
+        <div class="form-group">
+          <label for="coverPhoto">Conver photo:</label>
+          <br />
+          <input type="file" id="coverPhoto"
+                formControlName="coverPhoto" required
+                class="form-control" />
+
+          <div *ngIf="hasError('coverPhoto')"
+              class="invalid-feedback">
+            <div *ngIf="form.get('coverPhoto').errors?.required">
+              Cover photo is required
+            </div>
+          </div>
+        </div>
+        <!-- COVER PHOTO -->
       </div>
-      <!-- DESCRIPTION -->
-
-      <!-- ADDRESS -->
-      <div class="form-group" [formGroup]="address">
-        <label for="location">Address:</label>
-        <br />
-        <input type="text" id="city"
-               formControlName="city" required
-               placeholder="City..."
-               class="form-control" />
-
-        <div *ngIf="hasError('city')"
-             class="invalid-feedback">
-          <div *ngIf="form.get('city').errors?.required">
-            City is required.
-          </div>
-        </div>
-
-        <input type="text" id="zipCode"
-               formControlName="zipCode" required
-               placeholder="Zip code..."
-               class="form-control" />
-
-        <div *ngIf="hasError('zipCode')"
-             class="invalid-feedback">
-          <div *ngIf="form.get('zipCode').errors?.required">
-            Zip code is required.
-          </div>
-        </div>
-
-        <input type="text" id="street"
-               formControlName="street" required
-               placeholder="Street..."
-               class="form-control" />
-
-        <div *ngIf="hasError('street')"
-             class="invalid-feedback">
-          <div *ngIf="form.get('street').errors?.required">
-            Street is required.
-          </div>
-        </div>
-
-        <input type="text" id="streetNumber"
-               formControlName="streetNumber" required
-               placeholder="Street number..."
-               class="form-control" />
-
-        <div *ngIf="hasError('streetNumber')"
-             class="invalid-feedback">
-          <div *ngIf="form.get('streetNumber').errors?.required">
-            Street Number is required.
-          </div>
-        </div>
-
-        <input type="text" id="flatNumber"
-               formControlName="flatNumber" required
-               placeholder="Flat number..."
-               class="form-control" />
-
-        <div *ngIf="hasError('flatNumber')"
-             class="invalid-feedback">
-          <div *ngIf="form.get('flatNumber').errors?.required">
-            Flat Number is required.
-          </div>
-        </div>
-      </div>
-      <!-- ADDRESS -->
-      <!-- COVER PHOTO -->
-      <div class="form-group">
-        <label for="coverPhoto">Conver photo:</label>
-        <br />
-        <input type="file" id="coverPhoto"
-               formControlName="coverPhoto" required
-               class="form-control" />
-
-        <div *ngIf="hasError('coverPhoto')"
-             class="invalid-feedback">
-          <div *ngIf="form.get('coverPhoto').errors?.required">
-            Cover photo is required
-          </div>
-        </div>
-      </div>
-      <!-- COVER PHOTO -->
-
-      <hr class="thickHr" />
 
       <!-- EMPLOYEES -->
-      <div class="list-group list-group-flush">
+      <div class="list-group list-group-flush" *ngIf="step == 2">
+        <h3>Employees list</h3>
+
         <div class="list-group-item" *ngFor="let employee of employees.controls; let i = index">
           <h5 class="card-title">Employee {{i + 1}}</h5>
           <div [formGroup]="employee" class="form-row">
@@ -185,10 +189,10 @@
       </div>
       <!-- EMPLOYEES -->
 
-      <hr class="thickHr" />
-
       <!-- OPENING HOURS -->
-      <div class="list-group list-group-flush">
+      <div class="list-group list-group-flush" *ngIf="step == 3">
+        <h3>Opening hours</h3>
+
         <div class="list-group-item" *ngFor="let day of openingHours.controls; let i = index">
           <h5 class="card-title">{{ weekDays[i] }}</h5>
           <div [formGroup]="day" class="form-row">
@@ -221,10 +225,10 @@
       </div>
       <!-- OPENING HOURS -->
 
-      <hr class="thickHr" />
-
       <!-- SERVICES -->
-      <div class="list-group list-group-flush">
+      <div class="list-group list-group-flush" *ngIf="step == 4">
+        <h3>List of services</h3>
+
         <div class="list-group-item" *ngFor="let service of services.controls; let i = index">
           <h5 class="card-title">Service {{ i + 1 }}</h5>
           <div [formGroup]="service" class="form-row" *ngIf="service">
@@ -246,11 +250,19 @@
             </div>
             <div class="form-group col-4">
               <label>Duration [minutes]</label>
-              <input type="number"
+              <select class="form-control" (change)="serviceTimeChanged($event, i)" formControlName="duration" id="duration">
+                <option value="" disabled>Choice time</option>
+                <option *ngFor="let time of servicetimes" [value]="time">{{ time }}</option>
+              </select>
+              <div *ngIf="submitted && service.controls.duration.errors" class="invalid-feedback">
+                <div *ngIf="service.controls.duration.errors.required">Duration is required</div>
+              </div>
+
+              <!-- <input type="number"
                      formControlName="duration"
                      class="form-control"
                      [ngClass]="{ 'is-invalid': submitted && service.controls.duration.errors }" />
-              <div *ngIf="submitted && service.controls.duration.errors.required">Duration is required</div>
+              <div *ngIf="submitted && service.controls.duration.errors.required">Duration is required</div> -->
             </div>
             <div class="form-group col-6">
               <label>Description</label>
@@ -280,10 +292,31 @@
         <button class="btn btn-primary" (click)="addService()">Add next service</button>
       </div>
       <!-- SERVICES -->
+      
+      <div class="row" id="buttonsSection">
+        <div class="col-12 text-right">
+          <button type="submit" 
+            (click)="onSubmit()" 
+            class="btn btn-primary" 
+            [disabled]="!form.valid" 
+            *ngIf="step == maxStep">
+            Finish
+          </button>
+    
+          <button
+            (click)="nextStep()"
+            class="btn btn-primary"
+            [disabled]="!canGoToNextStep()"
+            *ngIf="step != maxStep">
+            Next step  
+          </button>
+        </div>
+      </div>
 
-      <hr class="thickHr" />
+      <h6 *ngIf="step == maxStep">
+        Remember, you can edit all the data later in your profile!
+      </h6>
 
-      <button type="submit" (click)="onSubmit()" class="btn btn-primary" [disabled]="!form.valid">Save</button>
     </div>
 
 </div>
