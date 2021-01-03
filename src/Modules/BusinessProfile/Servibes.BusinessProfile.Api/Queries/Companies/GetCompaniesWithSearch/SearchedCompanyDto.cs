@@ -13,6 +13,6 @@ namespace Servibes.BusinessProfile.Api.Queries.Companies.GetCompaniesWithSearch
         public CompanyAddressDto Address { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
-        public string CoverPhoto { get; set; }
+        public string CoverPhotoId { get; set; }
     }
 }

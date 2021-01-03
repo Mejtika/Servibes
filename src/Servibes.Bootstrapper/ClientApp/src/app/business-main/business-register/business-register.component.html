@@ -149,7 +149,9 @@
           <br />
           <input type="file" id="coverPhoto"
                 formControlName="coverPhoto" required
-                class="form-control" />
+                class="form-control"
+                (change)="onCoverPhotoChange($event)"
+                accept="image/*" />
 
           <div *ngIf="hasError('coverPhoto')"
               class="invalid-feedback">

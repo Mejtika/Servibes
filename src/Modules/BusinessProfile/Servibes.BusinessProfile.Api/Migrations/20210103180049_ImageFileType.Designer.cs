@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Servibes.BusinessProfile.Api;
 
 namespace Servibes.BusinessProfile.Api.Migrations
 {
     [DbContext(typeof(BusinessProfileContext))]
-    partial class BusinessProfileContextModelSnapshot : ModelSnapshot
+    [Migration("20210103180049_ImageFileType")]
+    partial class ImageFileType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,28 +34,6 @@ namespace Servibes.BusinessProfile.Api.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            CategoryId = new Guid("d8f762ca-b7a5-486d-a793-e142f856d103"),
-                            Name = "Hairdresser"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("40b22590-3f08-4928-a86c-5c1d5d75d3bb"),
-                            Name = "Barber"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("87467e7d-4185-4bd1-bc32-1a0f62f5726a"),
-                            Name = "Massage"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("3ac00a98-2b01-46d5-99f2-546b9e302b18"),
-                            Name = "Makeup"
-                        });
                 });
 
             modelBuilder.Entity("Servibes.BusinessProfile.Api.Models.ClientBase.Appointment", b =>

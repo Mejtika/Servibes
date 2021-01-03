@@ -11,6 +11,9 @@ using Servibes.BusinessProfile.Api.Queries.Companies.GetCompany;
 using Servibes.BusinessProfile.Api.Queries.Companies.GetOwnerCompany;
 using Servibes.BusinessProfile.Api.Queries.Companies.GetAllCategories;
 using CompanyDto = Servibes.BusinessProfile.Api.Commands.Companies.CompanyDto;
+using Microsoft.AspNetCore.Http;
+using Servibes.BusinessProfile.Api.Commands.Images.UploadImage;
+using Servibes.BusinessProfile.Api.Queries.Images.GetImage;
 
 namespace Servibes.BusinessProfile.Api.Controllers
 {
@@ -66,6 +69,23 @@ namespace Servibes.BusinessProfile.Api.Controllers
         {
             var result = await _mediator.Send(new CreateCompanyCommand(companyDto));
             return CreatedAtAction(nameof(GetCompanyById), new { result });
+        }
+
+        [HttpPost("images")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadImage([FromForm] IFormFile formFile )
+        {
+            var imageId = await _mediator.Send(new UploadImageCommand(formFile));
+
+            return CreatedAtAction(nameof(GetImage), new { imageId });
+        }
+
+        [HttpGet("images/{imageId}")]
+        public async Task<IActionResult> GetImage(Guid imageId)
+        {
+            var image = await _mediator.Send(new GetImageQuery(imageId));
+
+            return Ok(image);
         }
 
         [HttpPut("{companyId}")]

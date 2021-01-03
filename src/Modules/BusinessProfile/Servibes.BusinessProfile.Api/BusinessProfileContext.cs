@@ -21,6 +21,8 @@ namespace Servibes.BusinessProfile.Api
 
         public DbSet<Review> Reviews { get; set; }
 
+        public DbSet<Image> Images { get; set; }
+
         public BusinessProfileContext(DbContextOptions<BusinessProfileContext> options) : base(options)
         {
         }

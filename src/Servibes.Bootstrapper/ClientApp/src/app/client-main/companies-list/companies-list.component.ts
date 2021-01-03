@@ -14,7 +14,7 @@ import { CompanyDataService } from "src/app/data-service/company-data.service";
 })
 export class CompaniesListComponent {
   page: number = 1;
-  pageSize: number = 1;
+  pageSize: number = 10;
   collectionSize: number;
   companies: SearchedCompanyDto[];
   _category: Category;
