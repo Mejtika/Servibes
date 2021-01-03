@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,13 +32,16 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.UpdateCompany
             company.PhoneNumber = PhoneNumber.Create(request.UpdateCompanyDto.PhoneNumber);
             company.Category = request.UpdateCompanyDto.Category;
             company.Description = request.UpdateCompanyDto.Description;
-            company.CoverPhoto = request.UpdateCompanyDto.CoverPhoto;
             company.Address = Address.Create(
                 request.UpdateCompanyDto.Address.City,
                 request.UpdateCompanyDto.Address.ZipCode,
                 request.UpdateCompanyDto.Address.Street,
                 request.UpdateCompanyDto.Address.StreetNumber,
                 request.UpdateCompanyDto.Address.FlatNumber);
+
+            //Update cover photo id only when incoming value is not empty
+            if (!string.IsNullOrWhiteSpace(request.UpdateCompanyDto.CoverPhotoId))
+                company.CoverPhotoId = Guid.Parse(request.UpdateCompanyDto.CoverPhotoId);
 
             await _context.SaveChangesAsync(cancellationToken);
             return Unit.Value;
