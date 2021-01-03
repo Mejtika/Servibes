@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -86,7 +87,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany
                     request.CompanyDto.Address.FlatNumber),
                 Category = request.CompanyDto.Category,
                 Description = request.CompanyDto.Description,
-                CoverPhoto = request.CompanyDto.CoverPhoto,
+                CoverPhotoId = Guid.Parse(request.CompanyDto.CoverPhotoId)
             };
 
             var walkInClient = new Client

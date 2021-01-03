@@ -1,7 +1,7 @@
 <div *ngIf="company" class="container">
   <div class="row justify-content-md-center">
     <div class="col-7 company-main">
-      <img class="img-fluid rounded" [src]="company.coverPhoto" />
+      <img class="img-fluid rounded" [src]="imageSrc" *ngIf="imageSrc"/>
 
       <div>
           <h3>

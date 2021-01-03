@@ -20,6 +20,7 @@ export class BusinessRegisterComponent extends BaseForm {
     public weekDays: string[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     public times: string[] = this.timeArray.generateHours(15);
     public servicetimes: string[] = this.timeArray.generateMinutes(15, 0, 240);
+    private coverPhoto: File;
 
     public step: number = 1;
     public maxStep = 4;
@@ -55,7 +56,7 @@ export class BusinessRegisterComponent extends BaseForm {
                 streetNumber: new FormControl('', Validators.required),
                 flatNumber: new FormControl('')
             }),
-            coverPhoto: new FormControl(''),
+            coverPhotoId: new FormControl(''),
             employees: new FormArray([]),
             openingHours: new FormArray([]),
             services: new FormArray([])
@@ -182,6 +183,20 @@ export class BusinessRegisterComponent extends BaseForm {
       this.services.controls[index].get('duration').setValue(+e.target.value);
     }
 
+    onCoverPhotoChange(e) {
+      this.coverPhoto = <File>e.target.files[0];
+
+      const formData = new FormData();
+      formData.append('formFile', this.coverPhoto);
+
+      this.profileService.uploadImage(formData).subscribe(image => {
+        //this.form.controls.coverPhotoId.setValue(imageId);
+        this.form.controls['coverPhotoId'].setValue(image.imageId);
+      });
+
+      console.log('coverPhoto', this.coverPhoto);
+    }
+
     onSubmit() {
       console.log(this.form.getRawValue());
 
@@ -189,7 +204,7 @@ export class BusinessRegisterComponent extends BaseForm {
         this.form.value
       )
 
-      console.log('after object assign', formValue);
+      console.log('formValue', formValue);
 
       this.profileService.addBusinessProfile(formValue).subscribe(profile => {
         console.log('Posted profile: ', profile);

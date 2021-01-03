@@ -34,3 +34,8 @@ input.ng-valid ~ .valid-feedback,
 input.ng-invalid ~ .invalid-feedback {
     display: block;
 }
+
+#coverPhotoSection,
+#coverPhoto {
+    margin: 15px 0px;
+}

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ApiService } from '../core/services/api.service';
 
 import { Company, Category, OpeningHours, SearchedCompanyDto, PagedResult, CompanyDetails } from '../shared/interfaces/company';
+import { IImage } from "../business-main/business-modules/profile/models/profile.model";
 
 @Injectable()
 export class CompanyDataService extends ApiService<Company> {
@@ -35,5 +36,9 @@ export class CompanyDataService extends ApiService<Company> {
 
   public getCategories(): string[] {
     return Object.keys(Category).map((key) => Category[key]);
+  }
+
+  public getImage(imageId: string) : Observable<IImage> {
+      return this.get(`companies/images/${imageId}`);
   }
 }

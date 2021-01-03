@@ -30,7 +30,7 @@ namespace Servibes.BusinessProfile.Api
                 Description = "This is a test company " + randomInt + " description.",
                 PhoneNumber = PhoneNumber.Create("123456789"),
                 Category = "Barber",
-                CoverPhoto = "C:/FakePath/photo" + randomInt + ".jpg",
+                CoverPhotoId = Guid.Parse("A79FDEE9-10C0-483A-3A85-08D8B00960E8"),
                 Address = Address.Create("Test City", "00-000", "Test street", NewRandomInt().ToString(), NewRandomInt().ToString())
             };
 
