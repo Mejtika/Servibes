@@ -5,7 +5,7 @@ export interface Company {
   address: Address;
   category: string;
   description: string;
-  coverPhoto: string;
+  coverPhotoId: string;
   openingHours?: OpeningHours[];
   employees?: Employee[];
   services?: Service[];
@@ -18,7 +18,7 @@ export interface CompanyDetails {
   address: Address;
   category: string;
   description: string;
-  coverPhoto: string;
+  coverPhotoId: string;
 }
 export interface SearchedCompanyDto {
   companyId: string;
@@ -28,7 +28,7 @@ export interface SearchedCompanyDto {
   address: Address;
   category: string;
   description: string;
-  coverPhoto: string;
+  coverPhotoId: string;
 }
 
 export interface PaidAppointmentDetails {

@@ -19,6 +19,7 @@ import {
   ClientReviewsService,
   ReviewSummaryDto,
 } from "../client-account/client-reviews.service";
+import { IImage } from "src/app/business-main/business-modules/profile/models";
 
 @Component({
   selector: "company-page",
@@ -44,6 +45,7 @@ export class CompanyPageComponent {
   public isFavoriteCompany: boolean;
   public reviewsSummary: ReviewSummaryDto;
   public reviews: ReviewDetails[];
+  public imageSrc: string;
 
   constructor(
     private companyDataService: CompanyDataService,
@@ -111,6 +113,10 @@ export class CompanyPageComponent {
         company.services = services;
         company.employees = employees;
         this.company = company;
+
+        this.companyDataService.getImage(this.company.coverPhotoId).subscribe(image => {
+          this.imageSrc = "data:" + image.fileType + ";base64," + image.data;
+        });
       }
     );
   }
