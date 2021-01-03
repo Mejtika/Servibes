@@ -1,6 +1,8 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
+import { IImage } from '../business-modules/profile/models/profile.model';
 import { BusinessProfile } from '../models/BusinessProfile';
 
 @Injectable({
@@ -26,5 +28,13 @@ export class ProfileService {
 
   public hasProfile() : Observable<boolean> {
     return this.apiService.get(`companies/owner/exists`);
+  }
+
+  uploadImage(image: FormData) : Observable<IImage> {
+    return this.apiService.post(`companies/images`, image);
+  }
+
+  getImage(imageId: string) : Observable<IImage> {
+    return this.apiService.get(`companies/images/${imageId}`);
   }
 }
