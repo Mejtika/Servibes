@@ -12,7 +12,7 @@ namespace Servibes.Availability.Core.Employees
     {
         public Guid EmployeeId { get; private set; }
 
-        private Guid _companyId;
+        public Guid CompanyId { get; private set; }
 
         private List<HoursRange> _workingHours;
 
@@ -30,7 +30,7 @@ namespace Servibes.Availability.Core.Employees
         private Employee(Guid employeeId, Guid companyId, List<HoursRange> workingHours)
         {
             EmployeeId = employeeId;
-            _companyId = companyId;
+            CompanyId = companyId;
             _workingHours = workingHours;
             _reservations = new HashSet<Reservation>();
             _timeOffs = new HashSet<TimeOff>();
@@ -55,7 +55,7 @@ namespace Servibes.Availability.Core.Employees
              
             if (_reservations.Add(reservation))
             {
-                AddDomainEvent(new EmployeeReservationAddedDomainEvent(EmployeeId, _companyId, reservation, snapshot));
+                AddDomainEvent(new EmployeeReservationAddedDomainEvent(EmployeeId, CompanyId, reservation, snapshot));
             }
         }
 
@@ -133,7 +133,7 @@ namespace Servibes.Availability.Core.Employees
         }
 
         public bool CheckCompanyCorrectness(Guid companyId)
-            => _companyId == companyId;
+            => CompanyId == companyId;
         
         private void CheckForCollision(Reservation reservation)
         {

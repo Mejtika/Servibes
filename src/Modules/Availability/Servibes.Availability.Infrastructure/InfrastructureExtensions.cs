@@ -35,6 +35,7 @@ namespace Servibes.Availability.Infrastructure
 
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IEmployeesRepository, EmployeesRepository>();
             services.AddScoped<IAvailabilityUnitOfWork, AvailabilityUnitOfWork>();
             services.AddTransient<IReservationClient, ReservationClient>();
             services.AddSingleton<IEventMapper, EventMapper>();
