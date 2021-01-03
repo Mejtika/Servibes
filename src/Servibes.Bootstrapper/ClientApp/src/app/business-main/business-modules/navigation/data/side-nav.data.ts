@@ -52,6 +52,10 @@ export const sideNavItems: SideNavItems = {
             {
                 text: 'Services',
                 link: '/business/profile/services'
+            },
+            {
+                text: 'Opening hours',
+                link: '/business/profile/openinghours'
             }
         ]
     }

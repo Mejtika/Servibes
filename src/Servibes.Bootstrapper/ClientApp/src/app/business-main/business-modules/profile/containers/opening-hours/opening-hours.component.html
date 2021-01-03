@@ -1,0 +1,46 @@
+<div *ngIf="!categories && !profile"><spinner></spinner></div>
+
+<sb-layout-dashboard>
+    <sb-dashboard-head title="Profile" [hideBreadcrumbs]="false"></sb-dashboard-head>
+    <div [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="profile && openingHours">
+
+    <!-- OPENING HOURS -->
+    <div class="list-group list-group-flush">
+        <div class="list-group-item" *ngFor="let day of openingHoursForm.controls; let i = index">
+            <h5 class="card-title">{{ weekDays[i] }}</h5>
+            <div [formGroup]="day" class="form-row">
+                <div class="form-group col-2">
+                <label>Is open</label>
+                <input type="checkbox" formControlName="isAvailable" />
+                </div>
+                <div class="form-group col-5">
+                <label>Open hour</label>
+                <select class="form-control" (change)="openHoursChanged($event, i)" formControlName="start" id="start" [attr.disabled]="day.controls.isAvailable.value ? null : true">
+                    <option value="" disabled>Choice time</option>
+                    <option *ngFor="let time of times" [value]="time">{{ time }}</option>
+                </select>
+                <div *ngIf="submitted && day.controls.start.errors" class="invalid-feedback">
+                    <div *ngIf="day.controls.start.errors.required">Open hours is required</div>
+                </div>
+                </div>
+                <div class="form-group col-5">
+                <label>Close hour</label>
+                <select class="form-control" (change)="closeHoursChanged($event, i)" formControlName="end" id="end" [attr.disabled]="day.controls.isAvailable.value ? null : true">
+                    <option value="" disabled>Choice time</option>
+                    <option *ngFor="let time of times" [value]="time">{{ time }}</option>
+                </select>
+                <div *ngIf="submitted && day.controls.end.errors" class="invalid-feedback">
+                    <div *ngIf="day.controls.end.errors.required">Close hours is required</div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- OPENING HOURS -->
+    
+    </div>
+
+    
+  
+    <button type="submit" (click)="onSubmit()" class="btn btn-primary" [disabled]="!form.valid">Save</button>
+</sb-layout-dashboard>

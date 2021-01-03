@@ -74,6 +74,28 @@ export const ROUTES: Routes = [
         } as SBRouteData
     },
     {
+        path: 'employees/workinghours/:employeeId',
+        canActivate: [],
+        component: profileContainers.EmployeeWorkingHoursComponent,
+        data: {
+            title: 'Employee working hours',
+            breadcrumbs: [
+                {
+                    text: "Profile",
+                    link: '/business/profile'
+                },
+                {
+                    text: 'Employees',
+                    link: '/business/profile/employees'
+                },
+                {
+                    text: 'Employee working hours',
+                    active: true
+                }
+            ]
+        } as SBRouteData
+    },
+    {
         path: 'services',
         canActivate: [],
         component: profileContainers.ServicesComponent,
@@ -108,6 +130,24 @@ export const ROUTES: Routes = [
                 },
                 {
                     text: 'Add/Edit service',
+                    active: true
+                }
+            ]
+        } as SBRouteData
+    },
+    {
+        path: 'openinghours',
+        canActivate: [],
+        component: profileContainers.OpeningHoursComponent,
+        data: {
+            title: 'Opening hours',
+            breadcrumbs: [
+                {
+                    text: 'Profile',
+                    link: '/business/profile'
+                },
+                {
+                    text: 'Opening hours',
                     active: true
                 }
             ]
