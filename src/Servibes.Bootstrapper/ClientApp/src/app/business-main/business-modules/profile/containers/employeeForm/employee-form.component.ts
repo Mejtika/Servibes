@@ -82,8 +82,7 @@ export class EmployeeFormComponent extends BaseForm implements OnInit {
 
     gotoWorkingHours() {
         let route = `business/profile/employees/workinghours/${this.employee.employeeId}`;
-        console.log('route:', route); 
-        this.router.navigateByUrl(route);
+        return this.router.navigateByUrl(route);
     }
     
 }

@@ -43,7 +43,7 @@
 
     <div class="row" id="workingHoursButton">
       <div class="col-2 text-left">
-        <button type="submit" (click)="gotoWorkingHours()" class="btn btn-warning" [disabled]="!employee.employeeId">
+        <button *ngIf="employee" type="submit" (click)="gotoWorkingHours()" class="btn btn-warning" [disabled]="!employee.employeeId">
           Working hours
         </button>
       </div> 

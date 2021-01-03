@@ -12,7 +12,7 @@ namespace Servibes.Availability.Core.Employees
     {
         public Guid EmployeeId { get; private set; }
 
-        private Guid _companyId;
+        public Guid CompanyId { get; private set; }
 
         private List<HoursRange> _workingHours;
 
@@ -30,7 +30,7 @@ namespace Servibes.Availability.Core.Employees
         private Employee(Guid employeeId, Guid companyId, List<HoursRange> workingHours)
         {
             EmployeeId = employeeId;
-            _companyId = companyId;
+            CompanyId = companyId;
             _workingHours = workingHours;
             _reservations = new HashSet<Reservation>();
             _timeOffs = new HashSet<TimeOff>();
@@ -55,7 +55,7 @@ namespace Servibes.Availability.Core.Employees
              
             if (_reservations.Add(reservation))
             {
-                AddDomainEvent(new EmployeeReservationAddedDomainEvent(EmployeeId, _companyId, reservation, snapshot));
+                AddDomainEvent(new EmployeeReservationAddedDomainEvent(EmployeeId, CompanyId, reservation, snapshot));
             }
         }
 
@@ -128,12 +128,56 @@ namespace Servibes.Availability.Core.Employees
         public void AdjustWorkingHours(List<HoursRange> companyOpeningHours)
         {
             CheckForDaysCorrectness(companyOpeningHours);
-            _workingHours = companyOpeningHours;
+            var newWorkingHours = Adjust(companyOpeningHours);
+            _workingHours = newWorkingHours;
             AddDomainEvent(new EmployeeWorkingHoursChangedDomainEvent(this));
         }
 
+        private List<HoursRange> Adjust(List<HoursRange> newOpeningHours)
+        {
+            List<HoursRange> newHoursRanges = new List<HoursRange>();
+            foreach (var newDayHoursRange in newOpeningHours)
+            {
+               var workingHoursRange = _workingHours.SingleOrDefault(x => x.DayOfWeek == newDayHoursRange.DayOfWeek);
+               if (!newDayHoursRange.IsAvailable)
+               {
+                   var unavailableHoursRange = HoursRange.Create(
+                       newDayHoursRange.DayOfWeek,
+                       newDayHoursRange.IsAvailable,
+                       workingHoursRange.Start,
+                       workingHoursRange.End);
+                   newHoursRanges.Add(unavailableHoursRange);
+                   continue;
+               }
+
+               if (newDayHoursRange.IsAvailable && !workingHoursRange.IsAvailable)
+               {
+                   newHoursRanges.Add(workingHoursRange);
+                   continue;
+               }
+
+               var newStart = newDayHoursRange.Start > workingHoursRange.Start
+                   ? newDayHoursRange.Start
+                   : workingHoursRange.Start;
+
+               var newEnd = newDayHoursRange.End < workingHoursRange.End
+                   ? newDayHoursRange.End
+                   : workingHoursRange.End;
+
+               var newHoursRange = HoursRange.Create(
+                   newDayHoursRange.DayOfWeek, 
+                   newDayHoursRange.IsAvailable,
+                   newStart,
+                   newEnd);
+
+               newHoursRanges.Add(newHoursRange);
+            }
+
+            return newHoursRanges;
+        }
+
         public bool CheckCompanyCorrectness(Guid companyId)
-            => _companyId == companyId;
+            => CompanyId == companyId;
         
         private void CheckForCollision(Reservation reservation)
         {

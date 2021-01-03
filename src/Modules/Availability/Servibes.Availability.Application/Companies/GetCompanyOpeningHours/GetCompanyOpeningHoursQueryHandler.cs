@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
@@ -31,7 +30,7 @@ namespace Servibes.Availability.Application.Companies.GetCompanyOpeningHours
                                "FROM [Servibes].[availability].[OpeningHours]" +
                                "WHERE[CompanyId] = @CompanyId";
             var openingHours = await connection.QueryAsync<HoursRangeDto>(sql, new { request.CompanyId });
-            return openingHours.AsList();
+            return openingHours.OrderBy(x => x.DayOfWeek).AsList();
         }
     }
 }
