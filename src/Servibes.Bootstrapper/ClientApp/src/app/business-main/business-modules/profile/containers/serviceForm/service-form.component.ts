@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BaseForm } from 'src/app/shared/others/BaseForm';
+import { TimeArray } from 'src/app/shared/others/time-array';
 import { IEmployee, IProfile, IService } from '../../models';
 import { EmployeeService, ProfileService, ServicesService } from '../../services';
 
@@ -16,6 +17,7 @@ export class ServiceFormComponent extends BaseForm implements OnInit {
     public service: IService;
     public employees: IEmployee[];
     public performers: IEmployee[];
+    public servicetimes: string[] = this.timeArray.generateMinutes(15, 0, 240);
 
     get employeesForm() { return this.form.controls.employees as FormArray; }
 
@@ -27,7 +29,8 @@ export class ServiceFormComponent extends BaseForm implements OnInit {
         private toastr: ToastrService,
         private router: Router,
         private formBuilder: FormBuilder,
-        private cd: ChangeDetectorRef
+        private cd: ChangeDetectorRef,
+        private timeArray: TimeArray
     ) {
         super();
     }
@@ -109,6 +112,10 @@ export class ServiceFormComponent extends BaseForm implements OnInit {
             lastName: new FormControl(employee.lastName)
           }));
     }
+
+    serviceTimeChanged (e, index: number) {
+        this.form.controls.duration.setValue(+e.target.value);
+      }
 
     onSubmit() {
         var formValues = this.form.getRawValue();
