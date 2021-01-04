@@ -6,7 +6,7 @@ import { ProfileService, ServicesService } from '../../services';
 
 @Component({
     selector: 'services',
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    // changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './services.component.html',
     styleUrls: ['./services.component.scss'],
 })
@@ -35,7 +35,7 @@ export class ServicesComponent extends BaseForm implements OnInit {
         this.servicesService.getAllServices(this.profile.companyId).subscribe(services => {
             this.services = services;
 
-            this.cd.markForCheck();
+            // this.cd.markForCheck();
         });
     }
 

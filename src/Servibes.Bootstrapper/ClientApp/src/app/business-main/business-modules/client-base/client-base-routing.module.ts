@@ -21,10 +21,7 @@ export const ROUTES: Routes = [
         data: {
             title: 'Client base',
             breadcrumbs: [
-                {
-                    text: 'Client base',
-                    link: '/business/clientbase',
-                },
+
                 {
                     text: 'Client base',
                     active: true,

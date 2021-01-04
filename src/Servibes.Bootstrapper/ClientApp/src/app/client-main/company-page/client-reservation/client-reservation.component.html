@@ -28,10 +28,15 @@
   </div>
 
   <div class="modal-body" *ngIf="step == 3">
-    <div class="list-group">
-      <button type="button" class="list-group-item list-group-item-action" *ngFor="let hour of serviceAvailableHours" (click)="selectHour(hour)">
-        {{ hour.time }}
-      </button>
+    <div class="list-group d-flex flex-center">
+      <ng-container *ngIf="serviceAvailableHours.length === 0; else elseTemplate">
+        <span class="bookedHours">📅 Fully booked</span>
+      </ng-container>
+      <ng-template #elseTemplate>
+        <button type="button" class="list-group-item list-group-item-action" *ngFor="let hour of serviceAvailableHours" (click)="selectHour(hour)">
+          {{ hour.time }}
+        </button>
+      </ng-template>  
     </div>
   </div>
 
