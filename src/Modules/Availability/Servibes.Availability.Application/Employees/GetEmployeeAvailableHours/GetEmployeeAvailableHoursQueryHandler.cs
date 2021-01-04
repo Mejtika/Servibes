@@ -7,16 +7,21 @@ using Dapper;
 using MediatR;
 using Servibes.Shared.Database;
 using Servibes.Shared.Exceptions;
+using Servibes.Shared.Services;
 
 namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
 {
     public class GetEmployeeAvailableHoursQueryHandler : IRequestHandler<GetEmployeeAvailableHoursQuery, List<AvailableHoursDto>>
     {
         private readonly ISqlConnectionFactory _sqlConnection;
+        private readonly IDateTimeServer _dateTimeServer;
 
-        public GetEmployeeAvailableHoursQueryHandler(ISqlConnectionFactory sqlConnection)
+        public GetEmployeeAvailableHoursQueryHandler(
+            ISqlConnectionFactory sqlConnection,
+            IDateTimeServer dateTimeServer)
         {
             _sqlConnection = sqlConnection;
+            _dateTimeServer = dateTimeServer;
         }
         public async Task<List<AvailableHoursDto>> Handle(GetEmployeeAvailableHoursQuery request, CancellationToken cancellationToken)
         {
@@ -39,7 +44,7 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
                                                    "FROM [Servibes].[availability].[WorkingHours]" +
                                                    "WHERE[EmployeeId] = @EmployeeId AND DayOfWeek = @Day";
             var workingHours = await connection.QueryFirstAsync<WorkingHoursDto>(employeeWorkingHoursSql, new { request.EmployeeId, Day = request.Date.DayOfWeek.ToString() });
-            if (!workingHours.IsAvailable)
+            if (!workingHours.IsAvailable || (request.Date.Date == _dateTimeServer.Now.Date && _dateTimeServer.Now.TimeOfDay >= workingHours.End))
             {
                 return new List<AvailableHoursDto>();
             }
@@ -52,18 +57,33 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
                                                     "WHERE [EmployeeId] = @EmployeeId AND [Start] BETWEEN @DateFrom AND @DateTo";
             var reservations = (await connection.QueryAsync<ReservationDto>(reservationsForGivenDateSql, new { request.EmployeeId, DateFrom = request.Date, DateTo = nextDay })).AsList();
             var availableHours = GetHoursAvailableForReservation(request.Duration, workingHours.Start, workingHours.End, reservations);
-
+            if (request.Date.Date == _dateTimeServer.Now.Date && (_dateTimeServer.Now.TimeOfDay > workingHours.Start && _dateTimeServer.Now.TimeOfDay < workingHours.End))
+            {
+                var currentTime = _dateTimeServer.Now.TimeOfDay.TotalMinutes;
+                var closestAvailableHour = availableHours.Aggregate((x, y) => Math.Abs(x.TotalMinutes - currentTime) < Math.Abs(y.TotalMinutes - currentTime) ? x : y);
+                var indexOfClosestHour = availableHours.IndexOf(closestAvailableHour);
+                if (currentTime + 5 > closestAvailableHour.TotalMinutes)
+                {
+                    indexOfClosestHour++;
+                }
+                availableHours.RemoveRange(0, indexOfClosestHour);
+            }
             return availableHours.Select(x => new AvailableHoursDto {Time = x.ToString()}).ToList();
         }
 
         private List<TimeSpan> GetHoursAvailableForReservation(int serviceTime, TimeSpan start, TimeSpan end, List<ReservationDto> reservations)
         {
+            var availableHours = new List<TimeSpan>();
             if (serviceTime == 15)
             {
-                return GetHoursToBookForShortReservation(start, end, reservations);
+                availableHours = GetHoursToBookForShortReservation(start, end, reservations);
+            }
+            else
+            {
+                availableHours = GetHoursToBookForLongReservation(serviceTime, start, end, reservations);
             }
 
-            return GetHoursToBookForLongReservation(serviceTime, start, end, reservations);
+            return availableHours.Where(x => x.Minutes == 0 || x.Minutes % 15 == 0).ToList();
         }
 
         private List<TimeSpan> GetHoursToBookForLongReservation(int serviceTime, TimeSpan start, TimeSpan end, List<ReservationDto> reservations)
@@ -72,7 +92,7 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
 
             foreach (var reservation in reservations)
             {
-                var startIndex = timePeriodsBetween.IndexOf(reservation.Start.TimeOfDay.Add(TimeSpan.FromMinutes(15)));
+                var startIndex = timePeriodsBetween.IndexOf(reservation.Start.TimeOfDay.Add(TimeSpan.FromMinutes(5)));
                 var endIndex = timePeriodsBetween.IndexOf(reservation.End.TimeOfDay);
                 timePeriodsBetween.RemoveRange(startIndex, endIndex - startIndex);
             }
@@ -91,7 +111,7 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
 
         private List<TimeSpan> GetHoursToBookForShortReservation(TimeSpan start, TimeSpan end, List<ReservationDto> reservations)
         {
-            var timePeriodsBetween = GetTimePeriodsBetween(start, end.Add(TimeSpan.FromMinutes(-15)));
+            var timePeriodsBetween = GetTimePeriodsBetween(start, end.Add(TimeSpan.FromMinutes(-5)));
             foreach (var reservation in reservations)
             {
                 var startIndex = timePeriodsBetween.IndexOf(reservation.Start.TimeOfDay);
@@ -110,9 +130,9 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
         {
             long ticksPerSecond = 10000000;
             long ticksPerMinute = ticksPerSecond * 60;
-            long ticksPer15Min = ticksPerMinute * 15;
+            long ticksPer5Min = ticksPerMinute * 5;
             List<TimeSpan> timeSpans = new List<TimeSpan>();
-            for (long i = start.Ticks; i <= end.Ticks; i += ticksPer15Min)
+            for (long i = start.Ticks; i <= end.Ticks; i += ticksPer5Min)
             {
                 timeSpans.Add(TimeSpan.FromTicks(i));
             }

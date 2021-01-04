@@ -127,7 +127,7 @@ export class CompanyPageComponent {
       service: service,
       company: this.company,
     };
-    this.modalService.show(ClientReservationComponent, { initialState });
+    this.modalService.show(ClientReservationComponent, { class: 'modal-dialog-centered', initialState });
   }
 
   refreshPage() {

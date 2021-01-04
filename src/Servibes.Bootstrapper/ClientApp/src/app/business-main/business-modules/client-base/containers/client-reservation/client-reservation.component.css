@@ -3,7 +3,6 @@
   border-color: grey;
 }
 
-
 .modal {
   display: block !important; /* I added this to see the modal, you don't need this */
 }
@@ -16,4 +15,8 @@
 .modal-body {
   max-height: 80vh;
   overflow-y: auto;
+}
+
+.bookedHours{
+  text-align: center;
 }

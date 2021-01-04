@@ -8,7 +8,6 @@ import { ClientReservationComponent } from './../client-reservation/client-reser
 
 @Component({
     selector: 'client-base',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './client-base.component.html',
     styleUrls: ['./client-base.component.scss'],
 })
@@ -20,19 +19,14 @@ export class ClientBaseComponent implements OnInit {
     constructor(
         private clientBaseService: ClientBaseService,
         private profileService: ProfileService,
-        private cd: ChangeDetectorRef,
         private modalService: BsModalService) {
-
     }
 
     ngOnInit() {
         this.profileService.getProfile().subscribe(profile => {
             this.profile = profile;
-
             this.clientBaseService.getClients(this.profile.companyId).subscribe(clients => {
                 this.clients = clients;
-
-                this.cd.markForCheck();
             });
         });
     }
@@ -45,8 +39,7 @@ export class ClientBaseComponent implements OnInit {
         const initialState = {
             client: client,
             companyId: this.profile.companyId,
-          };
-
+          };        
         this.modalService.show(ClientReservationComponent, { class: 'modal-dialog-centered', initialState });
     }
 }

@@ -6,7 +6,9 @@
       <div>
           <h3>
               {{ company.companyName }}
-            <ng-container *ngIf="!isFavoriteCompany; else elseTemplate">
+
+              
+              <ng-container *ngIf="!isFavoriteCompany; else elseTemplate">
                 <button (click)="addToFavorites()" class="btn">🤍</button>
               </ng-container>
         

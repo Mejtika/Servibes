@@ -1,1 +1,8 @@
 @import '../../../../styles/variables.scss';
+
+.account-navigation{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
