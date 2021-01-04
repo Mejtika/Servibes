@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Servibes.ClientProfile.Api;
 
 namespace Servibes.ClientProfile.Api.Migrations
 {
     [DbContext(typeof(ClientProfileContext))]
-    partial class ClientProfileContextModelSnapshot : ModelSnapshot
+    [Migration("20210104214134_AddedUniquePKToFavorites")]
+    partial class AddedUniquePKToFavorites
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
