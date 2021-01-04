@@ -28,7 +28,8 @@ namespace Servibes.ClientProfile.Api
 
             modelBuilder.Entity<Favorite>(builder =>
             {
-                builder.HasKey(x => x.CompanyId);
+                builder.Property<Guid>("FavoriteId").IsRequired();
+                builder.HasKey("FavoriteId");
             });
         }
     }
