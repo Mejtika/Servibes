@@ -3,12 +3,11 @@
     <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu aria-labelledby="dropdownUser">
         <h6 class="dropdown-header">
             <div class="dropdown-user-details">
-                <div class="dropdown-user-details-name">user name</div>
-                <div class="dropdown-user-details-email">user email</div>
+                <div class="dropdown-user-details-name">Hi, {{userName$ | async}}!</div>
             </div>
         </h6>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" routerLink="/dashboard">Settings</a><a class="dropdown-item" routerLink="/dashboard">Activity Log</a>
+        <a class="dropdown-item" [routerLink]='["/authentication/profile"]'>Settings</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" [routerLink]='["/authentication/logout"]' [state]='{ local: true }'>Logout</a>
     </div>
