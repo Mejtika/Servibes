@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Servibes.BusinessProfile.Api.Queries.ClientBase
 {
@@ -8,9 +6,7 @@ namespace Servibes.BusinessProfile.Api.Queries.ClientBase
     {
         public Guid ClientId { get; set; }
 
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        public string Name { get; set; }
 
         public string Email { get; set; }
     }

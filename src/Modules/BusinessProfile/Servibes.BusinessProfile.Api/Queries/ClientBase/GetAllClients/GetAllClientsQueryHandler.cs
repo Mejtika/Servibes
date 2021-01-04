@@ -6,49 +6,46 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace Servibes.BusinessProfile.Api.Queries.ClientBase.GetAllClients
 {
     public class GetAllClientsQueryHandler : IRequestHandler<GetAllClientsQuery, IEnumerable<ClientDto>>
     {
         private readonly BusinessProfileContext _context;
+        private readonly IMapper _mapper;
 
         public GetAllClientsQueryHandler(
-            BusinessProfileContext context)
+            BusinessProfileContext context,
+            IMapper mapper)
         {
             this._context = context;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<ClientDto>> Handle(GetAllClientsQuery request, CancellationToken cancellationToken)
         {
-            var clients = await _context.Appointments.Join(_context.Clients,
-                    appointment => appointment.ClientId,
-                    client => client.ClientId,
-                    (appointmemnt, client) => new ClientDto
-                    {
-                        ClientId = client.ClientId,
-                        Email = client.Email,
-                        FirstName = client.FirstName,
-                        LastName = client.LastName
-                    }).Distinct().ToListAsync<ClientDto>();
-
-            var walkInClient = await _context.Companies.Where(c => c.CompanyId == request.CompanyId).Join(_context.Clients,
-                company => company.WalkInClientId,
-                client => client.ClientId,
-                (company, client) => new ClientDto
-                {
-                    ClientId = client.ClientId,
-                    Email = client.Email,
-                    FirstName = client.FirstName,
-                    LastName = client.LastName,
-                }).Distinct().FirstOrDefaultAsync();
-
-            if (walkInClient is null)
-                throw new Exception("Company doesnt have a walk in client specified.");
-
-            clients.Add(walkInClient);
-
-            return clients;
+            var companyClients = await _context.Clients.FromSqlInterpolated(
+                 $@"SELECT DISTINCT
+                    [Clients].[ClientId],
+                    [Clients].[FirstName],
+                    [Clients].[LastName],
+                    [Clients].[Email]
+                    FROM [Servibes].[business].[Clients] AS [Clients]
+                    JOIN [Servibes].[business].[Appointments] AS [Appointments]
+                    ON [Clients].ClientId = [Appointments].ClientId
+                    WHERE [Appointments].CompanyId = {request.CompanyId}
+                    UNION
+                    SELECT
+                    [Clients].[ClientId],
+                    [Clients].[FirstName],
+                    [Clients].[LastName],
+                    [Clients].[Email]
+                    FROM [Servibes].[business].[Clients] AS [Clients]
+                    JOIN [Servibes].[business].[Companies] AS [Companies]
+                    ON [Clients].ClientId = [Companies].WalkInClientId
+                    WHERE [Companies].CompanyId = {request.CompanyId}").ToListAsync(cancellationToken);
+            return _mapper.Map<IEnumerable<ClientDto>>(companyClients);
         }
     }
 }
