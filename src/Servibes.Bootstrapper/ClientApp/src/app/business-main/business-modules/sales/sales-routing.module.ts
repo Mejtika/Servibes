@@ -16,11 +16,6 @@ import * as salesGuards from './guards';
 export const ROUTES: Routes = [
     {
         path: '',
-        pathMatch: 'full',
-        redirectTo: 'sales'
-    },
-    {
-        path: 'sales',
         canActivate: [],
         component: salesContainers.SalesComponent,
         data: {

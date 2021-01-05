@@ -1,6 +1,67 @@
 <sb-layout-dashboard>
-    <sb-dashboard-head title="Sales" [hideBreadcrumbs]="false"></sb-dashboard-head>
+  <sb-dashboard-head title="Sales" [hideBreadcrumbs]="false">
+  </sb-dashboard-head>
+  <ng-container *ngIf="appointments && appointments.length == 0; else elseTemplate">
+    <strong class="info">📆 No appointments to be paid.</strong>
+  </ng-container>
+  <ng-template #elseTemplate>
     <div class="row">
-        <h1>SALES</h1>
+      <div class="col-md-4 mb-4 account-navigation">
+        <div class="list-group list-group-flush">
+          <button
+            *ngFor="let appointment of appointments"
+            type="button"
+            (click)="selectClient(appointment)"
+            class="list-group-item list-group-item-action payment"
+          >
+            ✂ <strong>{{ appointment.serviceName }}</strong>
+            <br />
+            🕓
+            <strong>
+              {{ appointment.start | date: "shortDate" }}
+              {{ appointment.start | date: "shortTime" }} -
+              {{ appointment.end | date: "shortTime" }}
+            </strong>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div *ngIf="selectedAppointment">
+          <p>
+            <strong>Client:</strong>
+            {{ selectedAppointment.clientName }}
+          </p>
+          <p>
+            <strong>Employee:</strong>
+            {{ selectedAppointment.employeeName }}
+          </p>
+          <p>
+            <strong>Service:</strong>
+            {{ selectedAppointment.serviceName }}
+          </p>
+          <div class="input-group w-50">
+            <div class="input-group-prepend">
+              <span class="input-group-text"> <strong>PLN</strong> </span>
+            </div>
+            <input
+              type="number"
+              class="form-control"
+              aria-label="Price"
+              [(ngModel)]="selectedAppointment.price"
+              name="appointmentPrice"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-primary"
+                type="button"
+                (click)="checkoutAppointment(selectedAppointment)"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </ng-template>
 </sb-layout-dashboard>
