@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Servibes.BusinessProfile.Api.Events;
 using Servibes.BusinessProfile.Api.Models;
+using Servibes.Shared.Communication.Brokers;
 using Servibes.Shared.Exceptions;
 
 namespace Servibes.BusinessProfile.Api.Commands.Employees.CreateEmployee
@@ -12,10 +13,12 @@ namespace Servibes.BusinessProfile.Api.Commands.Employees.CreateEmployee
     public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Guid>
     {
         private readonly BusinessProfileContext _context;
+        private readonly IMessageBroker _messageBroker;
 
-        public CreateEmployeeCommandHandler(BusinessProfileContext context)
+        public CreateEmployeeCommandHandler(BusinessProfileContext context, IMessageBroker messageBroker)
         {
-            this._context = context;
+            _context = context;
+            _messageBroker = messageBroker;
         }
 
         public async Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
@@ -38,7 +41,8 @@ namespace Servibes.BusinessProfile.Api.Commands.Employees.CreateEmployee
 
             await _context.Employees.AddAsync(employee, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
-
+            var @event = new EmployeeAddedEvent(employee.EmployeeId, employee.CompanyId, $"{employee.FirstName} {employee.LastName}");
+            await _messageBroker.PublishAsync(new[] {@event});
             return employee.EmployeeId;
         }
     }
