@@ -107,6 +107,7 @@ namespace Servibes.BusinessProfile.Api.Commands.Companies.CreateCompany
             var @event = new RegistrationCompletedEvent(
                 companyId,
                 walkInClientId,
+                ownerId,
                 request.CompanyDto.OpeningHours);
             await _messageBroker.PublishAsync(@event);
 
