@@ -1,12 +1,7 @@
-<div *ngIf="!employee && !profile"><spinner></spinner></div>
-
 <sb-layout-dashboard>
     <sb-dashboard-head title="Profile" [hideBreadcrumbs]="false"></sb-dashboard-head>
-  <div [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="profile && workingHours">
-
+    <div [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="profile && workingHours">
         <input hidden type="text" formControlName="employeeId"/>
-
-        <!-- WORKING HOURS -->
         <div class="list-group list-group-flush">
             <div class="list-group-item" *ngFor="let day of workingHoursForm.controls; let i = index">
                 <h5 class="card-title">{{ weekDays[i] }}</h5>
@@ -38,14 +33,11 @@
                 </div>
             </div>
         </div>
-        <!-- WORKING HOURS -->
-
-        
     </div>
 
     <div class="row">
         <div class="col-6 text-left">
-            <button type="submit" (click)="onSubmit()" class="btn btn-primary" [disabled]="!form.valid">Save</button>
+            <button type="submit" (click)="onSubmit()" class="btn btn-primary" [disabled]="!form.valid || !form.dirty">Save</button>
         </div>
         <div class="col-6 text-right">
             <button type="submit" (click)="navigateBack()" class="btn btn-danger">Cancel</button>

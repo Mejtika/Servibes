@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component } from "@angular/core";
 import { FormArray, FormBuilder, FormControl } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { BaseForm } from "src/app/shared/others/BaseForm";
 import { TimeArray } from "src/app/shared/others/time-array";
@@ -38,6 +38,7 @@ export class EmployeeWorkingHoursComponent extends BaseForm {
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
+    private router: Router,
     private timeArray: TimeArray
   ) {
     super();
@@ -106,6 +107,14 @@ export class EmployeeWorkingHoursComponent extends BaseForm {
     
     this.employeeService
       .changeWorkingHours(this.profile.companyId, this.employeeId, body)
-      .subscribe(_ => this.toastr.success("Working hours changed successfully."));
+      .subscribe(_ => {
+        this.toastr.success("Working hours changed successfully.");
+        this.navigateBack();
+      });
+  }
+
+  navigateBack(){
+    let route = `business/profile/employees/${this.employeeId}`;
+    return this.router.navigateByUrl(route);
   }
 }

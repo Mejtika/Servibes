@@ -67,18 +67,18 @@ export const ROUTES: Routes = [
                     link: '/business/profile/employees'
                 },
                 {
-                    text: 'Add/Edit employee',
+                    text: 'Manage',
                     active: true
                 }
             ]
         } as SBRouteData
     },
     {
-        path: 'employees/:employeeId/workinghours',
+        path: 'employees/:employeeId/timereservations',
         canActivate: [],
-        component: profileContainers.EmployeeWorkingHoursComponent,
+        component: profileContainers.EmployeeTimeReservationsComponent,
         data: {
-            title: 'Employee working hours',
+            title: 'Time reservations',
             breadcrumbs: [
                 {
                     text: "Profile",
@@ -89,7 +89,29 @@ export const ROUTES: Routes = [
                     link: '/business/profile/employees'
                 },
                 {
-                    text: 'Employee working hours',
+                    text: 'Time reservations',
+                    active: true
+                }
+            ]
+        } as SBRouteData
+    },
+    {
+        path: 'employees/:employeeId/workinghours',
+        canActivate: [],
+        component: profileContainers.EmployeeWorkingHoursComponent,
+        data: {
+            title: 'Working hours',
+            breadcrumbs: [
+                {
+                    text: "Profile",
+                    link: '/business/profile'
+                },
+                {
+                    text: 'Employees',
+                    link: '/business/profile/employees'
+                },
+                {
+                    text: 'Working hours',
                     active: true
                 }
             ]
@@ -129,7 +151,7 @@ export const ROUTES: Routes = [
                     link: '/business/profile/services'
                 },
                 {
-                    text: 'Add/Edit service',
+                    text: 'Manage',
                     active: true
                 }
             ]

@@ -1,0 +1,54 @@
+<sb-layout-dashboard>
+  <sb-dashboard-head title="Profile" [hideBreadcrumbs]="false"></sb-dashboard-head>
+  <div [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="profile && employee">
+    <input hidden type="text" formControlName="employeeId"/>
+    <div class="form-group">
+      <label for="firstName">First name: </label>
+      <br />
+      <input 
+          type="text" 
+          id="firstName"
+          formControlName="firstName"
+          required
+          placeholder="First name..."
+          class="form-control"/>
+      <div *ngIf="hasError('firstName')" class="invalid-feedback">
+        <div *ngIf="form.get('firstName').errors?.required">
+          First name is required.
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+        <label for="lastName">Last name: </label>
+        <br />
+        <input type="text" id="lastName"
+            formControlName="lastName" required
+            placeholder="Last name..."
+            class="form-control"/>
+
+        <div *ngIf="hasError('lastName')" class="invalid-feedback">
+          <div *ngIf="form.get('lastName').errors?.required">
+            Last name is required.
+          </div>
+        </div>
+      </div>
+  </div>
+
+    <div class="mb-3 d-flex" *ngIf="employee && employee.employeeId">
+      <button type="btn" (click)="goToWorkingHours()" class="btn btn-outline-primary">
+        Working hours
+      </button>
+      <button type="btn" (click)="goToTimeReservations()" class="btn btn-outline-primary ml-2">
+        Time reservations
+      </button>
+    </div>
+
+    <div class="row">
+        <div class="col-6 text-left">
+            <button type="submit" (click)="onSubmit()" class="btn btn-primary" [disabled]="!form.valid || !form.dirty">Save</button>
+        </div>
+        <div class="col-6 text-right">
+            <button type="submit" (click)="navigateBack()" class="btn btn-danger">Cancel</button>
+        </div>
+    </div>
+</sb-layout-dashboard>

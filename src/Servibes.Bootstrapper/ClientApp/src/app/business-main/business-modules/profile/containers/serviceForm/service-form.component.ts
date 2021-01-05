@@ -29,7 +29,6 @@ export class ServiceFormComponent extends BaseForm implements OnInit {
         private toastr: ToastrService,
         private router: Router,
         private formBuilder: FormBuilder,
-        private cd: ChangeDetectorRef,
         private timeArray: TimeArray
     ) {
         super();
@@ -64,8 +63,6 @@ export class ServiceFormComponent extends BaseForm implements OnInit {
     
                                 this.addEmployeeToServiceForm(e, isActive);
                             });
-        
-                            this.cd.markForCheck();
                         });                    
                     });
                 });
@@ -89,8 +86,6 @@ export class ServiceFormComponent extends BaseForm implements OnInit {
                     });
                 });
             }
-
-            this.cd.markForCheck();
         });
     }
 
@@ -137,6 +132,6 @@ export class ServiceFormComponent extends BaseForm implements OnInit {
     }
 
     navigateBack() {
-        this.router.navigateByUrl('business/profile/services');
+        return this.router.navigateByUrl('business/profile/services');
     }
 }
