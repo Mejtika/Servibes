@@ -32,8 +32,6 @@ namespace Servibes.BusinessProfile.Api
             });
 
             services.AddTransient<ReservationService>();
-            services.AddTransient<AuthorizationService>();
-
             return services;
         }
 
@@ -47,13 +45,8 @@ namespace Servibes.BusinessProfile.Api
                 {
                     var service = sp.GetService<ReservationService>();
                     return await service.GetReservationData(request.EmployeeId, request.ServiceId);
-                })
-                .Subscribe<CheckUserOwnershipRequest>("modules/business/auth", async (sp, request) =>
-                {
-                    var service = sp.GetService<AuthorizationService>();
-                    return await service.CheckOwnership(request.UserId, request.CompanyId);
                 });
-
+                
             using var serviceScope = app.ApplicationServices.CreateScope();
             var dbContext = serviceScope.ServiceProvider.GetService<BusinessProfileContext>();
             dbContext.SeedData();

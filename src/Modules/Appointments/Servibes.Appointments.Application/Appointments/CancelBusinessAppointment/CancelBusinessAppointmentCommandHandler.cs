@@ -6,8 +6,8 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Servibes.Appointments.Application;
 using Servibes.Appointments.Application.Appointments.CancelBusinessAppointment;
-using Servibes.Appointments.Application.ModuleClients;
 using Servibes.Appointments.Core.Appointments;
+using Servibes.Appointments.Core.Reservees;
 using Servibes.Shared.Communication.Events;
 using Servibes.Shared.Exceptions;
 using Servibes.Shared.Services;
@@ -19,7 +19,7 @@ namespace Servibes.Appointments.Api
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IAppointmentUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _accessor;
-        private readonly IAuthorizationClient _authorizationClient;
+        private readonly ICompanyRepository _companyRepository;
         private readonly IDateTimeServer _dateTimeServer;
         private readonly IEventProcessor _eventProcessor;
 
@@ -27,14 +27,14 @@ namespace Servibes.Appointments.Api
             IAppointmentRepository appointmentRepository,
             IAppointmentUnitOfWork unitOfWork,
             IHttpContextAccessor accessor,
-            IAuthorizationClient authorizationClient,
+            ICompanyRepository companyRepository,
             IDateTimeServer dateTimeServer,
             IEventProcessor eventProcessor)
         {
             _appointmentRepository = appointmentRepository;
             _unitOfWork = unitOfWork;
             _accessor = accessor;
-            _authorizationClient = authorizationClient;
+            _companyRepository = companyRepository;
             _dateTimeServer = dateTimeServer;
             _eventProcessor = eventProcessor;
         }
@@ -43,8 +43,8 @@ namespace Servibes.Appointments.Api
         {
             var ownerId = Guid.Parse(_accessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
             var appointment = await  _appointmentRepository.GetAsync(request.AppointmentId);
-            var user = await _authorizationClient.IsAuthenticatedAsync(ownerId, appointment.CompanyId);
-            if (!user.IsAuthorized)
+            var isAuthorized = await _companyRepository.ExistsByWalkInIdAsync(appointment.CompanyId, ownerId);
+            if (!isAuthorized)
             {
                 throw new AppException($"User {ownerId} is not authorized to perform this action.");
             }
@@ -52,7 +52,6 @@ namespace Servibes.Appointments.Api
             appointment.Cancel(_dateTimeServer.Now, request.CancellationReason);
             await _unitOfWork.CommitAsync(cancellationToken);
             await _eventProcessor.ProcessAsync(appointment.DomainEvents);
-
             return Unit.Value;
         }
     }

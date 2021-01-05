@@ -113,8 +113,8 @@ namespace Servibes.Sales.Api
             }
 
             var ownerId = Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
-            var ownerCompany = await _context.Companies.SingleOrDefaultAsync(x => x.OwnerId == ownerId);
-            if (ownerCompany == null)
+            var isAuthorized = await _context.Companies.AnyAsync(x => x.CompanyId == appointment.CompanyId && x.OwnerId == ownerId);
+            if (!isAuthorized)
             {
                 throw new AppException($"User {ownerId} is not authorized to perform this action.");
             }
