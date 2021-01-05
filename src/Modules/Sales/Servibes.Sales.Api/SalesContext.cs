@@ -10,8 +10,6 @@ namespace Servibes.Sales.Api
 
         public DbSet<Client> Clients { get; set; }
 
-        public DbSet<WalkInClient> WalkInClients { get; set; }
-
         public DbSet<Employee> Employees { get; set; }
 
         public DbSet<Company> Companies  { get; set; }
@@ -28,6 +26,7 @@ namespace Servibes.Sales.Api
                 b.Property(x => x.Status).HasConversion(new EnumToStringConverter<AppointmentStatus>());
                 b.HasOne<Company>().WithMany(x => x.Appointments).HasForeignKey(x => x.CompanyId).IsRequired();
                 b.HasOne<Employee>().WithMany(x => x.Appointments).HasForeignKey(x => x.EmployeeId).IsRequired();
+                b.HasOne<Client>().WithMany(x => x.Appointments).HasForeignKey(x => x.ReserveeId).IsRequired();
             });
         }
     }

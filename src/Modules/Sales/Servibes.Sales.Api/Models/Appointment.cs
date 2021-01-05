@@ -16,6 +16,10 @@ namespace Servibes.Sales.Api.Models
 
         public decimal Price { get; set; }
 
+        public DateTime Start { get; set; }
+
+        public DateTime End { get; set; }
+
         public AppointmentStatus Status { get; set; }
     }
 }
