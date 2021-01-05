@@ -36,7 +36,6 @@ export class EmployeeWorkingHoursComponent extends BaseForm {
     private profileService: ProfileService,
     private employeeService: EmployeeService,
     private activatedRoute: ActivatedRoute,
-    private cd: ChangeDetectorRef,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private timeArray: TimeArray
@@ -62,9 +61,6 @@ export class EmployeeWorkingHoursComponent extends BaseForm {
         .getWorkingHours(this.profile.companyId, this.employeeId)
         .subscribe((workingHours) => {
           this.workingHours = workingHours;
-          console.log(workingHours);
-          this.cd.markForCheck();
-
           if (this.workingHoursForm.controls.length != 7)
             this.addWorkingHoursForm();
         });
