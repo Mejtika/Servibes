@@ -7,6 +7,10 @@ namespace Servibes.Sales.Api.Models
     {
         public Guid CompanyId { get; set; }
 
+        public Guid WalkInClientId { get; set; }
+
+        public Guid OwnerId { get; set; }
+
         public List<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }

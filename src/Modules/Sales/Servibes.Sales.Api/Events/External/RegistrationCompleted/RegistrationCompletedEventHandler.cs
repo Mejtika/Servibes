@@ -22,18 +22,22 @@ namespace Servibes.Availability.Application.Events.External.RegistrationComplete
         {
             var company = new Company
             {
-                CompanyId = notification.CompanyId
+                CompanyId = notification.CompanyId,
+                OwnerId = notification.OwnerId,
+                WalkInClientId = notification.WalkInClientId
             };
 
             await _context.Companies.AddAsync(company, cancellationToken);
 
-            var walkInClient = new WalkInClient
+            var walkInClient = new Client
             {
-                WalkInClientId = notification.WalkInClientId,
+                ClientId = notification.WalkInClientId,
+                FirstName = "Walk-in",
+                LastName = "Client",
+                Email = "walkin@walkin.com"
             };
 
-            await _context.WalkInClients.AddAsync(walkInClient, cancellationToken);
-
+            await _context.Clients.AddAsync(walkInClient, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }
     }
