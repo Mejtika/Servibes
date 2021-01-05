@@ -21,9 +21,7 @@ export class EmployeeFormComponent extends BaseForm implements OnInit {
         private formBuilder: FormBuilder,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private toastr: ToastrService,
-        private cd: ChangeDetectorRef) {
-        
+        private toastr: ToastrService) {
         super();
     }
 
@@ -37,9 +35,7 @@ export class EmployeeFormComponent extends BaseForm implements OnInit {
             {
                 this.employeeService.getSingleEmployee(this.profile.companyId, employeeId).subscribe(employee => {
                     this.employee = employee;
-
                     this.form.patchValue(employee);
-                    this.cd.markForCheck();
                 });
             }
             else {
@@ -81,7 +77,7 @@ export class EmployeeFormComponent extends BaseForm implements OnInit {
     }
 
     gotoWorkingHours() {
-        let route = `business/profile/employees/workinghours/${this.employee.employeeId}`;
+        let route = `business/profile/employees/${this.employee.employeeId}/workinghours`;
         return this.router.navigateByUrl(route);
     }
     

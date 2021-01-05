@@ -74,7 +74,7 @@ export const ROUTES: Routes = [
         } as SBRouteData
     },
     {
-        path: 'employees/workinghours/:employeeId',
+        path: 'employees/:employeeId/workinghours',
         canActivate: [],
         component: profileContainers.EmployeeWorkingHoursComponent,
         data: {
