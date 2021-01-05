@@ -24,7 +24,9 @@ namespace Servibes.Sales.Api.Events.External.AppointmentFinished
                 EmployeeId = notification.EmployeeId,
                 Price = notification.ServicePrice,
                 ServiceName = notification.ServiceName,
-                Status = AppointmentStatus.Unpaid
+                Status = AppointmentStatus.Unpaid,
+                Start =  notification.Start,
+                End = notification.End
             };
 
             await _context.Appointments.AddAsync(appointment, cancellationToken);
