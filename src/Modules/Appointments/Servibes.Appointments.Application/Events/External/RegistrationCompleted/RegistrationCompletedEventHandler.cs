@@ -20,7 +20,7 @@ namespace Servibes.Appointments.Application.Events.External.RegistrationComplete
 
         public async Task Handle(RegistrationCompletedEvent notification, CancellationToken cancellationToken)
         {
-            var company = Company.Create(notification.CompanyId, notification.WalkInClientId);
+            var company = Company.Create(notification.CompanyId, notification.WalkInClientId, notification.OwnerId);
             await _companyRepository.AddAsync(company);
             await _unitOfWork.CommitAsync(cancellationToken);
         }

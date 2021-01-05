@@ -5,7 +5,8 @@ namespace Servibes.Appointments.Core.Reservees
 {
     public interface ICompanyRepository
     {
-        Task<bool> ExistsAsync(Guid companyId, Guid walkInId);
+        Task<bool> ExistsByWalkInIdAsync(Guid companyId, Guid walkInId);
+        Task<bool> ExistsByOwnerIdAsync(Guid companyId, Guid ownerId);
         Task AddAsync(Company company);
     }
 }

@@ -62,7 +62,7 @@ namespace Servibes.Appointments.Application.Events.External.ReservationAdded
 
         private async Task CheckReservationCorrectness(ReservationAddedEvent notification)
         {
-            var isWalkInClient = await _companyRepository.ExistsAsync(notification.CompanyId, notification.ReserveeId);
+            var isWalkInClient = await _companyRepository.ExistsByWalkInIdAsync(notification.CompanyId, notification.ReserveeId);
             var isClient = await _clientRepository.ExistsAsync(notification.ReserveeId);
             if (isWalkInClient || isClient)
             {

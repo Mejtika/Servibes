@@ -14,9 +14,14 @@ namespace Servibes.Appointments.Infrastructure.Domain.Reservees
             _appointmentsContext = appointmentsContext;
         }
 
-        public async Task<bool> ExistsAsync(Guid companyId, Guid walkInId)
+        public async Task<bool> ExistsByWalkInIdAsync(Guid companyId, Guid walkInId)
         {
             return await _appointmentsContext.Companies.AnyAsync(x => x.CompanyId == companyId && x.WalkInId == walkInId);
+        }
+
+        public async Task<bool> ExistsByOwnerIdAsync(Guid companyId, Guid ownerId)
+        {
+            return await _appointmentsContext.Companies.AnyAsync(x => x.CompanyId == companyId && x.OwnerId == ownerId);
         }
 
         public async Task AddAsync(Company company)

@@ -9,15 +9,18 @@ namespace Servibes.Appointments.Core.Reservees
 
         public Guid WalkInId { get; private set; }
 
-        private Company(Guid companyId, Guid walkInId)
+        public Guid OwnerId { get; private set; }
+
+        private Company(Guid companyId, Guid walkInId, Guid ownerId)
         {
             CompanyId = companyId;
             WalkInId = walkInId;
+            OwnerId = ownerId;
         }
 
-        public static Company Create(Guid companyId, Guid walkInId)
+        public static Company Create(Guid companyId, Guid walkInId, Guid ownerId)
         {
-            return new Company(companyId, walkInId);
+            return new Company(companyId, walkInId, ownerId);
         }
     }
 }
