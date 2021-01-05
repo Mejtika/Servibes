@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Servibes.Sales.Api
+namespace Servibes.Sales.Api.Dtos
 {
-    public class PaidAppointmentsDto
+    public class AccountAppointmentDto
     {
         public Guid AppointmentId { get; set; }
 

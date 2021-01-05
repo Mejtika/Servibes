@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +8,6 @@ using Servibes.Sales.Api.Events.External.AppointmentFinished;
 using Servibes.Sales.Api.Events.External.EmployeeAdded;
 using Servibes.Sales.Api.Events.External.NewClientRegistered;
 using Servibes.Sales.Api.Events.External.RegistrationCompleted;
-using Servibes.Sales.Api.ModuleClients;
 using Servibes.Shared;
 
 namespace Servibes.Sales.Api
@@ -29,8 +27,6 @@ namespace Servibes.Sales.Api
                         sqlServerOptions.MigrationsHistoryTable("__SalesMigrationsHistory", "sales");
                     });
             });
-
-            services.AddTransient<AuthorizationClient>();
 
             return services;
         }
