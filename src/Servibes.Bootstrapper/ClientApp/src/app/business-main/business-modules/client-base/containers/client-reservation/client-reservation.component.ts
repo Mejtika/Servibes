@@ -1,18 +1,13 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { formatDate } from '@angular/common';
-
-import { Client, Company, Employee, Service, ServiceHours } from './../../../../../shared/interfaces/company';
-
+import { Employee, Service, ServiceHours } from './../../../../../shared/interfaces/company';
 import { ServicesDataService } from './../../../../../data-service/services-data.service';
 import { EmployeeDataService } from '../../../../../data-service/employee-data.service';
-
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { AppointmentDataService } from './../../../../../data-service/appointment-data.service';
 import { ToastrService } from 'ngx-toastr';
-import { ClientDataService } from '../../../../../data-service/client-data.service';
-import { mergeMap } from 'rxjs/operators';
 import { IClient } from '../../models/client.model';
-import { IProfile } from '../../../profile/models';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'client-reservation',
@@ -20,22 +15,20 @@ import { IProfile } from '../../../profile/models';
   styleUrls: ['./client-reservation.component.css']
 })
 export class ClientReservationComponent {
-  companyId: string;
-  service: Service;
-  client: IClient;
-
+  public companyId: string;
+  public service: Service;
+  public client: IClient;
   public step: number = 1;
   public maxStep: number = 5;
   public canMoveToNextStep: boolean;
-
-  public selectedDate: Date = new Date();
-
+  public selectedDate: Date;
+  public minDate: Date;
+  public maxDate: Date;
+  public bsConfig: Partial<BsDatepickerConfig>;
   public serviceEmployees: Employee[];
   public selectedEmployee: Employee;
-
   public serviceAvailableHours: ServiceHours[];
   public selectedHour: ServiceHours;
-
   public services: Service[];
 
   constructor(
@@ -44,6 +37,12 @@ export class ClientReservationComponent {
     private employeeDataService: EmployeeDataService,
     private appointmentDataService: AppointmentDataService,
     private toastr: ToastrService) {
+      this.selectedDate = new Date();
+      this.minDate = new Date();
+      this.maxDate = new Date();
+      this.minDate.setDate(this.minDate.getDate());
+      this.maxDate.setMonth(this.maxDate.getMonth() + 2);
+      this.bsConfig = Object.assign({}, { containerClass: 'theme-dark-blue' });
   }
 
   ngOnInit() {
@@ -116,14 +115,19 @@ export class ClientReservationComponent {
     this.canMoveToNextStep = this.checkIfCanMoveToNextStep();
   }
 
+  onValueChange(value: Date): void {
+    this.selectedDate = value;
+  } 
+
   public createReservation() {
       const appointmentObject = {
         reserveeId: this.client.clientId,
         serviceId: this.service.serviceId,
         start: formatDate(this.selectedDate, 'yyy-MM-dd', "en_US") + "T" + this.selectedHour.time
       };
-
-      this.appointmentDataService.postAppointment(this.companyId, this.selectedEmployee.employeeId, appointmentObject).subscribe(result => {
+      console.log(appointmentObject);
+      
+      this.appointmentDataService.postAppointment(this.companyId, this.selectedEmployee.employeeId, appointmentObject).subscribe(() => {
         console.log('created appointment with data', appointmentObject);
         this.closeModal();
         this.toastr.success("Reservation created successfuly!");

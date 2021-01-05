@@ -20,6 +20,7 @@ import * as clientBaseGuards from './guards';
 /* Services */
 import * as clientBaseServices from './services';
 import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
     imports: [
@@ -29,6 +30,7 @@ import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
         FormsModule,
         AppCommonModule,
         NavigationModule,
+        BsDatepickerModule.forRoot(),
         ModalModule.forRoot()
     ],
     providers: [...clientBaseServices.services, ...clientBaseGuards.guards],

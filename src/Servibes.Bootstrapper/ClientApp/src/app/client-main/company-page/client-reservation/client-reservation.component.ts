@@ -11,6 +11,7 @@ import { AppointmentDataService } from '../../../data-service/appointment-data.s
 import { ToastrService } from 'ngx-toastr';
 import { ClientDataService } from '../../..//data-service/client-data.service';
 import { mergeMap } from 'rxjs/operators';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'client-reservation',
@@ -25,7 +26,10 @@ export class ClientReservationComponent {
   public maxStep: number = 4;
   public canMoveToNextStep: boolean;
 
-  public selectedDate: Date = new Date();
+  public selectedDate: Date;
+  public minDate: Date;
+  public maxDate: Date;
+  public bsConfig: Partial<BsDatepickerConfig>;
 
   public serviceEmployees: Employee[];
   public selectedEmployee: Employee;
@@ -40,6 +44,12 @@ export class ClientReservationComponent {
     private appointmentDataService: AppointmentDataService,
     private clientDataService: ClientDataService,
     private toastr: ToastrService) {
+      this.selectedDate = new Date();
+      this.minDate = new Date();
+      this.maxDate = new Date();
+      this.minDate.setDate(this.minDate.getDate());
+      this.maxDate.setMonth(this.maxDate.getMonth() + 2);
+      this.bsConfig = Object.assign({}, { containerClass: 'theme-dark-blue' });
   }
 
   ngOnInit() {
@@ -90,6 +100,11 @@ export class ClientReservationComponent {
 
     this.canMoveToNextStep = this.checkIfCanMoveToNextStep();
   }
+
+
+  onValueChange(value: Date): void {
+    this.selectedDate = value;
+  } 
 
   public selectHour(hour: ServiceHours) {
     this.selectedHour = hour;

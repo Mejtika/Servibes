@@ -16,6 +16,7 @@ import { ServicesDataService } from '../data-service/services-data.service';
 import { EmployeeDataService } from '../data-service/employee-data.service';
 import { AppointmentDataService } from '../data-service/appointment-data.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ClientDataService } from '../data-service/client-data.service';
 import { ClientFavoritesService } from './client-account/client-favorites.service';
 import { CompanyRatingsComponent } from './company-page/company-ratings/company-ratings.component';
@@ -75,7 +76,8 @@ const routes: Routes = [
         ReactiveFormsModule,
         NgSelectModule,
         NgbModule,
-        ModalModule.forRoot()
+        ModalModule.forRoot(),
+        BsDatepickerModule.forRoot()
     ],
     providers: [
         CompanyDataService,
