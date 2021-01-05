@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Servibes.Sales.Api.Models
 {
@@ -13,5 +14,7 @@ namespace Servibes.Sales.Api.Models
         public string Name => $"{FirstName} {LastName}";
 
         public string Email { get; set; }
+
+        public List<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }
