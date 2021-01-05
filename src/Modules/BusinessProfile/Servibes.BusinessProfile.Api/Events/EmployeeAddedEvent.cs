@@ -9,7 +9,7 @@ namespace Servibes.BusinessProfile.Api.Events
 
         public Guid CompanyId { get; }
 
-        public string Name { get; set; }
+        public string Name { get; }
 
         public EmployeeAddedEvent(
             Guid employeeId,
