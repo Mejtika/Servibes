@@ -1,12 +1,18 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { SalesService } from "../../services";
+import { AppointmentDto } from "../../models/sales.model";
 
 @Component({
-    selector: 'history',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    templateUrl: './history.component.html',
-    styleUrls: ['./history.component.scss'],
+  selector: "history",
+  templateUrl: "./history.component.html",
+  styleUrls: ["./history.component.scss"],
 })
 export class HistoryComponent implements OnInit {
-    constructor() {}
-    ngOnInit() {}
+  appointments: AppointmentDto[];
+  constructor(private salesService: SalesService) {}
+  ngOnInit() {
+    this.salesService
+      .getAppointmentsHistory()
+      .subscribe(result => this.appointments = result);
+  }
 }

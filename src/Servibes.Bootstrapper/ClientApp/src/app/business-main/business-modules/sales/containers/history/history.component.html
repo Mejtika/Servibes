@@ -1,6 +1,19 @@
 <sb-layout-dashboard>
     <sb-dashboard-head title="History" [hideBreadcrumbs]="false"></sb-dashboard-head>
-    <div class="row">
-        <h1>HISTORY</h1>
-    </div>
+    <div *ngFor="let appointment of appointments" class="card my-2">
+        <div class="card-header">
+          <h5>
+            {{ appointment.start | date: "shortDate" }}
+            {{ appointment.start | date: "shortTime" }} -
+            {{ appointment.end | date: "shortTime" }}
+          </h5>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">⚙ {{ appointment.serviceName }}</h4>
+          <div class="card-text">
+            <p>💇‍♂️ Performed by <strong>{{appointment.employeeName}}</strong>.</p>
+            <p>💵 Client <strong>{{appointment.clientName}}</strong> has paid <strong>{{appointment.price}}</strong> PLN.</p>
+          </div>
+        </div>
+      </div>
 </sb-layout-dashboard>
