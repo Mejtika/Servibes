@@ -3,3 +3,8 @@ export interface IEmployee {
     firstName: string;
     lastName: string;
 }
+
+export interface TimeOff {
+    start: string;
+    end: string;
+}

@@ -1,0 +1,40 @@
+<div class="container modal-content">
+  <div class="modal-header">
+    <h6>Manage Time Offs</h6>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="d-flex flex-column justify-content-center">
+      <div class="input-group">
+        <input
+        class="form-control"
+        placeholder="Give new time off"
+        bsDaterangepicker 
+        [(ngModel)]="selectedDates"
+        [bsConfig]="bsConfig"
+        [minDate]="minDate"
+        [maxDate]="maxDate"/>
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" [disabled]="!selectedDates" (click)="giveTimeOff()">Give</button>
+        </div>
+      </div>
+      <hr>
+      <div>
+        <ul class="list-group">
+          <li *ngFor="let timeOff of timeOffs" class="list-group-item d-flex justify-content-between align-items-center">
+            {{timeOff.start | date:'shortDate'}} - {{timeOff.end | date:'shortDate'}} 
+            <button class="badge bg-outline-danger rounded-pill" (click)="cancelTimeOff(timeOff)">❌</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+

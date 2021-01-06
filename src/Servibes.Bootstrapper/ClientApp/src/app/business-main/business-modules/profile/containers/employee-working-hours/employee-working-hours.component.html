@@ -16,7 +16,7 @@
                         <option value="" disabled>Choice time</option>
                         <option *ngFor="let time of times" [value]="time">{{ time }}</option>
                     </select>
-                    <div *ngIf="submitted && day.controls.start.errors" class="invalid-feedback">
+                    <div *ngIf="day.controls.start.errors" class="invalid-feedback">
                         <div *ngIf="day.controls.start.errors.required">Start hours is required</div>
                     </div>
                     </div>
@@ -26,7 +26,7 @@
                         <option value="" disabled>Choice time</option>
                         <option *ngFor="let time of times" [value]="time">{{ time }}</option>
                     </select>
-                    <div *ngIf="submitted && day.controls.end.errors" class="invalid-feedback">
+                    <div *ngIf="day.controls.end.errors" class="invalid-feedback">
                         <div *ngIf="day.controls.end.errors.required">End hours is required</div>
                     </div>
                     </div>

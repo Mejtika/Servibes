@@ -24,7 +24,7 @@ export class EmployeeTimeReservationsComponent implements OnInit {
   public minDate: Date;
   public maxDate: Date;
   public bsConfig: Partial<BsDatepickerConfig>;
-  public serviceAvailableHours: ServiceHours[];
+  public serviceAvailableHours: ServiceHours[] = [];
   public selectedHour: ServiceHours;
 
   constructor(
@@ -47,15 +47,13 @@ export class EmployeeTimeReservationsComponent implements OnInit {
   }
 
   private checkIfCanMoveToNextStep(): boolean {
- 
     if(this.step == 1 && this.selectedDate != null)
       return true;
 
-    console.log(this.step,  this.getTotalMinutes(this.selectedDuration));
     if (this.step == 2 && this.getTotalMinutes(this.selectedDuration) != 0 )
       return true;
 
-    if (this.step == 3 && this.selectHour != null )
+    if (this.step == 3 && this.selectedHour != null )
       return true;
 
     if(this.step == 4)

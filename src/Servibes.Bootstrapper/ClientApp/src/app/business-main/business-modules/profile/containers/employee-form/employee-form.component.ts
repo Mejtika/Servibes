@@ -1,10 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { BaseForm } from 'src/app/shared/others/BaseForm';
 import { IEmployee, IProfile } from '../../models';
 import { EmployeeService, ProfileService } from '../../services';
+import { EmployeeTimeReservationsComponent } from '../employee-time-reservations/employee-time-reservations.component';
+import { EmployeeTimeOffsComponent } from '../employee-time-offs/employee-time-offs.component';
 
 @Component({
     selector: 'employee-form',
@@ -21,6 +24,7 @@ export class EmployeeFormComponent extends BaseForm implements OnInit {
         private formBuilder: FormBuilder,
         private activatedRoute: ActivatedRoute,
         private router: Router,
+        private modalService: BsModalService,
         private toastr: ToastrService) {
         super();
     }
@@ -28,9 +32,7 @@ export class EmployeeFormComponent extends BaseForm implements OnInit {
     ngOnInit() {
         this.profileService.getProfile().subscribe(profile => {
             this.profile = profile;
-
             var employeeId = this.activatedRoute.snapshot.paramMap.get('employeeId');
-            console.log('employeeId: ', employeeId);
             if(employeeId != "")
             {
                 this.employeeService.getSingleEmployee(this.profile.companyId, employeeId).subscribe(employee => {
@@ -82,8 +84,19 @@ export class EmployeeFormComponent extends BaseForm implements OnInit {
     }
 
     goToTimeReservations() {
-        let route = `business/profile/employees/${this.employee.employeeId}/timereservations`;
-        return this.router.navigateByUrl(route);
+        const initialState = {
+            employeeId: this.employee.employeeId,
+            companyId: this.profile.companyId,
+        };        
+        this.modalService.show(EmployeeTimeReservationsComponent, { class: 'modal-dialog-centered', initialState });
+    }
+
+    goToTimeOffs(){
+        const initialState = {
+            employeeId: this.employee.employeeId,
+            companyId: this.profile.companyId,
+        };        
+        this.modalService.show(EmployeeTimeOffsComponent, { class: 'modal-dialog-centered', initialState });
     }
     
 }

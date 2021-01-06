@@ -35,7 +35,7 @@
 
   <div class="modal-body" *ngIf="step == 3">
     <div class="list-group d-flex flex-center">
-      <ng-container *ngIf="serviceAvailableHours.length === 0; else elseTemplate">
+      <ng-container *ngIf="serviceAvailableHours && serviceAvailableHours.length === 0; else elseTemplate">
         <span class="bookedHours">📅 Fully booked</span>
       </ng-container>
       <ng-template #elseTemplate>
