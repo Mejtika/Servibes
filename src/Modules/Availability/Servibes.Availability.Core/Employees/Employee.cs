@@ -74,11 +74,16 @@ namespace Servibes.Availability.Core.Employees
             return _timeOffs.SingleOrDefault(x => x.Start == start);
         }
 
+        public IReadOnlyList<TimeOff> GetTimeOffs(DateTime now)
+        {
+            return _timeOffs.Where(x => x.Start > now).ToList();
+        }
+
         public void GiveTimeOff(TimeOff timeOff)
         {
             if (_timeOffs.Any(IsColliding))
             {
-                throw new TimeOffCollidingDatesException(timeOff);
+                throw new TimeOffCollidingDatesException(timeOff); 
             }
 
             if (_timeOffs.Add(timeOff))

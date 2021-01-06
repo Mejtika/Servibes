@@ -9,6 +9,7 @@ using Servibes.Availability.Application.Employees.CancelTimeOff;
 using Servibes.Availability.Application.Employees.ChangeWorkingHours;
 using Servibes.Availability.Application.Employees.GetEmployeeAvailableHours;
 using Servibes.Availability.Application.Employees.GetEmployeeWorkingHours;
+using Servibes.Availability.Application.Employees.GetTimeOffs;
 using Servibes.Availability.Application.Employees.GiveTimeOff;
 using Servibes.Availability.Application.Employees.MakeReservation;
 using Servibes.Availability.Application.Employees.MakeTimeReservation;
@@ -98,13 +99,23 @@ namespace Servibes.Availability.Api
             return NoContent();
         }
 
-        [HttpDelete("{companyId}/employees/{employeeId}/timeOffs/cancel")]
-        public async Task<IActionResult> CancelTimeOff(Guid companyId, Guid employeeId, [FromBody] CancelTimeOffRequest request)
+        [HttpGet("{companyId}/employees/{employeeId}/timeOffs")]
+        public async Task<IActionResult> GetTimeOffs(Guid companyId, Guid employeeId)
         {
-            await _mediator.Send(new CancelTimeOffCommand(
+            var result =await _mediator.Send(new GetTimeOffsCommand(
+                companyId,
+                employeeId));
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{companyId}/employees/{employeeId}/timeOffs/{startDate}/cancel")]
+        public async Task<IActionResult> CancelTimeOff(Guid companyId, Guid employeeId, DateTime startDate)
+        {
+                    await _mediator.Send(new CancelTimeOffCommand(
                 companyId,
                 employeeId,
-                request.Start));
+                startDate));
 
             return NoContent();
         }
