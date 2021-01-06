@@ -17,7 +17,11 @@ namespace Servibes.Appointments.Core.TimeReservations
 
         private readonly ReservationDate _reservedDate;
 
+        public ReservationDate ReservationDate => _reservedDate;
+
         private TimeReservationStatus _status;
+
+        public TimeReservationStatus Status => _status;
 
         private TimeReservation()
         {

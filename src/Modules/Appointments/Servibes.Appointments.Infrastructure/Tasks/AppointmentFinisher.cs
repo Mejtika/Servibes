@@ -5,20 +5,24 @@ using Coravel.Invocable;
 using Microsoft.EntityFrameworkCore;
 using Servibes.Appointments.Core.Appointments;
 using Servibes.Shared.Communication.Events;
+using Servibes.Shared.Services;
 
-namespace Servibes.Appointments.Infrastructure
+namespace Servibes.Appointments.Infrastructure.Tasks
 {
     public class AppointmentFinisher : IInvocable
     {
         private readonly AppointmentsContext _appointmentsContext;
         private readonly IEventProcessor _eventProcessor;
+        private readonly IDateTimeServer _dateTimeServer;
 
         public AppointmentFinisher(
             AppointmentsContext appointmentsContext,
-            IEventProcessor eventProcessor)
+            IEventProcessor eventProcessor,
+            IDateTimeServer dateTimeServer)
         {
             _appointmentsContext = appointmentsContext;
             _eventProcessor = eventProcessor;
+            _dateTimeServer = dateTimeServer;
         }
 
         public async Task Invoke()
@@ -27,8 +31,8 @@ namespace Servibes.Appointments.Infrastructure
 
             var appointment = appointments.FirstOrDefault(x =>
                 x.AppointmentStatus == AppointmentStatus.Confirmed
-                && x.ReservationDate.Start.Date == DateTime.Today
-                && x.ReservationDate.End <= DateTime.Now);
+                && x.ReservationDate.Start.Date == _dateTimeServer.Now.Date
+                && x.ReservationDate.End <= _dateTimeServer.Now);
 
             if (appointment == null)
             {

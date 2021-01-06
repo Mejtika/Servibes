@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Servibes.Appointments.Application;
 using Servibes.Appointments.Infrastructure;
+using Servibes.Appointments.Infrastructure.Tasks;
 
 namespace Servibes.Bootstrapper
 {
@@ -19,6 +20,9 @@ namespace Servibes.Bootstrapper
             {
                 scheduler.Schedule<AppointmentFinisher>()
                     .EveryMinute();
+
+                scheduler.Schedule<AppointmentFinisher>()
+                    .EveryFiveMinutes();
             });
                 
             host.Run();

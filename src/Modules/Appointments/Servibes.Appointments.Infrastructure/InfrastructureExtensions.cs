@@ -16,6 +16,7 @@ using Servibes.Appointments.Core.TimeReservations;
 using Servibes.Appointments.Infrastructure.Domain.Appointments;
 using Servibes.Appointments.Infrastructure.Domain.Reservees;
 using Servibes.Appointments.Infrastructure.Domain.TimeReservations;
+using Servibes.Appointments.Infrastructure.Tasks;
 using Servibes.Shared;
 using Servibes.Shared.Communication.Events;
 
@@ -45,6 +46,7 @@ namespace Servibes.Appointments.Infrastructure
 
             services.AddScheduler();
             services.AddScoped<AppointmentFinisher>();
+            services.AddScoped<TimeReservationFinisher>();
             return services;
         }
 
