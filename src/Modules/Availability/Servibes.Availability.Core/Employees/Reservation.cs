@@ -51,7 +51,7 @@ namespace Servibes.Availability.Core.Employees
             bool StartDateIsEarlierThanEndDate() => start < end;
             bool StartDateIsInFuture() => start > now;
             bool EndDateIsInFuture() => start > now;
-            bool ReservationIsShorterThanOneDay() => (end - start).TotalHours < 24;
+            bool ReservationIsShorterThanOneDay() => start.Date == end.Date;
         }
     }
 }

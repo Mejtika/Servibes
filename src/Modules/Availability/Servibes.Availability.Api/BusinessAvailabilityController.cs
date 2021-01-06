@@ -79,7 +79,7 @@ namespace Servibes.Availability.Api
                 companyId,
                 employeeId,
                 request.Start,
-                request.End));
+                request.Duration));
 
             return NoContent();
         }

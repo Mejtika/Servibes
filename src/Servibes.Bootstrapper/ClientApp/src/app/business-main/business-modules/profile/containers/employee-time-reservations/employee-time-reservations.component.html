@@ -1,46 +1,69 @@
-<sb-layout-dashboard>
-  <sb-dashboard-head title="Profile" [hideBreadcrumbs]="false"></sb-dashboard-head>
-  <div [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="profile && workingHours">
-      <input hidden type="text" formControlName="employeeId"/>
-      <div class="list-group list-group-flush">
-          <div class="list-group-item" *ngFor="let day of workingHoursForm.controls; let i = index">
-              <h5 class="card-title">{{ weekDays[i] }}</h5>
-              <div [formGroup]="day" class="form-row">
-                  <div class="form-group col-2">
-                  <label>Is working</label>
-                  <input type="checkbox" formControlName="isAvailable" />
-                  </div>
-                  <div class="form-group col-5">
-                  <label>Start hour</label>
-                  <select class="form-control" (change)="startHoursChanged($event, i)" formControlName="start" id="start" [attr.disabled]="day.controls.isAvailable.value ? null : true">
-                      <option value="" disabled>Choice time</option>
-                      <option *ngFor="let time of times" [value]="time">{{ time }}</option>
-                  </select>
-                  <div *ngIf="submitted && day.controls.start.errors" class="invalid-feedback">
-                      <div *ngIf="day.controls.start.errors.required">Start hours is required</div>
-                  </div>
-                  </div>
-                  <div class="form-group col-5">
-                  <label>End hour</label>
-                  <select class="form-control" (change)="endHoursChanged($event, i)" formControlName="end" id="end" [attr.disabled]="day.controls.isAvailable.value ? null : true">
-                      <option value="" disabled>Choice time</option>
-                      <option *ngFor="let time of times" [value]="time">{{ time }}</option>
-                  </select>
-                  <div *ngIf="submitted && day.controls.end.errors" class="invalid-feedback">
-                      <div *ngIf="day.controls.end.errors.required">End hours is required</div>
-                  </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+<div class="container modal-content">
+    <div class="modal-header">
+      <h6>Create new reservation</h6>
+      <button type="button"
+              class="close"
+              aria-label="Close"
+              (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+  <div class="modal-body" *ngIf="step == 1">
+    <div class="d-flex justify-content-center">
+        <bs-datepicker-inline 
+        [bsValue]="selectedDate" 
+        (bsValueChange)="onValueChange($event)"
+        [bsConfig]="bsConfig"
+        [minDate]="minDate"
+        [maxDate]="maxDate">
+        </bs-datepicker-inline>
+    </div>
   </div>
 
-  <div class="row">
-      <div class="col-6 text-left">
-          <button type="submit" (click)="onSubmit()" class="btn btn-primary" [disabled]="!form.valid">Save</button>
-      </div>
-      <div class="col-6 text-right">
-          <button type="submit" (click)="navigateBack()" class="btn btn-danger">Cancel</button>
-      </div>
+  <div class="modal-body" *ngIf="step == 2">
+    <div class="d-flex justify-content-center">
+        <timepicker 
+        [(ngModel)]="selectedDuration"
+        (ngModelChange)="selectedDurationChanged()" 
+        [hourStep]="1" 
+        [minuteStep]="15" 
+        [showMeridian]="false">
+        </timepicker>
+    </div>
   </div>
-</sb-layout-dashboard>
+
+  <div class="modal-body" *ngIf="step == 3">
+    <div class="list-group d-flex flex-center">
+      <ng-container *ngIf="serviceAvailableHours.length === 0; else elseTemplate">
+        <span class="bookedHours">📅 Fully booked</span>
+      </ng-container>
+      <ng-template #elseTemplate>
+        <button type="button" class="list-group-item list-group-item-action" *ngFor="let hour of serviceAvailableHours" (click)="selectHour(hour)">
+          {{ hour.time }}
+        </button>
+      </ng-template>  
+    </div>
+  </div>
+
+  <div class="modal-body" *ngIf="step == 4">
+    <div>
+      <h4>Summary:</h4>
+      <h6>Date: {{ selectedHour.time }} {{ selectedDate | date:'fullDate'}}</h6>
+    </div>
+  </div>
+  <div class="modal-footer d-flex justify-content-between">
+    <div>
+      <button type="button" class="btn btn-primary float-left" (click)="prevStep()" *ngIf="step > 1">Prev</button>
+    </div>
+    <div>
+      <ng-container *ngIf="step == 2; else elseTemplate">
+        <button type="button" class="btn btn-primary float-right" (click)="selectDuration()" [disabled]="!canMoveToNextStep" *ngIf="step != maxStep">Next</button>
+      </ng-container>
+      <ng-template #elseTemplate>
+        <button type="button" class="btn btn-primary float-right" (click)="nextStep()" [disabled]="!canMoveToNextStep" *ngIf="step != maxStep">Next</button>
+      </ng-template>
+      <button type="button" class="btn btn-primary float-right" (click)="createTimeReservation()" *ngIf="step == maxStep">Confirm</button>
+    </div>
+  </div>
+</div>

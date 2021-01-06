@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ApiService } from '../core/services/api.service';
 
 import { Service, Employee, Appointment } from '../shared/interfaces/company';
+import { MakeTimeReservationRequest } from '../business-main/business-modules/profile/models/requests.model';
 
 @Injectable()
 export class AppointmentDataService extends ApiService<Appointment> {
@@ -18,5 +19,13 @@ export class AppointmentDataService extends ApiService<Appointment> {
 
   public postAppointment(companyId: string, employeeId: string, body: any): Observable<Appointment> {
     return this.post(`companies/${companyId}/employees/${employeeId}/appointments`, body);
+  }
+
+  public postTimeReservation(companyId: string, employeeId: string, start: string, duration: number ): Observable<Appointment> {
+    const body: MakeTimeReservationRequest = {
+      start,
+      duration
+    }
+    return this.post(`companies/${companyId}/employees/${employeeId}/timeReservations`, body);
   }
 }

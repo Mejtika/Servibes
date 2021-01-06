@@ -11,18 +11,18 @@ namespace Servibes.Availability.Application.Employees.MakeTimeReservation
 
         public DateTime Start { get; }
 
-        public DateTime End { get; }
+        public int Duration { get; }
 
         public MakeTimeReservationCommand(
             Guid companyId,
             Guid employeeId,
             DateTime start,
-            DateTime end)
+            int duration)
         {
             CompanyId = companyId;
             EmployeeId = employeeId;
             Start = start;
-            End = end;
+            Duration = duration;
         }
     }
 }
