@@ -111,7 +111,7 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
 
         private List<TimeSpan> GetHoursToBookForShortReservation(TimeSpan start, TimeSpan end, List<ReservationDto> reservations)
         {
-            var timePeriodsBetween = GetTimePeriodsBetween(start, end.Add(TimeSpan.FromMinutes(-5)));
+            var timePeriodsBetween = GetTimePeriodsBetween(start, end);
             foreach (var reservation in reservations)
             {
                 var startIndex = timePeriodsBetween.IndexOf(reservation.Start.TimeOfDay);
@@ -121,9 +121,19 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
                     timePeriodsBetween.RemoveAt(timePeriodsBetween.Count - 1);
                     continue;
                 }
-                timePeriodsBetween.RemoveRange(startIndex, endIndex - startIndex);
+                timePeriodsBetween.RemoveRange(startIndex + 1, endIndex - startIndex - 1);
             }
-            return timePeriodsBetween;
+
+
+            var hoursToBook = timePeriodsBetween.Where(timePeriod =>
+            {
+                var checkTime = timePeriod.Add(TimeSpan.FromMinutes(15));
+                var timePeriods = GetTimePeriodsBetween(timePeriod, checkTime);
+                return timePeriodsBetween.Contains(checkTime) && ContainsAll(timePeriods);
+            }).ToList();
+
+            return hoursToBook;
+            bool ContainsAll(List<TimeSpan> timePeriods) => !timePeriods.Except(timePeriodsBetween).Any();
         }
 
         private List<TimeSpan> GetTimePeriodsBetween(TimeSpan start, TimeSpan end)

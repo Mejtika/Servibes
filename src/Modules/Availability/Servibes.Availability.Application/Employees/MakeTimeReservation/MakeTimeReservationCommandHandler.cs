@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Resources;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -43,9 +44,11 @@ namespace Servibes.Availability.Application.Employees.MakeTimeReservation
                 throw new AppException($"Employee {request.EmployeeId} and company {request.CompanyId} are not match.");
             }
 
+            var end = request.Start.AddMinutes(request.Duration);
+
             var reservation = Reservation.Create(
                 request.Start,
-                request.End,
+                end,
                 _dateTime.Now);
 
             employee.AddReservation(reservation, null);

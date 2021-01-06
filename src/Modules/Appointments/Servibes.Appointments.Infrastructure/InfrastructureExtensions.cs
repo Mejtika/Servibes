@@ -9,6 +9,7 @@ using Servibes.Appointments.Application;
 using Servibes.Appointments.Application.Events.External.NewClientRegistered;
 using Servibes.Appointments.Application.Events.External.RegistrationCompleted;
 using Servibes.Appointments.Application.Events.External.ReservationAdded;
+using Servibes.Appointments.Application.Events.External.TimeReservationAdded;
 using Servibes.Appointments.Core.Appointments;
 using Servibes.Appointments.Core.Reservees;
 using Servibes.Appointments.Core.TimeReservations;
@@ -51,6 +52,7 @@ namespace Servibes.Appointments.Infrastructure
         {
             app.UseModuleRequests()
                 .Subscribe<ReservationAddedEvent>()
+                .Subscribe<TimeReservationAddedEvent>()
                 .Subscribe<NewClientRegisteredEvent>()
                 .Subscribe<RegistrationCompletedEvent>();
 

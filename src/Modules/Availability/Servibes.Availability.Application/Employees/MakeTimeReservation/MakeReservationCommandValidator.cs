@@ -17,12 +17,8 @@ namespace Servibes.Availability.Application.Employees.MakeTimeReservation
             RuleFor(x => x.Start).Must(x => x > DateTime.Now)
                 .WithMessage("Start date must be in the feature.");
 
-            RuleFor(x => x.End).Must(x => x > DateTime.Now)
-                .WithMessage("End date must be in the feature.");
-
-            RuleFor(m => m.End)
-                .GreaterThan(m => m.Start)
-                .WithMessage("End date must be greater than start date.");
+            RuleFor(x => x.Duration).Must(x => x % 15 == 0)
+                .WithMessage("Duration must be in 15 minutes intervals.");
         }
     }
 }
