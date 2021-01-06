@@ -74,28 +74,6 @@ export const ROUTES: Routes = [
         } as SBRouteData
     },
     {
-        path: 'employees/:employeeId/timereservations',
-        canActivate: [],
-        component: profileContainers.EmployeeTimeReservationsComponent,
-        data: {
-            title: 'Time reservations',
-            breadcrumbs: [
-                {
-                    text: "Profile",
-                    link: '/business/profile'
-                },
-                {
-                    text: 'Employees',
-                    link: '/business/profile/employees'
-                },
-                {
-                    text: 'Time reservations',
-                    active: true
-                }
-            ]
-        } as SBRouteData
-    },
-    {
         path: 'employees/:employeeId/workinghours',
         canActivate: [],
         component: profileContainers.EmployeeWorkingHoursComponent,

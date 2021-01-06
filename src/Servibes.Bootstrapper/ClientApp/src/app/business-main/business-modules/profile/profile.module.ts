@@ -20,16 +20,23 @@ import * as profileGuards from './guards';
 /* Services */
 import * as profileServices from './services';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 @NgModule({
     imports: [
-        CommonModule,
         RouterModule,
         ReactiveFormsModule,
         FormsModule,
         AppCommonModule,
         NavigationModule,
-        SharedModule
+        SharedModule,
+        BsDatepickerModule.forRoot(),
+        ModalModule.forRoot(),
+        TimepickerModule.forRoot(),
+        CollapseModule.forRoot(),
     ],
     providers: [...profileServices.services, ...profileGuards.guards],
     declarations: [...profileContainers.containers, /*...appointmentsComponents.components*/],

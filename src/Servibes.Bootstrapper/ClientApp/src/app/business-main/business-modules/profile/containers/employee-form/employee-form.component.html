@@ -34,12 +34,15 @@
       </div>
   </div>
 
-    <div class="mb-3 d-flex" *ngIf="employee && employee.employeeId">
+    <div class="mb-3 d-flex justify-content-between justify-content-sm-start" *ngIf="employee && employee.employeeId">
       <button type="btn" (click)="goToWorkingHours()" class="btn btn-outline-primary">
         Working hours
       </button>
       <button type="btn" (click)="goToTimeReservations()" class="btn btn-outline-primary ml-2">
         Time reservations
+      </button>
+      <button type="btn" (click)="goToTimeOffs()" class="btn btn-outline-primary ml-2">
+        Time offs
       </button>
     </div>
 

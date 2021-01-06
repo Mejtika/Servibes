@@ -6,6 +6,7 @@ import { ServiceFormComponent } from "./serviceForm/service-form.component";
 import { OpeningHoursComponent } from "./opening-hours/opening-hours.component";
 import { EmployeeWorkingHoursComponent } from "./employee-working-hours/employee-working-hours.component";
 import { EmployeeTimeReservationsComponent } from './employee-time-reservations/employee-time-reservations.component';
+import { EmployeeTimeOffsComponent } from './employee-time-offs/employee-time-offs.component';
 
 export const containers = [
   ProfileComponent,
@@ -15,7 +16,8 @@ export const containers = [
   ServiceFormComponent,
   OpeningHoursComponent,
   EmployeeWorkingHoursComponent,
-  EmployeeTimeReservationsComponent
+  EmployeeTimeReservationsComponent,
+  EmployeeTimeOffsComponent
 ];
 
 export * from "./profile/profile.component";
