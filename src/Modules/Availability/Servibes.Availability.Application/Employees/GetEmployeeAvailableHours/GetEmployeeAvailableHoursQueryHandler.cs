@@ -37,6 +37,15 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
                 throw new AppException("Employee or company with specified id doesn't exists.");
             }
 
+            const string colisionWithTimeOffs = "SELECT COUNT(*) " +
+                                                "FROM [Servibes].[availability].[TimeOffs] " +
+                                                "WHERE @Date BETWEEN [Start] AND [End]";
+            var isCollidingWithTimeOff = connection.ExecuteScalar<bool>(colisionWithTimeOffs, new { request.Date });
+            if (isCollidingWithTimeOff)
+            {
+                return new List<AvailableHoursDto>();
+            }
+
             const string employeeWorkingHoursSql = "SELECT " +
                                                    "[Start], " +
                                                    "[End], " +
