@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Servibes.Availability.Api.Requests;
 using Servibes.Availability.Application.Companies.ChangeOpeningHours;
 using Servibes.Availability.Application.Companies.GetCompanyOpeningHours;
+using Servibes.Availability.Application.Employees.CancelTimeOff;
 using Servibes.Availability.Application.Employees.ChangeWorkingHours;
 using Servibes.Availability.Application.Employees.GetEmployeeAvailableHours;
 using Servibes.Availability.Application.Employees.GetEmployeeWorkingHours;
+using Servibes.Availability.Application.Employees.GiveTimeOff;
 using Servibes.Availability.Application.Employees.MakeReservation;
 using Servibes.Availability.Application.Employees.MakeTimeReservation;
 
@@ -80,6 +82,29 @@ namespace Servibes.Availability.Api
                 employeeId,
                 request.Start,
                 request.Duration));
+
+            return NoContent();
+        }
+
+        [HttpPost("{companyId}/employees/{employeeId}/timeOffs")]
+        public async Task<IActionResult> GiveTimeOff(Guid companyId, Guid employeeId, [FromBody] GiveTimeOffRequest request)
+        {
+            await _mediator.Send(new GiveTimeOffCommand(
+                companyId,
+                employeeId,
+                request.Start,
+                request.End));
+
+            return NoContent();
+        }
+
+        [HttpDelete("{companyId}/employees/{employeeId}/timeOffs/cancel")]
+        public async Task<IActionResult> CancelTimeOff(Guid companyId, Guid employeeId, [FromBody] CancelTimeOffRequest request)
+        {
+            await _mediator.Send(new CancelTimeOffCommand(
+                companyId,
+                employeeId,
+                request.Start));
 
             return NoContent();
         }
