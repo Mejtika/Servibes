@@ -7,9 +7,10 @@ using Servibes.Availability.Application.Companies.ChangeOpeningHours;
 using Servibes.Availability.Application.Companies.GetCompanyOpeningHours;
 using Servibes.Availability.Application.Employees.CancelTimeOff;
 using Servibes.Availability.Application.Employees.ChangeWorkingHours;
+using Servibes.Availability.Application.Employees.GetCompanyTimeOffs;
 using Servibes.Availability.Application.Employees.GetEmployeeAvailableHours;
+using Servibes.Availability.Application.Employees.GetEmployeeTimeOffs;
 using Servibes.Availability.Application.Employees.GetEmployeeWorkingHours;
-using Servibes.Availability.Application.Employees.GetTimeOffs;
 using Servibes.Availability.Application.Employees.GiveTimeOff;
 using Servibes.Availability.Application.Employees.MakeReservation;
 using Servibes.Availability.Application.Employees.MakeTimeReservation;
@@ -102,9 +103,19 @@ namespace Servibes.Availability.Api
         [HttpGet("{companyId}/employees/{employeeId}/timeOffs")]
         public async Task<IActionResult> GetTimeOffs(Guid companyId, Guid employeeId)
         {
-            var result =await _mediator.Send(new GetTimeOffsCommand(
+            var result =await _mediator.Send(new GetEmployeeTimeOffsQuery(
                 companyId,
                 employeeId));
+
+            return Ok(result);
+        }
+
+        [HttpGet("{companyId}/timeOffs")]
+        public async Task<IActionResult> GetCompanyTimeOffs(Guid companyId, DateTime date)
+        {
+            var result = await _mediator.Send(new GetCompanyTimeOffsQuery(
+                companyId,
+                date));
 
             return Ok(result);
         }

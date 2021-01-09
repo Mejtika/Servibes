@@ -69,9 +69,9 @@ namespace Servibes.Availability.Core.Employees
             AddDomainEvent(new EmployeeReservationReleasedDomainEvent(this, reservation));
         }
 
-        public TimeOff GetTimeOffByDate(DateTime start)
+        public TimeOff GetTimeOffByDate(DateTime date)
         {
-            return _timeOffs.SingleOrDefault(x => x.Start == start);
+            return _timeOffs.SingleOrDefault(x => date >= x.Start && date <= x.End);
         }
 
         public IReadOnlyList<TimeOff> GetTimeOffs(DateTime now)
