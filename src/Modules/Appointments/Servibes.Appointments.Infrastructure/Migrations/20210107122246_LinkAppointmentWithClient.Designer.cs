@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Servibes.Appointments.Infrastructure;
 
 namespace Servibes.Appointments.Infrastructure.Migrations
 {
     [DbContext(typeof(AppointmentsContext))]
-    partial class AppointmentsContextModelSnapshot : ModelSnapshot
+    [Migration("20210107122246_LinkAppointmentWithClient")]
+    partial class LinkAppointmentWithClient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,8 +46,6 @@ namespace Servibes.Appointments.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AppointmentId");
-
-                    b.HasIndex("_companyId");
 
                     b.HasIndex("_reserveeId");
 
@@ -115,12 +115,6 @@ namespace Servibes.Appointments.Infrastructure.Migrations
 
             modelBuilder.Entity("Servibes.Appointments.Core.Appointments.Appointment", b =>
                 {
-                    b.HasOne("Servibes.Appointments.Core.Reservees.Company", null)
-                        .WithMany()
-                        .HasForeignKey("_companyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Servibes.Appointments.Core.Reservees.Client", null)
                         .WithMany()
                         .HasForeignKey("_reserveeId")

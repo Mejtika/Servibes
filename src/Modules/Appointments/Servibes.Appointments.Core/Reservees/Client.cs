@@ -7,14 +7,25 @@ namespace Servibes.Appointments.Core.Reservees
     {
         public Guid ClientId { get; private set; }
 
-        private Client(Guid clientId)
+        public string FirstName { get; private set; }
+
+        public string LastName { get; private set; }
+
+        public string Email { get; private set; }
+
+        private Client(Guid clientId, string firstName, string lastName, string email)
         {
             ClientId = clientId;
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
         }
 
-        public static Client Create(Guid clientId)
+        public string Name => $"{FirstName} {LastName}";
+
+        public static Client Create(Guid clientId, string firstName, string lastName, string email)
         {
-            return new Client(clientId);
+            return new Client(clientId, firstName, lastName, email);
         }
     }
 }

@@ -24,6 +24,11 @@ namespace Servibes.Appointments.Infrastructure.Domain.Reservees
             return await _appointmentsContext.Companies.AnyAsync(x => x.CompanyId == companyId && x.OwnerId == ownerId);
         }
 
+        public async Task<Company> GetByOwnerIdAsync(Guid ownerId)
+        {
+            return await _appointmentsContext.Companies.SingleOrDefaultAsync(x => x.OwnerId == ownerId);
+        }
+
         public async Task AddAsync(Company company)
         {
             await _appointmentsContext.Companies.AddAsync(company);
