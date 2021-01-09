@@ -7,6 +7,7 @@ namespace Servibes.Appointments.Core.Reservees
     {
         Task<bool> ExistsByWalkInIdAsync(Guid companyId, Guid walkInId);
         Task<bool> ExistsByOwnerIdAsync(Guid companyId, Guid ownerId);
+        Task<Company> GetByOwnerIdAsync(Guid ownerId);
         Task AddAsync(Company company);
     }
 }

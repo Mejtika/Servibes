@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Servibes.Appointments.Core.Appointments;
+using Servibes.Appointments.Core.Reservees;
 using Servibes.Appointments.Core.Shared;
 
 namespace Servibes.Appointments.Infrastructure.Domain.Appointments
@@ -14,7 +15,9 @@ namespace Servibes.Appointments.Infrastructure.Domain.Appointments
             builder.HasKey(x => x.AppointmentId);
 
             builder.Property<Guid>("_reserveeId").HasColumnName("ReserveeId");
+            builder.HasOne<Client>().WithMany().HasForeignKey("_reserveeId").IsRequired();
             builder.Property<Guid>("_companyId").HasColumnName("CompanyId");
+            builder.HasOne<Company>().WithMany().HasForeignKey("_companyId").IsRequired();
             builder.Property<string>("_cancellationReason").HasColumnName("CancellationReason");
             builder.Property<AppointmentStatus>("_status").HasColumnName("Status")
                 .HasConversion(new EnumToStringConverter<AppointmentStatus>());

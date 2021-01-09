@@ -20,7 +20,7 @@ namespace Servibes.Appointments.Application.Events.External.NewClientRegistered
 
         public async Task Handle(NewClientRegisteredEvent notification, CancellationToken cancellationToken)
         {
-            var client = Client.Create(notification.ClientId);
+            var client = Client.Create(notification.ClientId, notification.FirstName, notification.LastName, notification.Email);
             await _clientRepository.AddAsync(client);
             await _unitOfWork.CommitAsync(cancellationToken);
         }
