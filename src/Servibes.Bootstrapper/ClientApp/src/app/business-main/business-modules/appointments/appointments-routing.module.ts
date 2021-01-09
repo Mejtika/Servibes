@@ -17,7 +17,7 @@ export const ROUTES: Routes = [
     {
         path: '',
         canActivate: [],
-        component: appointmentsContainers.AppointmentsComponent,
+        component: appointmentsContainers.AppointmentCalendarComponent,
         data: {
             title: 'Appointments',
             breadcrumbs: [
