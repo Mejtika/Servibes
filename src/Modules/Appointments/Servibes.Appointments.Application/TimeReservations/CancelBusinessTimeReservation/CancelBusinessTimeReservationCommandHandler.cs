@@ -10,7 +10,7 @@ using Servibes.Shared.Communication.Events;
 using Servibes.Shared.Exceptions;
 using Servibes.Shared.Services;
 
-namespace Servibes.Appointments.Application.Appointments.CancelBusinessTimeReservation
+namespace Servibes.Appointments.Application.TimeReservations.CancelBusinessTimeReservation
 {
     public class CancelBusinessTimeReservationCommandHandler : IRequestHandler<CancelBusinessTimeReservationCommand>
     {
@@ -41,7 +41,7 @@ namespace Servibes.Appointments.Application.Appointments.CancelBusinessTimeReser
         {
             var ownerId = Guid.Parse(_accessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
             var timeReservation = await _timeReservationRepository.GetAsync(request.TimeReservationId);
-            var isAuthorized = await _companyRepository.ExistsByWalkInIdAsync(timeReservation.CompanyId, ownerId);
+            var isAuthorized = await _companyRepository.ExistsByOwnerIdAsync(timeReservation.CompanyId, ownerId);
             if (!isAuthorized)
             {
                 throw new AppException($"User {ownerId} is not authorized to perform this action.");
