@@ -21,8 +21,8 @@ namespace Servibes.Bootstrapper
                 scheduler.Schedule<AppointmentFinisher>()
                     .EveryMinute();
 
-                scheduler.Schedule<AppointmentFinisher>()
-                    .EveryFiveMinutes();
+                scheduler.Schedule<TimeReservationFinisher>()
+                    .EveryMinute();
             });
                 
             host.Run();
