@@ -1,4 +1,4 @@
-﻿namespace Servibes.Appointments.Api
+﻿namespace Servibes.Appointments.Api.Requests
 {
     public class CancelAppointmentRequest
     {

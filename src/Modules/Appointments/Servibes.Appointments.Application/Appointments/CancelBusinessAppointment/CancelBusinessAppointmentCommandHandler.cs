@@ -43,7 +43,7 @@ namespace Servibes.Appointments.Api
         {
             var ownerId = Guid.Parse(_accessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
             var appointment = await  _appointmentRepository.GetAsync(request.AppointmentId);
-            var isAuthorized = await _companyRepository.ExistsByWalkInIdAsync(appointment.CompanyId, ownerId);
+            var isAuthorized = await _companyRepository.ExistsByOwnerIdAsync(appointment.CompanyId, ownerId);
             if (!isAuthorized)
             {
                 throw new AppException($"User {ownerId} is not authorized to perform this action.");
