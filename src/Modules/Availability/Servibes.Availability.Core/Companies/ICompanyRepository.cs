@@ -12,5 +12,7 @@ namespace Servibes.Availability.Core.Companies
         Task<bool> ExistsAsync(Guid companyId);
 
         Task<Company> GetByIdAsync(Guid companyId);
+
+        Task<Company> GetByIdWithNoTrackingAsync(Guid companyId);
     }
 }

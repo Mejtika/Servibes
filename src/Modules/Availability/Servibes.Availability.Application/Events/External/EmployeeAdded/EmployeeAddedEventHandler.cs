@@ -26,7 +26,7 @@ namespace Servibes.Availability.Application.Events.External.EmployeeAdded
 
         public async Task Handle(EmployeeAddedEvent notification, CancellationToken cancellationToken)
         {
-            var company = await _companyRepository.GetByIdAsync(notification.CompanyId);
+            var company = await _companyRepository.GetByIdWithNoTrackingAsync(notification.CompanyId);
             if (company == null)
             {
                 throw new AppException($"Company with id {notification.CompanyId} not found.");

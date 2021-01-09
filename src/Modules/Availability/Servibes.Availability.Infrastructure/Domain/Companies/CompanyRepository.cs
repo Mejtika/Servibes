@@ -30,5 +30,10 @@ namespace Servibes.Availability.Infrastructure.Domain.Companies
         {
             return await _availabilityContext.Companies.SingleOrDefaultAsync(x => x.CompanyId == companyId);
         }
+
+        public async Task<Company> GetByIdWithNoTrackingAsync(Guid companyId)
+        {
+            return await _availabilityContext.Companies.AsNoTracking().SingleOrDefaultAsync(x => x.CompanyId == companyId);
+        }
     }
 }
