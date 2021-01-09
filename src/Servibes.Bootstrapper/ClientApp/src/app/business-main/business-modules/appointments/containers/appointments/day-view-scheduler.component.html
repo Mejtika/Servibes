@@ -1,0 +1,118 @@
+<div class="cal-week-view" role="grid">
+  <div class="cal-day-headers" role="row">
+    <div
+      class="cal-header"
+      *ngFor="let user of users; trackBy: trackByUserId"
+      tabindex="0"
+      role="columnheader">
+      <b>{{ user.name }}</b>
+    </div>
+  </div>
+  <div
+    class="cal-all-day-events"
+    #allDayEventsContainer
+    *ngIf="view.allDayEventRows.length > 0">
+    <div class="cal-day-columns">
+      <div
+        class="cal-time-label-column"
+        [ngTemplateOutlet]="allDayEventsLabelTemplate">
+      </div>
+      <div
+        class="cal-day-column"
+        *ngFor="let day of days; trackBy: trackByWeekDayHeaderDate">
+      </div>
+    </div>
+    <div
+      *ngFor="let eventRow of view.allDayEventRows; trackBy: trackById"
+      #eventRowContainer
+      class="cal-events-row">
+      <div
+        *ngFor="let allDayEvent of eventRow.row;
+                trackBy: trackByWeekAllDayEvent"
+        #event
+        class="cal-event-container"
+        [ngClass]="allDayEvent.event?.cssClass"
+        [style.width.%]="(100 / users.length) * allDayEvent.span"
+        [style.marginLeft.%]="(100 / users.length) * allDayEvent.offset">
+        <mwl-calendar-week-view-event
+          [locale]="locale"
+          [weekEvent]="allDayEvent"
+          [tooltipPlacement]="tooltipPlacement"
+          [tooltipTemplate]="tooltipTemplate"
+          [tooltipAppendToBody]="tooltipAppendToBody"
+          [tooltipDelay]="tooltipDelay"
+          [customTemplate]="eventTemplate"
+          [eventTitleTemplate]="eventTitleTemplate"
+          [eventActionsTemplate]="eventActionsTemplate"
+          [daysInWeek]="daysInWeek">
+        </mwl-calendar-week-view-event>
+      </div>
+    </div>
+  </div>
+  <div class="cal-time-events">
+    <div class="cal-time-label-column" *ngIf="view.hourColumns.length > 0">
+      <div
+        *ngFor=" let hour of view.hourColumns[0].hours;
+                 trackBy: trackByHour;
+                 let odd = odd"
+        class="cal-hour"
+        [class.cal-hour-odd]="odd">
+        <mwl-calendar-week-view-hour-segment
+          *ngFor="let segment of hour.segments; trackBy: trackByHourSegment"
+          [style.height.px]="hourSegmentHeight"
+          [segment]="segment"
+          [segmentHeight]="hourSegmentHeight"
+          [locale]="locale"
+          [customTemplate]="hourSegmentTemplate"
+          [isTimeLabel]="true">
+        </mwl-calendar-week-view-hour-segment>
+      </div>
+    </div>
+    <div
+      class="cal-day-columns"
+      [class.cal-resize-active]="timeEventResizes.size > 0"
+      #dayColumns>
+      <div
+        class="cal-day-column"
+        *ngFor="let column of view.hourColumns; trackBy: trackByHourColumn">
+        <mwl-calendar-week-view-current-time-marker
+          [columnDate]="column.date"
+          [dayStartHour]="dayStartHour"
+          [dayStartMinute]="dayStartMinute"
+          [dayEndHour]="dayEndHour"
+          [dayEndMinute]="dayEndMinute"
+          [hourSegments]="hourSegments"
+          [hourSegmentHeight]="hourSegmentHeight"
+          [customTemplate]="currentTimeMarkerTemplate">
+        </mwl-calendar-week-view-current-time-marker>
+        <div
+          *ngFor="let timeEvent of column.events; trackBy: trackByWeekTimeEvent"
+          #event
+          class="cal-event-container"
+          [class.cal-starts-within-day]="!timeEvent.startsBeforeDay"
+          [class.cal-ends-within-day]="!timeEvent.endsAfterDay"
+          [ngClass]="timeEvent.event.cssClass"
+          [hidden]="timeEvent.height === 0 && timeEvent.width === 0"
+          [style.top.px]="timeEvent.top"
+          [style.height.px]="timeEvent.height + 10"
+          [style.left.%]="timeEvent.left"
+          [style.width.%]="timeEvent.width">
+          <mwl-calendar-week-view-event
+            [locale]="locale"
+            [weekEvent]="timeEvent"
+            [tooltipPlacement]="tooltipPlacement"
+            [tooltipTemplate]="tooltipTemplate"
+            [tooltipAppendToBody]="tooltipAppendToBody"
+            [tooltipDisabled]="dragActive || timeEventResizes.size > 0"
+            [tooltipDelay]="tooltipDelay"
+            (eventClicked)="handleEventClick(timeEvent.event)"
+            [customTemplate]="eventTemplate"
+            [eventTitleTemplate]="eventTitleTemplate"
+            [eventActionsTemplate]="eventActionsTemplate"
+            [column]="column">
+          </mwl-calendar-week-view-event>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
