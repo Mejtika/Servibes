@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Servibes.Availability.Application.Employees.GetTimeOffs
+namespace Servibes.Availability.Application.Employees.GetEmployeeTimeOffs
 {
-    public class TimeOffDto
+    public class EmployeeTimeOffDto
     {
         public DateTime Start { get; set; }
 

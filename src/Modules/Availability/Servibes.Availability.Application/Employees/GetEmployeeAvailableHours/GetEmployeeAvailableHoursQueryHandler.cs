@@ -53,7 +53,9 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
                                                    "FROM [Servibes].[availability].[WorkingHours]" +
                                                    "WHERE[EmployeeId] = @EmployeeId AND DayOfWeek = @Day";
             var workingHours = await connection.QueryFirstAsync<WorkingHoursDto>(employeeWorkingHoursSql, new { request.EmployeeId, Day = request.Date.DayOfWeek.ToString() });
-            if (!workingHours.IsAvailable || (request.Date.Date == _dateTimeServer.Now.Date && _dateTimeServer.Now.TimeOfDay >= workingHours.End))
+            var x = _dateTimeServer.Now.TimeOfDay;
+            var d = workingHours.End.Add(TimeSpan.FromMinutes(-15));
+            if (!workingHours.IsAvailable || (request.Date.Date == _dateTimeServer.Now.Date && _dateTimeServer.Now.TimeOfDay >= workingHours.End.Add(TimeSpan.FromMinutes(-15))))
             {
                 return new List<AvailableHoursDto>();
             }
@@ -66,7 +68,7 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
                                                     "WHERE [EmployeeId] = @EmployeeId AND [Start] BETWEEN @DateFrom AND @DateTo";
             var reservations = (await connection.QueryAsync<ReservationDto>(reservationsForGivenDateSql, new { request.EmployeeId, DateFrom = request.Date, DateTo = nextDay })).AsList();
             var availableHours = GetHoursAvailableForReservation(request.Duration, workingHours.Start, workingHours.End, reservations);
-            if (request.Date.Date == _dateTimeServer.Now.Date && (_dateTimeServer.Now.TimeOfDay > workingHours.Start && _dateTimeServer.Now.TimeOfDay < workingHours.End))
+            if (availableHours.Count != 0 && request.Date.Date == _dateTimeServer.Now.Date && (_dateTimeServer.Now.TimeOfDay > workingHours.Start && _dateTimeServer.Now.TimeOfDay < workingHours.End))
             {
                 var currentTime = _dateTimeServer.Now.TimeOfDay.TotalMinutes;
                 var closestAvailableHour = availableHours.Aggregate((x, y) => Math.Abs(x.TotalMinutes - currentTime) < Math.Abs(y.TotalMinutes - currentTime) ? x : y);
@@ -103,6 +105,14 @@ namespace Servibes.Availability.Application.Employees.GetEmployeeAvailableHours
             {
                 var startIndex = timePeriodsBetween.IndexOf(reservation.Start.TimeOfDay.Add(TimeSpan.FromMinutes(5)));
                 var endIndex = timePeriodsBetween.IndexOf(reservation.End.TimeOfDay);
+                if (startIndex == -1 && endIndex == -1)
+                {
+                    continue;
+                }
+                if (startIndex == -1 && endIndex != -1)
+                {
+                    startIndex = 0;
+                }
                 timePeriodsBetween.RemoveRange(startIndex, endIndex - startIndex);
             }
 

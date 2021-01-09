@@ -7,14 +7,14 @@ using Servibes.Availability.Core.Employees;
 using Servibes.Shared.Exceptions;
 using Servibes.Shared.Services;
 
-namespace Servibes.Availability.Application.Employees.GetTimeOffs
+namespace Servibes.Availability.Application.Employees.GetEmployeeTimeOffs
 {
-    public class GetTimeOffsCommandHandler : IRequestHandler<GetTimeOffsCommand, List<TimeOffDto>>
+    public class GetEmployeeTimeOffsQueryHandler : IRequestHandler<GetEmployeeTimeOffsQuery, List<EmployeeTimeOffDto>>
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IDateTimeServer _dateTimeServer;
 
-        public GetTimeOffsCommandHandler(
+        public GetEmployeeTimeOffsQueryHandler(
             IEmployeeRepository employeeRepository,
             IDateTimeServer dateTimeServer)
         {
@@ -22,7 +22,7 @@ namespace Servibes.Availability.Application.Employees.GetTimeOffs
             _dateTimeServer = dateTimeServer;
         }
 
-        public async Task<List<TimeOffDto>> Handle(GetTimeOffsCommand request, CancellationToken cancellationToken)
+        public async Task<List<EmployeeTimeOffDto>> Handle(GetEmployeeTimeOffsQuery request, CancellationToken cancellationToken)
         {
             var employee = await _employeeRepository.GetByIdAsync(request.EmployeeId);
             if (employee == null)
@@ -37,7 +37,7 @@ namespace Servibes.Availability.Application.Employees.GetTimeOffs
 
             var timeOffs = employee.GetTimeOffs(_dateTimeServer.Now);
 
-            return timeOffs.Select(x => new TimeOffDto {Start = x.Start, End = x.End}).ToList();
+            return timeOffs.Select(x => new EmployeeTimeOffDto {Start = x.Start, End = x.End}).ToList();
         }
     }
 }
