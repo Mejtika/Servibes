@@ -6,7 +6,6 @@ using Servibes.BusinessProfile.Api.Queries.Employees.GetEmployeeById;
 using System;
 using System.Threading.Tasks;
 using Servibes.BusinessProfile.Api.Commands.Employees.CreateEmployee;
-using Servibes.BusinessProfile.Api.Commands.Employees.DeleteEmployee;
 using Servibes.BusinessProfile.Api.Commands.Employees.UpdateEmployee;
 
 namespace Servibes.BusinessProfile.Api.Controllers
@@ -47,13 +46,6 @@ namespace Servibes.BusinessProfile.Api.Controllers
         public async Task<ActionResult> UpdateEmployee(Guid companyId, Guid employeeId,[FromBody] EmployeeForUpdateDto employeeDto)
         {
             await _mediator.Send(new UpdateEmployeeCommand(companyId, employeeId, employeeDto));
-            return NoContent();
-        }
-
-        [HttpDelete("{companyId}/employees/{employeeId}")]
-        public async Task<ActionResult> DeleteEmployee(Guid companyId, Guid employeeId)
-        {
-            await _mediator.Send(new DeleteEmployeeCommand(companyId, employeeId));
             return NoContent();
         }
     }

@@ -42,7 +42,7 @@ namespace Servibes.Appointments.Api
         public async Task<Unit> Handle(CancelBusinessAppointmentCommand request, CancellationToken cancellationToken)
         {
             var ownerId = Guid.Parse(_accessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
-            var appointment = await  _appointmentRepository.GetAsync(request.AppointmentId);
+            var appointment = await  _appointmentRepository.GetByIdAsync(request.AppointmentId);
             var isAuthorized = await _companyRepository.ExistsByOwnerIdAsync(appointment.CompanyId, ownerId);
             if (!isAuthorized)
             {

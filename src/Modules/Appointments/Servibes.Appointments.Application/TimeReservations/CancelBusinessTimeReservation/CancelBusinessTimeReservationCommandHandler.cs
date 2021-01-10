@@ -40,7 +40,7 @@ namespace Servibes.Appointments.Application.TimeReservations.CancelBusinessTimeR
         public async Task<Unit> Handle(CancelBusinessTimeReservationCommand request, CancellationToken cancellationToken)
         {
             var ownerId = Guid.Parse(_accessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
-            var timeReservation = await _timeReservationRepository.GetAsync(request.TimeReservationId);
+            var timeReservation = await _timeReservationRepository.GetByIdAsync(request.TimeReservationId);
             var isAuthorized = await _companyRepository.ExistsByOwnerIdAsync(timeReservation.CompanyId, ownerId);
             if (!isAuthorized)
             {

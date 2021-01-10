@@ -25,5 +25,10 @@ namespace Servibes.Availability.Infrastructure.Domain.Employees
         {
             return await _availabilityContext.Employees.SingleOrDefaultAsync(x => x.EmployeeId == employeeId);
         }
+
+        public void Delete(Employee employee)
+        {
+           _availabilityContext.Employees.Remove(employee);
+        }
     }
 }

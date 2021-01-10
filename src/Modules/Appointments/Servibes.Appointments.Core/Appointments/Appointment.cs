@@ -20,6 +20,8 @@ namespace Servibes.Appointments.Core.Appointments
 
         private readonly Employee _employee;
 
+        public Employee Employee => _employee;
+
         private readonly Service _service;
 
         private AppointmentStatus _status;

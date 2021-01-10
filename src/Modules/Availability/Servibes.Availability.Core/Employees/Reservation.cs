@@ -38,6 +38,8 @@ namespace Servibes.Availability.Core.Employees
         public bool IsCollidingWith(Reservation reservation)
             => !(reservation.End <= Start || reservation.Start >= End);
 
+        public bool IsOngoing(DateTime now) => Start <= now && now <= End;
+
         private HoursRange ToHoursRange()
             => HoursRange.Create(Start.DayOfWeek, true, Start.TimeOfDay, End.TimeOfDay);
 

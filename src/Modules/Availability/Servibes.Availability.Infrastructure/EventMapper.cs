@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MediatR;
+using Servibes.Availability.Application.Events.Employees;
 using Servibes.Availability.Application.Events.ReservationAdded;
 using Servibes.Availability.Application.Events.Reservations;
 using Servibes.Availability.Core.Employees;
@@ -15,6 +16,8 @@ namespace Servibes.Availability.Infrastructure
         public INotification Map(IDomainEvent domainEvent)
             => domainEvent switch
             {
+                EmployeeReservationReleasedDomainEvent @event => new ReservationCancelledEvent(@event.Employee.CompanyId, @event.Employee.EmployeeId, @event.Reservation.Start, @event.Reservation.End),
+                EmployeeAvailabilityDeletedDomainEvent @event => new EmployeeDeletedEvent(@event.Employee.EmployeeId, @event.Employee.CompanyId),
                 EmployeeReservationAddedDomainEvent @event when @event.ReservationSnapshot == null 
                     => new TimeReservationAddedEvent(
                         @event.EmployeeId,

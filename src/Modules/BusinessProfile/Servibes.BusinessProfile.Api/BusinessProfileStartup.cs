@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Servibes.BusinessProfile.Api.Events.External.AppointmentCreated;
+using Servibes.BusinessProfile.Api.Events.External.EmployeeDeleted;
 using Servibes.BusinessProfile.Api.Events.External.NewClientRegistered;
 using Servibes.BusinessProfile.Api.Events.External.ReviewAdded;
 using Servibes.BusinessProfile.Api.Services;
@@ -41,6 +42,7 @@ namespace Servibes.BusinessProfile.Api
                 .Subscribe<AppointmentCreatedEvent>()
                 .Subscribe<ReviewAddedEvent>()
                 .Subscribe<NewClientRegisteredEvent>()
+                .Subscribe<EmployeeDeletedEvent>()
                 .Subscribe<GetReservationDataRequest>("modules/business/details", async (sp, request) =>
                 {
                     var service = sp.GetService<ReservationService>();

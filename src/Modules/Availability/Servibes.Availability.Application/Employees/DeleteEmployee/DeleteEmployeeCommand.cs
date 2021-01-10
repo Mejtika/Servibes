@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace Servibes.BusinessProfile.Api.Commands.Employees.DeleteEmployee
+namespace Servibes.Availability.Application.Employees.DeleteEmployee
 {
     public class DeleteEmployeeCommand : IRequest
     {

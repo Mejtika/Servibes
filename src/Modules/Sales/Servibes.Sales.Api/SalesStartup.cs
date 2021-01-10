@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Servibes.Sales.Api.Events.External.AppointmentFinished;
 using Servibes.Sales.Api.Events.External.EmployeeAdded;
+using Servibes.Sales.Api.Events.External.EmployeeDeleted;
 using Servibes.Sales.Api.Events.External.NewClientRegistered;
 using Servibes.Sales.Api.Events.External.RegistrationCompleted;
 using Servibes.Shared;
@@ -36,6 +37,7 @@ namespace Servibes.Sales.Api
             app.UseModuleRequests()
                 .Subscribe<AppointmentFinishedEvent>()
                 .Subscribe<EmployeeAddedEvent>()
+                .Subscribe<EmployeeDeletedEvent>()
                 .Subscribe<NewClientRegisteredEvent>()
                 .Subscribe<RegistrationCompletedEvent>();
 

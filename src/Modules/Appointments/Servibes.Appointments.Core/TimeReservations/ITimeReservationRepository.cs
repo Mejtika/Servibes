@@ -7,6 +7,8 @@ namespace Servibes.Appointments.Core.TimeReservations
     {
         Task AddAsync(TimeReservation timeReservation);
 
-        Task<TimeReservation> GetAsync(Guid timeReservationId);
+        Task<TimeReservation> GetByIdAsync(Guid timeReservationId);
+
+        Task<TimeReservation> GetAsync(Guid companyId, Guid employeeId, DateTime start);
     }
 }

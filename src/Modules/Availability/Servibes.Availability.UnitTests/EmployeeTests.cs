@@ -362,8 +362,9 @@ namespace Servibes.Availability.UnitTests
         [Fact]
         public void EmployeeWithExistingReservationsShouldBeDeleted()
         {
+            var now = new DateTime(2020, 12, 5, 12, 30, 0);
             var employee = CreateEmployeeWithReservations();
-            employee.Delete();
+            employee.Delete(now);
             employee.DomainEvents.Count.Should().Be(3);
         }
 

@@ -104,14 +104,21 @@ namespace Servibes.Availability.Core.Employees
             AddDomainEvent(new EmployeeTimeOffReleasedDomainEvent(this, timeOff));
         }
 
-        public void Delete()
+        public void Delete(DateTime now)
         {
+            if (HasOutgoingReservation())
+            {
+                throw new OutgoingReservationCancellationException();
+            }
+
             foreach (var reservation in _reservations)  
             {
                 AddDomainEvent(new EmployeeReservationReleasedDomainEvent(this, reservation));
             }
 
             AddDomainEvent(new EmployeeAvailabilityDeletedDomainEvent(this));
+
+            bool HasOutgoingReservation() => _reservations.Any(x => x.IsOngoing(now));
         }
 
         public void ChangeWorkingHours(List<HoursRange> companyOpeningHours, List<HoursRange> newWorkingHours)
