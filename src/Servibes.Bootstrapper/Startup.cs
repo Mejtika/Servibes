@@ -81,17 +81,18 @@ namespace Servibes.Bootstrapper
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //app.UseProblemDetails();
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
-            }
+            app.UseProblemDetails();
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //    app.UseDatabaseErrorPage();
+            //}
+            //else
+            //{
+            //    app.UseExceptionHandler("/Error");
+            //}
+
+            app.UseHsts();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
