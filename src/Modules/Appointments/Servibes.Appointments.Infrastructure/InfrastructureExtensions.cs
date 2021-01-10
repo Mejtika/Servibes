@@ -9,6 +9,7 @@ using Servibes.Appointments.Application;
 using Servibes.Appointments.Application.Events.External.NewClientRegistered;
 using Servibes.Appointments.Application.Events.External.RegistrationCompleted;
 using Servibes.Appointments.Application.Events.External.ReservationAdded;
+using Servibes.Appointments.Application.Events.External.ReservationCancelled;
 using Servibes.Appointments.Application.Events.External.TimeReservationAdded;
 using Servibes.Appointments.Core.Appointments;
 using Servibes.Appointments.Core.Reservees;
@@ -56,7 +57,8 @@ namespace Servibes.Appointments.Infrastructure
                 .Subscribe<ReservationAddedEvent>()
                 .Subscribe<TimeReservationAddedEvent>()
                 .Subscribe<NewClientRegisteredEvent>()
-                .Subscribe<RegistrationCompletedEvent>();
+                .Subscribe<RegistrationCompletedEvent>()
+                .Subscribe<ReservationCancelledEvent>();
 
             return app;
         }

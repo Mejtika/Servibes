@@ -36,7 +36,7 @@ namespace Servibes.Appointments.Application.Appointments.CancelClientAppointment
         public async Task<Unit> Handle(CancelClientAppointmentCommand request, CancellationToken cancellationToken)
         {
             var ownerId = Guid.Parse(_accessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty);
-            var appointment = await _appointmentRepository.GetAsync(request.AppointmentId);
+            var appointment = await _appointmentRepository.GetByIdAsync(request.AppointmentId);
             var isOwner = appointment.ReserveeId == ownerId;
             if (!isOwner)
             {

@@ -7,6 +7,8 @@ namespace Servibes.Appointments.Core.Appointments
     {
         Task AddAsync(Appointment appointment);
 
-        Task<Appointment> GetAsync(Guid appointmentId);
+        Task<Appointment> GetByIdAsync(Guid appointmentId);
+
+        Task<Appointment> GetAsync(Guid companyId, Guid employeeId, DateTime start);
     }
 }

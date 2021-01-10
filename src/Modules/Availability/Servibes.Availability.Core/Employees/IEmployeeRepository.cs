@@ -8,5 +8,7 @@ namespace Servibes.Availability.Core.Employees
         Task AddAsync(Employee employee);
 
         Task<Employee> GetByIdAsync(Guid employeeId);
+
+        void Delete(Employee employeeId);
     }
 }

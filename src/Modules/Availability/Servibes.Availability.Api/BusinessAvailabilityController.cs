@@ -7,6 +7,7 @@ using Servibes.Availability.Application.Companies.ChangeOpeningHours;
 using Servibes.Availability.Application.Companies.GetCompanyOpeningHours;
 using Servibes.Availability.Application.Employees.CancelTimeOff;
 using Servibes.Availability.Application.Employees.ChangeWorkingHours;
+using Servibes.Availability.Application.Employees.DeleteEmployee;
 using Servibes.Availability.Application.Employees.GetCompanyTimeOffs;
 using Servibes.Availability.Application.Employees.GetEmployeeAvailableHours;
 using Servibes.Availability.Application.Employees.GetEmployeeTimeOffs;
@@ -128,6 +129,13 @@ namespace Servibes.Availability.Api
                 employeeId,
                 startDate));
 
+            return NoContent();
+        }
+
+        [HttpDelete("{companyId}/employees/{employeeId}")]
+        public async Task<ActionResult> DeleteEmployee(Guid companyId, Guid employeeId)
+        {
+            await _mediator.Send(new DeleteEmployeeCommand(companyId, employeeId));
             return NoContent();
         }
     }
