@@ -15,8 +15,8 @@ import { EmployeeTimeOffsComponent } from '../employee-time-offs/employee-time-o
     styleUrls: ['./employee-form.component.scss']
 })
 export class EmployeeFormComponent extends BaseForm implements OnInit {
-    private profile: IProfile = null;
-    private employee: IEmployee = null;
+    public profile: IProfile = null;
+    public employee: IEmployee = null;
 
     constructor(
         private profileService: ProfileService,

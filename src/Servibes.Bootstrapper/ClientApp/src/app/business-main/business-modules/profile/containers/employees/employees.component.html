@@ -20,20 +20,27 @@
                         <button class="btn btn-link" [routerLink]="['/business/profile/employees/', employee.employeeId]">
                             <span class="col text-left"><i class="fas fa-edit"></i></span>
                         </button>
-                        <button class="btn btn-link" (click)="deleteEmployee(employee.employeeId)" *ngIf="i != 0">
+                        <button class="btn btn-link" (click)="openModal(deleteTemplate)" *ngIf="employees.length > 1">
                             <span class="col text-right"><i class="fas fa-user-slash"></i></span>
                         </button>
+                        <ng-template #deleteTemplate>
+                            <div class="modal-body text-center">
+                                <p>Deleting employee will cause cancellation of all their reservations, do you want to continue?</p>
+                                <div class="d-flex justify-content-around">
+                                    <button type="button" class="btn btn-primary" (click)="decline()">Go back</button>
+                                    <button type="button" class="btn btn-danger" (click)="deleteEmployee(employee.employeeId)">Delete anyway</button>
+                                </div>
+                            </div>
+                        </ng-template>
                     </td>
                 </tr>
             </tbody>
         </table>
-
+    
         <button 
           class="btn btn-primary" 
           [routerLink]="['/business/profile/employees/', '']">
             Add new employee
           </button>
-
   </div>
-    
 </sb-layout-dashboard>
