@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Servibes.Shared.BuildingBlocks;
@@ -8,29 +9,36 @@ namespace Servibes.Shared.Communication.Events
 {
     internal sealed class EventProcessor : IEventProcessor
     {
-        private readonly IMessageBroker _broker;
+        private readonly IMessageBroker _messageBroker;
         private readonly IEventMapperCompositionRoot _eventMapperCompositionRoot;
 
         public EventProcessor(IMessageBroker broker, IEventMapperCompositionRoot eventMapperCompositionRoot)
         {
-            _broker = broker;
+            _messageBroker = broker;
             _eventMapperCompositionRoot = eventMapperCompositionRoot;
         }
 
         public async Task ProcessAsync(IEnumerable<IDomainEvent> events)
         {
-            if (events is null)
+            var integrationEvents = MapEvents(events);
+            foreach (var @event in integrationEvents)
             {
-                return;
+                await _messageBroker.PublishAsync(@event);
+            }
+        }
+
+        private IEnumerable<INotification> MapEvents(IEnumerable<IDomainEvent> events)
+        {
+            if (events == null)
+            {
+                throw new Exception("Events list is empty");
             }
 
             var integrationEvents = new List<INotification>();
-
             foreach (var @event in events)
             {
                 var integrationEvent = _eventMapperCompositionRoot.Map(@event);
-
-                if (integrationEvent is null)
+                if (integrationEvent == null)
                 {
                     continue;
                 }
@@ -38,7 +46,7 @@ namespace Servibes.Shared.Communication.Events
                 integrationEvents.Add(integrationEvent);
             }
 
-            await _broker.PublishAsync(integrationEvents);
+            return integrationEvents;
         }
     }
 }
