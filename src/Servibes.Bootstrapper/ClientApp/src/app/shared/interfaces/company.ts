@@ -77,12 +77,8 @@ export interface ReviewDetails {
   status: ReviewStatus;
 }
 
-export enum Category {
-  All = "All",
-  Fryzjer = "Fryzjer",
-  Barber = "Barber",
-  Masaz = "Masaz",
-  Makeup = "Makeup"
+export interface Category {
+  name: string;
 }
 
 export enum City {

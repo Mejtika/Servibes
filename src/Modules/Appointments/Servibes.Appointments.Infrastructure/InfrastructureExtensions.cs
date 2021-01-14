@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Servibes.Appointments.Application;
+using Servibes.Appointments.Application.Events.External.ClientInformationUpdated;
 using Servibes.Appointments.Application.Events.External.NewClientRegistered;
 using Servibes.Appointments.Application.Events.External.RegistrationCompleted;
 using Servibes.Appointments.Application.Events.External.ReservationAdded;
@@ -57,6 +58,7 @@ namespace Servibes.Appointments.Infrastructure
                 .Subscribe<ReservationAddedEvent>()
                 .Subscribe<TimeReservationAddedEvent>()
                 .Subscribe<NewClientRegisteredEvent>()
+                .Subscribe<ClientInformationUpdatedEvent>()
                 .Subscribe<RegistrationCompletedEvent>()
                 .Subscribe<ReservationCancelledEvent>();
 

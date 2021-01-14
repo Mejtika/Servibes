@@ -1,5 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Category } from "src/app/shared/interfaces/company";
+import { HttpClient } from '@angular/common/http';
+import { environment } from "src/environments/environment";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-client-navbar",
@@ -7,10 +10,10 @@ import { Category } from "src/app/shared/interfaces/company";
   styleUrls: ["./client-navbar.component.css"],
 })
 export class ClientNavbarComponent implements OnInit {
-  public categories: Category[];
-  constructor() {}
+  public categories$: Observable<Category[]>;
+  constructor(private httpClient: HttpClient) {}
 
   ngOnInit() {
-    this.categories = Object.keys(Category).map((key) => Category[key]);
+    this.categories$ = this.httpClient.get<Category[]>(`${environment.backendEndpoint}companies/categories`);
   }
 }

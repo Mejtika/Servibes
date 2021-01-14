@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Servibes.Bootstrapper.Models;
+using Servibes.Shared.Communication.Brokers;
 
 namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account.Manage
 {
@@ -14,16 +15,19 @@ namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IMessageBroker _messageBroker;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IMessageBroker messageBroker)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _messageBroker = messageBroker;
         }
 
-        public string Username { get; set; }
+        //public string Username { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -33,21 +37,38 @@ namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            //[Phone]
+            //[Display(Name = "Phone number")]
+            //public string PhoneNumber { get; set; }
+
+            [Required]
+            [Display(Name = "First name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last name")]
+            public string LastName { get; set; }
+
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Email")]
+            public string Email { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            //var userName = await _userManager.GetUserNameAsync(user);
+            //var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            //Username = userName;
 
-            Username = userName;
+            var email = await _userManager.GetEmailAsync(user);
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                //PhoneNumber = phoneNumber,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = email
             };
         }
 
@@ -77,19 +98,42 @@ namespace Servibes.Bootstrapper.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            //var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            //if (Input.PhoneNumber != phoneNumber)
+            //{
+            //    var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+            //    if (!setPhoneResult.Succeeded)
+            //    {
+            //        StatusMessage = "Unexpected error when trying to set phone number.";
+            //        return RedirectToPage();
+            //    }
+            //}
+
+            var email = await _userManager.GetEmailAsync(user);
+
+            if (Input.Email != email)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
+                var result = await _userManager.SetEmailAsync(user, Input.Email);
+                if (!result.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
+                    StatusMessage = "Your email cannot be changed.";
+                    await LoadAsync(user);
+                    return Page();
                 }
             }
-
+            
+            user.FirstName = Input.FirstName;
+            user.LastName = Input.LastName;
+            await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
+
+            if (await _userManager.IsInRoleAsync(user, "Client"))
+            {
+                var @event = new ClientInformationUpdatedEvent(user.Id, user.FirstName, user.LastName, user.Email);
+                await _messageBroker.PublishAsync(@event);
+            }
+
             return RedirectToPage();
         }
     }

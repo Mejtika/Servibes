@@ -47,7 +47,11 @@ namespace Servibes.Bootstrapper
                     }));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(
-                    options => options.SignIn.RequireConfirmedAccount = true)
+                    options =>
+                    {
+                        options.SignIn.RequireConfirmedAccount = false;
+                        options.User.RequireUniqueEmail = true;
+                    })
                 .AddEntityFrameworkStores<IdentityContext>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();

@@ -14,12 +14,12 @@ import { CompanyDataService } from "src/app/data-service/company-data.service";
 })
 export class CompaniesListComponent {
   page: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 3;
   collectionSize: number;
   companies: SearchedCompanyDto[];
-  _category: Category;
+  _category: string;
 
-  set category(category: Category) {
+  set category(category: string) {
     this._category = category;
     this.getCompanies();
   }
@@ -35,11 +35,14 @@ export class CompaniesListComponent {
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
+    console.log(params.category);
+
       this.category = params.category;
     });
   }
 
   getCompanies() {
+    console.log(this.category);
     this.companyDataService
       .getAllCompanies(this.page, this.pageSize, this.category)
       .subscribe((result: PagedResult<SearchedCompanyDto[]>) => {

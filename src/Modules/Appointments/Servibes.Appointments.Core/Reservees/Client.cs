@@ -21,6 +21,13 @@ namespace Servibes.Appointments.Core.Reservees
             Email = email;
         }
 
+        public void Update(string firstName, string lastName, string email)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+        }
+
         public string Name => $"{FirstName} {LastName}";
 
         public static Client Create(Guid clientId, string firstName, string lastName, string email)

@@ -23,5 +23,10 @@ namespace Servibes.Appointments.Infrastructure.Domain.Reservees
         {
             await _appointmentsContext.Clients.AddAsync(client);
         }
+
+        public async Task<Client> GetAsync(Guid clientId)
+        {
+            return await _appointmentsContext.Clients.SingleOrDefaultAsync(x => x.ClientId == clientId);
+        }
     }
 }
