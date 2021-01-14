@@ -33,10 +33,10 @@
           </div>
           <div class="collapse navbar-collapse">
             <div class="navbar-nav category-container">
-                <a *ngFor="let category of categories" class="nav-item nav-links category"
+                <a *ngFor="let category of categories$ | async" class="nav-item nav-links category"
                   [routerLink]="['/client/companies']"
-                  [queryParams]="{ category: category }">
-                    {{ category }}
+                  [queryParams]="{ category: category.name }">
+                    {{ category.name }}
                 </a>
             </div>
           </div>

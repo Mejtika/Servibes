@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Servibes.Sales.Api.Events.External.AppointmentFinished;
+using Servibes.Sales.Api.Events.External.ClientInformationUpdated;
 using Servibes.Sales.Api.Events.External.EmployeeAdded;
 using Servibes.Sales.Api.Events.External.EmployeeDeleted;
 using Servibes.Sales.Api.Events.External.NewClientRegistered;
@@ -39,6 +40,7 @@ namespace Servibes.Sales.Api
                 .Subscribe<EmployeeAddedEvent>()
                 .Subscribe<EmployeeDeletedEvent>()
                 .Subscribe<NewClientRegisteredEvent>()
+                .Subscribe<ClientInformationUpdatedEvent>()
                 .Subscribe<RegistrationCompletedEvent>();
 
             return app;

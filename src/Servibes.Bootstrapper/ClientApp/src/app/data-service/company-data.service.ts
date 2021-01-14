@@ -18,11 +18,12 @@ export class CompanyDataService extends ApiService<Company> {
   public getAllCompanies(
     page:number, 
     pageSize: number, 
-    category: Category = Category.All) : Observable<PagedResult<SearchedCompanyDto[]>> {
+    category: string = "") : Observable<PagedResult<SearchedCompanyDto[]>> {
       console.log(page, pageSize, category);
-      if(category === Category.All){
+      if(category === "All" || category === ""){
+        console.log("all")
         return this.get(`companies/search?page=${page}&pageSize=${pageSize}`);
-      }
+      }      
       return this.get(`companies/search?page=${page}&pageSize=${pageSize}&category=${category}`);
   }
 
@@ -34,9 +35,9 @@ export class CompanyDataService extends ApiService<Company> {
     return this.get(`companies/${companyId}/openingHours`);
   }
 
-  public getCategories(): string[] {
-    return Object.keys(Category).map((key) => Category[key]);
-  }
+  // public getCategories(): string[] {
+  //   return Object.keys(Category).map((key) => Category[key]);
+  // }
 
   public getImage(imageId: string) : Observable<IImage> {
       return this.get(`companies/images/${imageId}`);
