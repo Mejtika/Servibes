@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace Servibes.BusinessProfile.Api.Services
+namespace Servibes.BusinessProfile.Api.Services.Reservation
 {
     public class ReservationService
     {

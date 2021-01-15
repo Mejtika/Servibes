@@ -1,4 +1,4 @@
-﻿namespace Servibes.BusinessProfile.Api.Services
+﻿namespace Servibes.BusinessProfile.Api.Services.Reservation
 {
     public class ReservationDataDto
     {

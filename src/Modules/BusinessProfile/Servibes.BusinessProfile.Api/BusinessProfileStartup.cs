@@ -11,6 +11,7 @@ using Servibes.BusinessProfile.Api.Events.External.EmployeeDeleted;
 using Servibes.BusinessProfile.Api.Events.External.NewClientRegistered;
 using Servibes.BusinessProfile.Api.Events.External.ReviewAdded;
 using Servibes.BusinessProfile.Api.Services;
+using Servibes.BusinessProfile.Api.Services.Reservation;
 using Servibes.Shared;
 
 namespace Servibes.BusinessProfile.Api
