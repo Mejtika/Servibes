@@ -37,7 +37,14 @@ export class SalesComponent implements OnInit {
         {
             this.toastr.success("Payment completed successfully!");
             var indexOfpaidAppointment = this.appointments.indexOf(appointment);
-            this.appointments = this.appointments.splice(indexOfpaidAppointment, 1);
+            if(indexOfpaidAppointment == 0)
+            {
+              this.appointments.shift();
+            }
+            else
+            {
+              this.appointments = this.appointments.splice(indexOfpaidAppointment, 1);
+            }
             this.selectedAppointment = null;
         });
   }
