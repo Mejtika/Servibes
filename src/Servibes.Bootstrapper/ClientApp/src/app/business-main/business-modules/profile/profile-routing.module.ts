@@ -16,11 +16,6 @@ import * as profileGuards from './guards';
 export const ROUTES: Routes = [
     {
         path: '',
-        pathMatch: 'full',
-        redirectTo: 'profile'   
-    },
-    {
-        path: 'profile',
         canActivate: [],
         component: profileContainers.ProfileComponent,
         data: {
