@@ -24,6 +24,12 @@ namespace Servibes.ClientProfile.Api.Events.External.AppointmentPaid
                 return;
             }
 
+            var clientExists = await _context.Clients.AnyAsync(x => x.ClientId == notification.ReserveeId);
+            if (!clientExists)
+            {
+                return;
+            }
+
             var review = new Review
             {
                 CompanyId = notification.CompanyId,

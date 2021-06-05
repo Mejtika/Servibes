@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Servibes.Shared.Exceptions;
 
 namespace Servibes.BusinessProfile.Api.Commands.Images.UploadImage
 {
@@ -22,13 +23,13 @@ namespace Servibes.BusinessProfile.Api.Commands.Images.UploadImage
         public async Task<Guid> Handle(UploadImageCommand request, CancellationToken cancellationToken)
         {
             if (request.ImageData == null)
-                throw new ArgumentNullException($"Image data can not be null.");
+                throw new AppException($"Image data can not be null.");
 
             if (request.ImageData.Length == 0)
-                throw new ArgumentException($"Image data contains no data.");
+                throw new AppException( $"Image data contains no data.");
 
-            if (request.ImageData.ContentType != "image/png" && request.ImageData.ContentType != "image/jpg")
-                throw new ArgumentException($"Unupported filetype. Try .png or .jpg file instead.");
+            if (request.ImageData.ContentType != "image/png" && request.ImageData.ContentType != "image/jpg" && request.ImageData.ContentType != "image/jpeg")
+                throw new AppException($"Unsupported filetype.");
 
             Image image = new Image();
             image.Data = ImageToByteArray(request.ImageData);

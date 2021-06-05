@@ -28,7 +28,7 @@ namespace Servibes.Appointments.Infrastructure.Domain.Appointments
         public async Task<Appointment> GetAsync(Guid companyId, Guid employeeId, DateTime start)
         {
             var appointments = await _appointmentsContext.Appointments.ToListAsync();
-            return appointments.SingleOrDefault(x => x.CompanyId == companyId && x.Employee.EmployeeId == employeeId && x.ReservationDate.Start == start);
+            return appointments.SingleOrDefault(x => x.CompanyId == companyId && x.Employee.EmployeeId == employeeId && x.ReservedDate.Start == start);
         }
     }
 }

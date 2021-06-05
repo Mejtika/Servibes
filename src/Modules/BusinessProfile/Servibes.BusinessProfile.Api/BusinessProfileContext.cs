@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.Xml;
 using Microsoft.EntityFrameworkCore;
 using Servibes.BusinessProfile.Api.Models;
 using Servibes.BusinessProfile.Api.Models.ClientBase;
@@ -70,6 +71,11 @@ namespace Servibes.BusinessProfile.Api
             {
                 builder.ToTable("Reviews");
                 builder.HasOne<Company>().WithMany().HasForeignKey(x => x.CompanyId).IsRequired();
+            });
+
+            modelBuilder.Entity<Image>(builder =>
+            {
+                builder.HasOne<Company>().WithOne().HasForeignKey<Company>(x => x.CoverPhotoId);
             });
         }
     }

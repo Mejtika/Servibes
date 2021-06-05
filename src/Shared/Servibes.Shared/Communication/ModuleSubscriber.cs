@@ -16,7 +16,7 @@ namespace Servibes.Shared.Communication
         {
             if (!_registry.TryAddRequestAction(path, typeof(TRequest), (sp, o) => action(sp, (TRequest)o)))
             {
-                throw new Exception();
+                throw new Exception($"Cannot register action by path {path}");
             }
 
             return this;

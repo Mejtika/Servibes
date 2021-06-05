@@ -8,31 +8,21 @@ namespace Servibes.Appointments.Core.Appointments
 {
     public class Appointment : Entity, IAggregateRoot
     {
+        private string _cancellationReason;
+
         public Guid AppointmentId { get; private set; }
 
-        private readonly Guid _reserveeId;
+        public Guid ReserveeId { get; private set; }
 
-        public Guid ReserveeId => _reserveeId;
+        public Guid CompanyId { get; private set; }
 
-        private readonly Guid _companyId;
+        public Employee Employee { get; private set; }
 
-        public Guid CompanyId => _companyId;
+        public Service Service { get; private set; }
 
-        private readonly Employee _employee;
+        public AppointmentStatus Status { get; private set; }
 
-        public Employee Employee => _employee;
-
-        private readonly Service _service;
-
-        private AppointmentStatus _status;
-
-        public AppointmentStatus AppointmentStatus => _status;
-
-        private readonly ReservationDate _reservedDate;
-
-        public ReservationDate ReservationDate => _reservedDate;
-
-        private string _cancellationReason;
+        public ReservationDate ReservedDate { get; private set; }
 
         private Appointment()
         {
@@ -43,12 +33,12 @@ namespace Servibes.Appointments.Core.Appointments
             Service service, AppointmentStatus status, ReservationDate reservedDate)
         {
             AppointmentId = appointmentId;
-            _reserveeId = reserveeId; 
-            _companyId = companyId;
-            _employee = employee;
-            _service = service;
-            _status = status;
-            _reservedDate = reservedDate;
+            ReserveeId = reserveeId; 
+            CompanyId = companyId;
+            Employee = employee;
+            Service = service;
+            Status = status;
+            ReservedDate = reservedDate;
             _cancellationReason = string.Empty;
         }
 
@@ -72,56 +62,56 @@ namespace Servibes.Appointments.Core.Appointments
 
         public void Cancel(DateTime now, string reason)
         {
-            if (_status != AppointmentStatus.Confirmed)
+            if (Status != AppointmentStatus.Confirmed)
             {
-                throw new CannotChangeAppointmentStateException(AppointmentId, _status, AppointmentStatus.Canceled);
+                throw new CannotChangeAppointmentStateException(AppointmentId, Status, AppointmentStatus.Canceled);
             }
 
-            if (_reservedDate.IsInReservationTime(now))
+            if (ReservedDate.IsInReservationTime(now))
             {
                 throw new CannotCancelStartedAppointmentException(AppointmentId);
             }
 
-            if (_reservedDate.HasPassed(now))
+            if (ReservedDate.HasPassed(now))
             {
                 throw new CannotCancelFinishedAppointmentException(AppointmentId);
             }
 
-            _status = AppointmentStatus.Canceled;
+            Status = AppointmentStatus.Canceled;
             _cancellationReason = reason ?? string.Empty;
-            AddDomainEvent(AppointmentStateChanged());
-        }
-
-        public void MarkAsNoShow(DateTime now)
-        {
-            if (_status != AppointmentStatus.Confirmed)
-            {
-                throw new CannotChangeAppointmentStateException(AppointmentId, _status, AppointmentStatus.NoShow);
-            }
-
-            if (!_reservedDate.IsInReservationTime(now))
-            {
-                throw new AppointmentNotStartedException(AppointmentId);
-            }
-
-            _status = AppointmentStatus.NoShow;
-            _cancellationReason = "The customer didn't come";
             AddDomainEvent(AppointmentStateChanged());
         }
 
         public void Finish(DateTime now)
         {
-            if (_status != AppointmentStatus.Confirmed)
+            if (Status != AppointmentStatus.Confirmed)
             {
-                throw new CannotChangeAppointmentStateException(AppointmentId, _status, AppointmentStatus.Finished);
+                throw new CannotChangeAppointmentStateException(AppointmentId, Status, AppointmentStatus.Finished);
             }
 
-            if (!_reservedDate.HasPassed(now))
+            if (!ReservedDate.HasPassed(now))
             {
                 throw new AppointmentDateIsNotPassedException(AppointmentId);
             }
 
-            _status = AppointmentStatus.Finished;
+            Status = AppointmentStatus.Finished;
+            AddDomainEvent(AppointmentStateChanged());
+        }
+
+        public void MarkAsNoShow(DateTime now)
+        {
+            if (Status != AppointmentStatus.Confirmed)
+            {
+                throw new CannotChangeAppointmentStateException(AppointmentId, Status, AppointmentStatus.NoShow);
+            }
+
+            if (!ReservedDate.IsInReservationTime(now))
+            {
+                throw new AppointmentNotStartedException(AppointmentId);
+            }
+
+            Status = AppointmentStatus.NoShow;
+            _cancellationReason = "The customer didn't come";
             AddDomainEvent(AppointmentStateChanged());
         }
 
@@ -129,13 +119,13 @@ namespace Servibes.Appointments.Core.Appointments
         {
             return new AppointmentStateChanged(
                 AppointmentId,
-                _reserveeId,
-                _companyId,
-                _employee,
-                _reservedDate,
-                _status,
+                ReserveeId,
+                CompanyId,
+                Employee,
+                ReservedDate,
+                Status,
                 _cancellationReason,
-                _service);
+                Service);
         }
     }
 }

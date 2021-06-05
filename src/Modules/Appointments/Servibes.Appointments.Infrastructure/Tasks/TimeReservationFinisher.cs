@@ -30,8 +30,8 @@ namespace Servibes.Appointments.Infrastructure.Tasks
 
             var timeReservation = timeReservations.FirstOrDefault(x =>
                 x.Status == TimeReservationStatus.Created
-                && x.ReservationDate.Start.Date == _dateTimeServer.Now.Date
-                && x.ReservationDate.End <= _dateTimeServer.Now);
+                && x.ReservedDate.Start.Date == _dateTimeServer.Now.Date
+                && x.ReservedDate.End <= _dateTimeServer.Now);
 
             if (timeReservation == null)
             {

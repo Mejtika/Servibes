@@ -30,9 +30,9 @@ namespace Servibes.Appointments.Infrastructure.Tasks
             var appointments = await _appointmentsContext.Appointments.ToListAsync();
 
             var appointment = appointments.FirstOrDefault(x =>
-                x.AppointmentStatus == AppointmentStatus.Confirmed
-                && x.ReservationDate.Start.Date == _dateTimeServer.Now.Date
-                && x.ReservationDate.End <= _dateTimeServer.Now);
+                x.Status == AppointmentStatus.Confirmed
+                && x.ReservedDate.Start.Date == _dateTimeServer.Now.Date
+                && x.ReservedDate.End <= _dateTimeServer.Now);
 
             if (appointment == null)
             {

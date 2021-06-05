@@ -9,21 +9,13 @@ namespace Servibes.Appointments.Core.TimeReservations
     {
         public Guid TimeReservationId { get; private set; }
 
-        private readonly Guid _companyId;
+        public Guid CompanyId { get; private set; }
 
-        public Guid CompanyId => _companyId;
+        public Guid EmployeeId { get; private set; }
 
-        private readonly Guid _employeeId;
+        public  ReservationDate ReservedDate { get; private set; }
 
-        public Guid EmployeeId => _employeeId;
-
-        private readonly ReservationDate _reservedDate;
-
-        public ReservationDate ReservationDate => _reservedDate;
-
-        private TimeReservationStatus _status;
-
-        public TimeReservationStatus Status => _status;
+        public TimeReservationStatus Status { get; private set; }
 
         private TimeReservation()
         {
@@ -33,48 +25,48 @@ namespace Servibes.Appointments.Core.TimeReservations
         private TimeReservation(Guid timeReservationId, Guid companyId, Guid employeeId, ReservationDate reservedDate, TimeReservationStatus status)
         {
             TimeReservationId = timeReservationId;
-            _companyId = companyId;
-            _employeeId = employeeId;
-            _reservedDate = reservedDate;
-            _status = status;
+            CompanyId = companyId;
+            EmployeeId = employeeId;
+            ReservedDate = reservedDate;
+            Status = status;
         }
 
         public static TimeReservation Create(Guid timeReservationId, Guid companyId, Guid employeeId, ReservationDate reservedDate)
         {
             var timeReservation = new TimeReservation(timeReservationId, companyId, employeeId, reservedDate, TimeReservationStatus.Created);
-            timeReservation.AddDomainEvent(new TimeReservationStateChanged(timeReservationId, companyId, employeeId, reservedDate, timeReservation._status));
+            timeReservation.AddDomainEvent(new TimeReservationStateChanged(timeReservationId, companyId, employeeId, reservedDate, timeReservation.Status));
             return timeReservation;
         }
 
         public void Cancel(DateTime now)
         {
-            if (_reservedDate.HasPassed(now))
+            if (ReservedDate.HasPassed(now))
             {
                 throw new CannotCancelFinishedTimeReservationException(TimeReservationId);
             }
 
-            if (_status != TimeReservationStatus.Created)
+            if (Status != TimeReservationStatus.Created)
             {
-                throw new CannotChangeTimeReservationStateException(TimeReservationId, _status, TimeReservationStatus.Canceled);
+                throw new CannotChangeTimeReservationStateException(TimeReservationId, Status, TimeReservationStatus.Canceled);
             }
-            _status = TimeReservationStatus.Canceled;
-            AddDomainEvent(new TimeReservationStateChanged(TimeReservationId, _companyId, _employeeId, _reservedDate, _status));
+            Status = TimeReservationStatus.Canceled;
+            AddDomainEvent(new TimeReservationStateChanged(TimeReservationId, CompanyId, EmployeeId, ReservedDate, Status));
         }
 
         public void Finish(DateTime now)
         {
-            if (!_reservedDate.HasPassed(now))
+            if (Status != TimeReservationStatus.Created)
+            {
+                throw new CannotChangeTimeReservationStateException(TimeReservationId, Status, TimeReservationStatus.Canceled);
+            }
+
+            if (!ReservedDate.HasPassed(now))
             {
                 throw new TimeReservationDateIsNotPassedException(TimeReservationId);
             }
 
-            if (_status != TimeReservationStatus.Created)
-            {
-                throw new CannotChangeTimeReservationStateException(TimeReservationId, _status, TimeReservationStatus.Canceled);
-            }
-
-            _status = TimeReservationStatus.Finished;
-            AddDomainEvent(new TimeReservationStateChanged(TimeReservationId, _companyId, _employeeId, _reservedDate, _status));
+            Status = TimeReservationStatus.Finished;
+            AddDomainEvent(new TimeReservationStateChanged(TimeReservationId, CompanyId, EmployeeId, ReservedDate, Status));
         }
     }
 }

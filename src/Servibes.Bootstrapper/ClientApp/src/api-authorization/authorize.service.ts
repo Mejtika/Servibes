@@ -61,7 +61,7 @@ export class AuthorizeService {
       this.isAuthenticated(),
       this.getUserRole().pipe(
         tap((r) => console.log(`Role - ${r}`)),
-        map(r => r.toString().toUpperCase() === role.toUpperCase())),
+        map(r => r && r.toString().toUpperCase() === role.toUpperCase())),
       (first, second) => first && second
     );
   }
