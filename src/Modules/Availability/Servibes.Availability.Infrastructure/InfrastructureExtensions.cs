@@ -12,6 +12,7 @@ using Servibes.Availability.Application.Events.External.TimeReservations.TimeRes
 using Servibes.Availability.Application.ModuleClients;
 using Servibes.Availability.Core.Companies;
 using Servibes.Availability.Core.Employees;
+using Servibes.Availability.Core.Shared;
 using Servibes.Availability.Infrastructure.Domain.Companies;
 using Servibes.Availability.Infrastructure.Domain.Employees;
 using Servibes.Availability.Infrastructure.ModuleClients;
@@ -37,6 +38,7 @@ namespace Servibes.Availability.Infrastructure
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IEmployeesRepository, EmployeesRepository>();
             services.AddScoped<IAvailabilityUnitOfWork, AvailabilityUnitOfWork>();
+            services.AddScoped<IHoursChanger, HoursChanger>();
             services.AddTransient<IReservationClient, ReservationClient>();
             services.AddSingleton<IEventMapper, EventMapper>();
 
